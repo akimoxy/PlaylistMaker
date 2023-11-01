@@ -2,104 +2,90 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:padding="20dp"
-    tools:context=".SettingsActivity">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/back_button"
             style="@style/settings_btn_title_icon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="9"
             android:contentDescription="@string/back_button"
             app:icon="@drawable/back_icon"
+            app:iconGravity="textStart"
             app:iconPadding="@dimen/padding_mini_icons"
-            app:iconSize="@dimen/size_mini_icons"
+            app:iconSize="48dp"
             app:iconTint="@color/black"
-            tools:ignore="RtlHardcoded,VisualLintButtonSize"
-
-            />
+            tools:ignore="RtlHardcoded,VisualLintButtonSize" />
 
         <TextView
             style="@style/settings_btn_title"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/settings" />
+            android:text="@string/settings"
+            tools:ignore="NestedWeights" />
 
     </LinearLayout>
 
-    <LinearLayout
+    <Switch
+        style="@style/settings_btn"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_top"
+        android:padding="@dimen/padding"
+        android:text="@string/nigt_theme"
+        tools:ignore="NestedWeights,UseSwitchCompatOrMaterialXml,VisualLintButtonSize" />
 
-        <Switch
-            style="@style/settings_btn"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/nigt_theme"
-            tools:ignore="NestedWeights,UseSwitchCompatOrMaterialXml,VisualLintButtonSize" />
-
-        <Button
-            style="@style/settings_btn"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/share"
-            app:icon="@drawable/light_mode_share"
-            app:iconGravity="end"
-            app:iconSize="@dimen/size_mini_icons"
-            app:iconTint="@color/black"
-            tools:ignore="VisualLintButtonSize"
-
-            />
-
-        <Button
-
-            style="@style/settings_btn"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:text="@string/support"
-            app:icon="@drawable/light_mode_support"
-            app:iconGravity="end"
-            app:iconSize="@dimen/size_mini_icons"
-            app:iconTint="@color/black"
-            tools:ignore="VisualLintButtonSize"
-
-            />
-
-        <Button
-            style="@style/settings_btn"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/terms_of_use"
-            app:icon="@drawable/light_mode_arrow_forward"
-            app:iconGravity="end"
-            app:iconSize="@dimen/size_mini_icons"
-            app:iconTint="@color/black"
-            tools:ignore="VisualLintButtonSize"
-
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
+    <Button
+        style="@style/settings_btn"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7">
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_top"
+        android:minHeight="48dp"
+        android:padding="@dimen/padding"
+        android:text="@string/share"
+        app:icon="@drawable/light_mode_share"
+        app:iconGravity="end"
+        app:iconSize="@dimen/size_mini_icons"
+        app:iconTint="@color/grey"
+        app:iconPadding="@dimen/padding"
+        tools:ignore="VisualLintButtonSize" />
 
-    </LinearLayout>
+    <Button
+        style="@style/settings_btn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_top"
+        android:minHeight="48dp"
+        android:padding="@dimen/padding"
+        android:text="@string/support"
+        app:icon="@drawable/light_mode_support"
+        app:iconGravity="end"
+        app:iconSize="@dimen/size_mini_icons"
+        app:iconTint="@color/grey"
+        app:iconPadding="@dimen/padding"
+        tools:ignore="VisualLintButtonSize" />
+
+    <Button
+        style="@style/settings_btn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_top"
+        android:minHeight="48dp"
+        android:padding="@dimen/padding"
+        android:text="@string/terms_of_use"
+        app:icon="@drawable/light_mode_arrow_forward"
+        app:iconGravity="end"
+        app:iconSize="@dimen/size_mini_icons"
+        app:iconTint="@color/grey"
+        app:iconPadding="@dimen/padding"
+        tools:ignore="VisualLintButtonSize" />
+
 </LinearLayout>
+

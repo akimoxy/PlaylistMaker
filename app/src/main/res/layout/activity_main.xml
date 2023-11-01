@@ -6,26 +6,30 @@
     android:layout_height="match_parent"
     android:background="@color/blue"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:textColor="@color/white"
-        android:textSize="26sp" />
+        android:textSize="@dimen/text_size" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
         <Button
-            style="@style/Btn"
             android:id="@+id/search_button"
+            style="@style/main_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_top"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
             android:text="@string/search"
             app:cornerRadius="@dimen/corner_radius_mini_icons"
             app:icon="@drawable/light_mode_search"
@@ -36,8 +40,13 @@
             tools:ignore="VisualLintButtonSize" />
 
         <Button
-            style="@style/Btn"
             android:id="@+id/mediateka_button"
+            style="@style/main_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_top"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
             android:text="@string/media_library"
             app:cornerRadius="@dimen/corner_radius_mini_icons"
             app:icon="@drawable/light_mode_mediateka"
@@ -49,8 +58,13 @@
 
         <Button
 
-            style="@style/Btn"
             android:id="@+id/settings_button"
+            style="@style/main_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_top"
+            android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
             android:text="@string/settings"
             app:cornerRadius="@dimen/corner_radius_mini_icons"
             app:icon="@drawable/light_mode_settings"
