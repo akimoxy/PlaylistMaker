@@ -4,7 +4,9 @@
     <dimen name="text_size_small">18sp</dimen>
 <dimen name="corner_radius_mini_icons">16dp</dimen>
     <dimen name="padding">16dp</dimen>
+    <dimen name="mini_text_size">16dp</dimen>
     <dimen name="padding_mini_icons">8dp</dimen>
     <dimen name="size_mini_icons">24dp</dimen>
     <dimen name="margin_top">18dp</dimen>
+    <dimen name="cursor_size">2dp</dimen>
 </resources>
