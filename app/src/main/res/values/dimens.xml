@@ -9,4 +9,5 @@
     <dimen name="size_mini_icons">24dp</dimen>
     <dimen name="margin_top">18dp</dimen>
     <dimen name="cursor_size">2dp</dimen>
+    <dimen name="search_icon_padding">10dp</dimen>
 </resources>

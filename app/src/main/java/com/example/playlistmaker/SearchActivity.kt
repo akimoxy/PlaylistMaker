@@ -1,15 +1,20 @@
 package com.example.playlistmaker
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 
 class SearchActivity : AppCompatActivity() {
+    private lateinit var inputEditText: EditText
+    private var text = ""
+
     @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,11 +23,16 @@ class SearchActivity : AppCompatActivity() {
         buttonBackInSettings.setOnClickListener {
             finish()
         }
-        val inputEditText = findViewById<EditText>(R.id.input_edit_text)
+        inputEditText = findViewById(R.id.input_edit_text)
         val clearButton = findViewById<Button>(R.id.clear_icon_search)
-
+        fun View.hideKeyboard() {
+            val inputManager =
+                context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputManager.hideSoftInputFromWindow(windowToken, 0)
+        }
         clearButton.setOnClickListener {
             inputEditText.setText("")
+            it.hideKeyboard()
         }
         fun clearButtonVisibility(s: CharSequence?): Int {
             return if (s.isNullOrEmpty()) {
@@ -49,8 +59,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        val inputEditText = findViewById<EditText>(R.id.input_edit_text)
-        val text = inputEditText.text.toString()
+        text = inputEditText.text.toString()
         super.onSaveInstanceState(outState)
         outState.putString(KEY, text)
     }
@@ -62,8 +71,7 @@ class SearchActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        val inputEditText = findViewById<EditText>(R.id.input_edit_text)
-        val text = savedInstanceState.getString(KEY)
+        text = savedInstanceState.getString(KEY)!!
         inputEditText.setText(text)
     }
 }
