@@ -48,6 +48,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                text = inputEditText.text.toString()
                 clearButton.visibility = clearButtonVisibility(s)
             }
 
@@ -59,7 +60,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        text = inputEditText.text.toString()
         super.onSaveInstanceState(outState)
         outState.putString(KEY, text)
     }

@@ -6,12 +6,12 @@
         <item name="cornerRadius">@dimen/corner_radius_mini_icons</item>
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textSize">@dimen/text_size26</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">@dimen/padding_mini_icons</item>
-        <item name="iconSize">@dimen/size_mini_icons</item>
+        <item name="iconSize">@dimen/dp24</item>
         <item name="iconTint">@color/black</item>
     </style>
 
@@ -25,21 +25,21 @@
         <item name="android:background">@android:color/transparent</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="iconGravity">end</item>
-        <item name="iconSize">@dimen/size_mini_icons</item>
+        <item name="iconSize">@dimen/dp24</item>
         <item name="iconTint">@color/text_grey</item>
-        <item name="iconPadding">@dimen/padding</item>
+        <item name="iconPadding">@dimen/padding16</item>
     </style>
 
     <style name="settings_btn_title" parent="Widget.MaterialComponents.Button">
         <item name="buttonStyle">@style/settings_btn_title</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
-        <item name="android:layout_marginTop">@dimen/margin_top</item>
+        <item name="android:layout_marginTop">@dimen/margin_top18</item>
         <item name="android:layout_weight">1</item>
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textSize">@dimen/text_size26</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
@@ -49,7 +49,7 @@
         <item name="buttonStyle">@style/settings_btn_title_icon</item>
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_height">48dp</item>
-        <item name="android:layout_marginTop">@dimen/margin_top</item>
+        <item name="android:layout_marginTop">@dimen/margin_top18</item>
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:background">@android:color/transparent</item>
@@ -59,5 +59,10 @@
     <style name="main_menu" parent="">
         <item name="android:background">@color/blue</item>
     </style>
+
+    <style name="search_line" parent="">
+        <item name="android:textColorHint">@color/text_grey</item>
+    </style>
+
 
 </resources>

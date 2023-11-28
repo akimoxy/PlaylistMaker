@@ -4,60 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/padding"
     android:orientation="vertical"
     tools:context=".SearchActivity">
 
-    <LinearLayout
-        android:id="@+id/container"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/dp4"
+        tools:ignore="RtlSymmetry">
 
         <Button
             android:id="@+id/back_button_search"
             style="@style/settings_btn_title_icon"
+            android:layout_gravity="start"
             android:contentDescription="@string/back_button"
             app:icon="@drawable/back_icon"
             app:iconGravity="textStart"
-            app:iconPadding="@dimen/padding_mini_icons"
-            app:iconSize="48dp"
-            tools:ignore="RtlHardcoded,VisualLintButtonSize,VisualLintBounds,TouchTargetSizeCheck" />
+            app:iconSize="@dimen/dp48"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:ignore="MissingConstraints,RtlHardcoded,TouchTargetSizeCheck,VisualLintBounds,VisualLintButtonSize" />
 
         <TextView
             style="@style/settings_btn_title"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/ys_display_medium"
+            android:paddingStart="@dimen/dp12"
+            android:paddingTop="@dimen/dp10"
+            android:paddingBottom="@dimen/dp12"
             android:text="@string/search"
-            tools:ignore="NestedWeights,DuplicateSpeakableTextCheck" />
-    </LinearLayout>
+            android:textSize="@dimen/tittle_text_size22"
+            app:layout_constraintLeft_toRightOf="@id/back_button_search"
+            tools:ignore="DuplicateSpeakableTextCheck,MissingConstraints,NestedWeights,RtlSymmetry" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding16"
+        android:layout_marginRight="@dimen/padding16"
         android:layout_marginTop="@dimen/padding_mini_icons"
-        android:background="@drawable/rounded_edit_text"
-        android:drawableStart="@drawable/search_icon_light">
+        android:layout_marginBottom="@dimen/padding_mini_icons"
+        android:background="@drawable/rounded_edit_text">
 
         <EditText
             android:id="@+id/input_edit_text"
+            style="@style/search_line"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="40dp"
+            android:layout_marginEnd="@dimen/dp40"
             android:autofillHints=""
             android:background="@drawable/rounded_edit_text"
             android:drawableStart="@drawable/search_icon_light"
-            android:drawablePadding="@dimen/search_icon_padding"
+            android:drawablePadding="@dimen/search_icon_padding10"
             android:gravity="start"
             android:hint="@string/search"
             android:inputType="text"
             android:maxLines="1"
-            android:padding="@dimen/padding"
+            android:padding="@dimen/padding16"
             android:textColor="@color/text_black_search"
-            android:textColorHint="@color/text_grey"
             android:textCursorDrawable="@drawable/text_cursor"
-            android:textSize="@dimen/text_size_small"
+            android:textSize="@dimen/mini_text_size16"
             app:cornerRadius="@dimen/corner_radius_mini_icons"
             tools:ignore="LabelFor,TextContrastCheck,VisualLintTextFieldSize" />
 
@@ -65,7 +73,7 @@
             android:id="@+id/clear_icon_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
+            android:layout_gravity="end|center_vertical"
             android:background="@android:color/transparent"
             android:textColor="@color/text_black_search"
             android:visibility="gone"
@@ -74,4 +82,5 @@
             app:iconTint="@color/text_grey"
             tools:ignore="VisualLintButtonSize" />
     </FrameLayout>
+
 </LinearLayout>
