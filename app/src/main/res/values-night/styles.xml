@@ -3,7 +3,7 @@
 
     <style name="main_button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="buttonStyle">@style/main_button</item>
-        <item name="cornerRadius">@dimen/corner_radius_mini_icons</item>
+        <item name="cornerRadius">@dimen/dp16</item>
         <item name="android:backgroundTint">@color/white</item>
 
         <item name="android:textColor">@color/black</item>
