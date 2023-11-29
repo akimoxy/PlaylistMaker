@@ -62,6 +62,10 @@
 
     <style name="search_line" parent="">
         <item name="android:textColorHint">@color/text_grey</item>
+        <item name="iconTint">@color/text_grey</item>
+
+
+
     </style>
 
 

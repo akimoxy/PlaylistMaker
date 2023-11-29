@@ -48,7 +48,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                text = inputEditText.text.toString()
+                text = s.toString()
                 clearButton.visibility = clearButtonVisibility(s)
             }
 

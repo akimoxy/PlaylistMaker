@@ -70,6 +70,7 @@
             tools:ignore="LabelFor,TextContrastCheck,VisualLintTextFieldSize" />
 
         <Button
+            style="@style/search_line"
             android:id="@+id/clear_icon_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,7 +80,6 @@
             android:visibility="gone"
             app:icon="@drawable/light_mode_clear_button"
             app:iconGravity="end"
-            app:iconTint="@color/text_grey"
             tools:ignore="VisualLintButtonSize" />
     </FrameLayout>
 
