@@ -8,4 +8,10 @@
     <string name="terms_of_use">Пользовательское соглашение</string>
     <string name="nigt_theme">Темная тема</string>
     <string name="back_button">Кнопка назад</string>
+    <string name="link_to_android_course">https://practicum.yandex.ru/android-developer</string>
+    <string name="recipient_email">akimova.oki@ya.ru</string>
+    <string name="subject_email">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="mail_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="url_term_of_use"> https://yandex.ru/legal/practicum_offer/</string>
+
 </resources>

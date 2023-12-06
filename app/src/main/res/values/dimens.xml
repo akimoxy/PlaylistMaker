@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_size">26sp</dimen>
-    <dimen name="text_size_small">18sp</dimen>
-<dimen name="corner_radius_mini_icons">16dp</dimen>
-    <dimen name="padding">16dp</dimen>
+    <dimen name="dp4">4dp</dimen>
+    <dimen name="cursor_size">2dp</dimen>
     <dimen name="padding_mini_icons">8dp</dimen>
-    <dimen name="size_mini_icons">24dp</dimen>
-    <dimen name="margin_top">18dp</dimen>
+    <dimen name="search_icon_padding10">10dp</dimen>
+    <dimen name="dp10">10dp</dimen>
+    <dimen name="dp12">12dp</dimen>
+    <dimen name="dp16">16dp</dimen>
+    <dimen name="padding16">16dp</dimen>
+    <dimen name="margin_top18">18dp</dimen>
+    <dimen name="dp19">19dp</dimen>
+    <dimen name="dp24">24dp</dimen>
+    <dimen name="dp40">40dp</dimen>
+    <dimen name="dp48">48dp</dimen>
+
+    <dimen name="mini_text_size16">16sp</dimen>
+    <dimen name="text_size_small">18sp</dimen>
+    <dimen name="tittle_text_size22">22sp</dimen>
+    <dimen name="text_size26">26sp</dimen>
+
+
 </resources>
