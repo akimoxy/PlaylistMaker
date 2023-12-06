@@ -17,7 +17,6 @@
         <Button
             android:id="@+id/back_button_search"
             style="@style/settings_btn_title_icon"
-            android:layout_gravity="start"
             android:contentDescription="@string/back_button"
             app:icon="@drawable/back_icon"
             app:iconGravity="textStart"
@@ -83,4 +82,16 @@
             tools:ignore="VisualLintButtonSize" />
     </FrameLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:listitem="@layout/track_item"
+        tools:itemCount="5"
+        >
+
+
+
+    </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>
