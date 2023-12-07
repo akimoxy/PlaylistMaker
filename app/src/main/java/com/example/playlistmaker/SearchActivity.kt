@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -108,19 +109,13 @@ class SearchActivity : AppCompatActivity() {
             trackName5, artistName5, trackTime5, artworkUrl5
         )
         val arrayOfTrack = TrackAdapter(arrayListOf(track1, track2, track3, track4, track5))
-        //    initial()
+
         val rvTrack = findViewById<RecyclerView>(R.id.recyclerView)
         rvTrack.adapter = arrayOfTrack
-//binding= ActivityMainBinding.inflate(layoutInflater)
-        //     setContentView(binding.root)
-        //initial()
+
+        rvTrack.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
     }
-    //end of create()
-
-    //  fun initial() {
-    //      rvTrack5=binding.rv
-    // }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(KEY, text)
