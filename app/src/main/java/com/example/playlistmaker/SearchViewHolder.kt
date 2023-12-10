@@ -13,6 +13,7 @@ class SearchViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val trackNameView: TextView = itemView.findViewById(R.id.track_name)
     private val trackTimeView: TextView = itemView.findViewById(R.id.track_time)
     private val artworkUrlView: ImageView = itemView.findViewById(R.id.track_image_url)
+
     fun bind(item: Track) {
         trackNameView.text = item.trackName
         artistNameView.text = item.artistName
@@ -25,9 +26,8 @@ class SearchViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             .into(artworkUrlView)
     }
 }
+
 private fun dpToPx(view: View, dp: Float): Int {
     val displayMetrics = view.resources.displayMetrics
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics).toInt()
 }
-
-//В классе ViewHolder есть метод bind(), в который передаётся объект типа Track

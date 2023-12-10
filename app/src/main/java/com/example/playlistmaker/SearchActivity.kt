@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText: EditText
     private var text = ""
-    // private lateinit var rvTrack5: RecyclerView
-    //private lateinit var binding: ActivityMainBinding
 
     @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,13 +84,6 @@ class SearchActivity : AppCompatActivity() {
         val artworkUrl3 = getString(R.string.artworkUrl3)
         val artworkUrl4 = getString(R.string.artworkUrl4)
         val artworkUrl5 = getString(R.string.artworkUrl5)
-
-        //      val artistNameList =
-        //          arrayOf(artistName1, artistName2, artistName3, artistName4, artistName5)
-        //     val trackNameList = arrayOf(trackName1, trackName2, trackName3, trackName4, trackName5)
-        //      val trackTimeList = arrayOf(trackTime1, trackTime2, trackTime3, trackTime4, trackTime5)
-        //    val imageUrlList = arrayOf(artworkUrl1, artworkUrl2, artworkUrl3, artworkUrl4, artworkUrl5)
-
         val track1 = Track(
             trackName1, artistName1, trackTime1, artworkUrl1
         )
@@ -116,6 +107,7 @@ class SearchActivity : AppCompatActivity() {
         rvTrack.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(KEY, text)
@@ -131,7 +123,6 @@ class SearchActivity : AppCompatActivity() {
         text = savedInstanceState.getString(KEY)!!
         inputEditText.setText(text)
     }
-
 }
 
 

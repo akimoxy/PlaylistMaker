@@ -21,7 +21,4 @@ class TrackAdapter(
         return arrayOfTrack.size
     }
 
-    // fun setList(list: ArrayList<Track>) {
-    //     arrayOfTrack = list
-    //  }
 }

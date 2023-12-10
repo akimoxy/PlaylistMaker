@@ -5,6 +5,7 @@
     <dimen name="cursor_size">2dp</dimen>
     <dimen name="padding_mini_icons">8dp</dimen>
     <dimen name="dp8">8dp</dimen>
+    <dimen name="dp8.5">8.5dp</dimen>
     <dimen name="search_icon_padding10">10dp</dimen>
     <dimen name="dp10">10dp</dimen>
     <dimen name="dp12">12dp</dimen>
@@ -24,10 +25,5 @@
     <dimen name="text_size_small">18sp</dimen>
     <dimen name="tittle_text_size22">22sp</dimen>
     <dimen name="text_size26">26sp</dimen>
-
-
-
-
-
 
 </resources>

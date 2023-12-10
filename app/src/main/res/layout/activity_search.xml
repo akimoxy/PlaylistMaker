@@ -52,7 +52,10 @@
             style="@style/search_line"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp14"
+            android:layout_marginTop="@dimen/dp8.5"
             android:layout_marginEnd="@dimen/dp40"
+            android:layout_marginBottom="@dimen/dp8.5"
             android:autofillHints=""
             android:background="@drawable/rounded_edit_text"
             android:drawableStart="@drawable/search_icon_light"
@@ -61,16 +64,15 @@
             android:hint="@string/search"
             android:inputType="text"
             android:maxLines="1"
-            android:padding="@dimen/padding16"
             android:textColor="@color/text_black_search"
             android:textCursorDrawable="@drawable/text_cursor"
             android:textSize="@dimen/mini_text_size16"
             app:cornerRadius="@dimen/dp16"
-            tools:ignore="LabelFor,TextContrastCheck,VisualLintTextFieldSize" />
+            tools:ignore="LabelFor,TextContrastCheck,VisualLintTextFieldSize,TouchTargetSizeCheck" />
 
         <Button
-            style="@style/search_line"
             android:id="@+id/clear_icon_search"
+            style="@style/search_line"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
@@ -87,11 +89,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:listitem="@layout/track_item"
         tools:itemCount="5"
-        >
-
-
-
+        tools:listitem="@layout/track_item">
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>
