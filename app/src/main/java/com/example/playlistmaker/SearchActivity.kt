@@ -10,6 +10,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText: EditText
@@ -57,6 +60,52 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
+
+        val trackName1 = getString(R.string.trackName1)
+        val trackName2 = getString(R.string.trackName2)
+        val trackName3 = getString(R.string.trackName3)
+        val trackName4 = getString(R.string.trackName4)
+        val trackName5 = getString(R.string.trackName5)
+
+        val artistName1 = getString(R.string.artistName1)
+        val artistName2 = getString(R.string.artistName2)
+        val artistName3 = getString(R.string.artistName3)
+        val artistName4 = getString(R.string.artistName4)
+        val artistName5 = getString(R.string.artistName5)
+
+        val trackTime1 = getString(R.string.trackTime1)
+        val trackTime2 = getString(R.string.trackTime2)
+        val trackTime3 = getString(R.string.trackTime3)
+        val trackTime4 = getString(R.string.trackTime4)
+        val trackTime5 = getString(R.string.trackTime5)
+
+        val artworkUrl1 = getString(R.string.artworkUrl1)
+        val artworkUrl2 = getString(R.string.artworkUrl2)
+        val artworkUrl3 = getString(R.string.artworkUrl3)
+        val artworkUrl4 = getString(R.string.artworkUrl4)
+        val artworkUrl5 = getString(R.string.artworkUrl5)
+        val track1 = Track(
+            trackName1, artistName1, trackTime1, artworkUrl1
+        )
+        val track2 = Track(
+            trackName2, artistName2, trackTime2, artworkUrl2
+        )
+        val track3 = Track(
+            trackName3, artistName3, trackTime3, artworkUrl3
+        )
+        val track4 = Track(
+            trackName4, artistName4, trackTime4, artworkUrl4
+        )
+        val track5 = Track(
+            trackName5, artistName5, trackTime5, artworkUrl5
+        )
+        val arrayOfTrack = TrackAdapter(arrayListOf(track1, track2, track3, track4, track5))
+
+        val rvTrack = findViewById<RecyclerView>(R.id.recyclerView)
+        rvTrack.adapter = arrayOfTrack
+
+        rvTrack.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
