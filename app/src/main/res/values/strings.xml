@@ -40,5 +40,9 @@
     <string name="artworkUrl5">https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg</string>
     <string name="trackNameDescr">название трека</string>
     <string name="arrowForwardDescr">кнопка перейти хз куда</string>
+    <string name="no_results_search">Ничего не нашлось</string>
+    <string name="server_error">Проблемы со связью</string>
+    <string name="server_error2">Загрузка не удалась.Проверьте подключение к интернету</string>
+    <string name="update">Обновить</string>
 
 </resources>
