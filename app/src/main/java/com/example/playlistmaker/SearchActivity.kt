@@ -22,12 +22,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText: EditText
     private var text = ""
-    private lateinit var clearButton: Button
     private var tracks = ArrayList<Track>()
-    private lateinit var errorView: View
-    private lateinit var noResultsView: View
-    lateinit var arrayOfTrack: TrackAdapter
+    private var errorView: View? = null
+    private var noResultsView: View? = null
+    private var clearButton: Button? = null
+    private val trackAdapter = TrackAdapter(tracks)
     private val iTunsBaseUrl = "https://itunes.apple.com"
+    private val serverCode200 = 200
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunsBaseUrl)
         .addConverterFactory(GsonConverterFactory.create())
@@ -42,12 +43,13 @@ class SearchActivity : AppCompatActivity() {
         buttonBackInSettings.setOnClickListener {
             finish()
         }
+        clearButton = findViewById(R.id.clear_icon_search)
         noResultsView = findViewById(R.id.no_results_search_include)
         errorView = findViewById(R.id.server_error_include)
         inputEditText = findViewById(R.id.input_edit_text)
-        arrayOfTrack = TrackAdapter(tracks)
+
         val rvTrack = findViewById<RecyclerView>(R.id.recyclerView)
-        rvTrack.adapter = arrayOfTrack
+        rvTrack.adapter = trackAdapter
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 inputEditText.setOnClickListener {
@@ -58,13 +60,13 @@ class SearchActivity : AppCompatActivity() {
             false
         }
         rvTrack.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        clearButton = findViewById(R.id.clear_icon_search)
-        clearButton.setOnClickListener {
+
+        clearButton!!.setOnClickListener {
             inputEditText.setText("")
             tracks.clear()
             it.hideKeyboard()
-            errorView.visibility = View.GONE
-            noResultsView.visibility = View.GONE
+            errorView!!.visibility = View.GONE
+            noResultsView!!.visibility = View.GONE
         }
         fun clearButtonVisibility(s: CharSequence?): Int {
             return if (s.isNullOrEmpty()) {
@@ -86,7 +88,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 text = s.toString()
-                clearButton.visibility = clearButtonVisibility(s)
+                clearButton!!.visibility = clearButtonVisibility(s)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -106,8 +108,8 @@ class SearchActivity : AppCompatActivity() {
                 ) {
                     tracks.clear()
                     tracks.addAll(response.body()?.results!!)
-                    arrayOfTrack.notifyDataSetChanged()
-                    if (tracks.isEmpty() || response.code() == 200) {
+                    trackAdapter.addTracks(tracks)
+                    if (tracks.isEmpty() || response.code() == serverCode200) {
                         noResults()
                     }
                 }
@@ -135,8 +137,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun serverError() {
-        noResultsView.visibility = View.GONE
-        errorView.visibility = View.VISIBLE
+        noResultsView!!.visibility = View.GONE
+        errorView!!.visibility = View.VISIBLE
         val upd = findViewById<Button>(R.id.update_search_server_error)
         upd.setOnClickListener {
             search()
@@ -144,7 +146,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun noResults() {
-        noResultsView.visibility = View.VISIBLE
+        noResultsView!!.visibility = View.VISIBLE
     }
 
     private fun View.hideKeyboard() {

@@ -86,15 +86,19 @@
     <style name="search_line" parent="">
         <item name="android:textColorHint">@color/text_grey</item>
         <item name="tint">@color/text_grey</item>
+        <item name="iconTint">@color/text_grey</item>
     </style>
+
     <style name="no_results_placeholder" parent="">
         <item name="android:src">@drawable/no_results_light_mode_placeholder</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
     <style name="server_error_placeholder" parent="">
         <item name="android:src">@drawable/server_error_light_mode</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
     <style name="black_white_button" parent="">
         <item name="android:textColor">@color/white</item>
         <item name="android:backgroundTint">@color/black</item>
