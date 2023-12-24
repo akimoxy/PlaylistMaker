@@ -49,12 +49,12 @@
 
     <ImageView
         android:id="@+id/dot"
+        style="@style/color_rv_search_small_text"
         android:layout_width="@dimen/dp13"
         android:layout_height="@dimen/dp13"
         android:layout_marginBottom="@dimen/dp14"
         android:contentDescription="TODO"
         android:src="@drawable/dot_track_list"
-        android:tint="@color/text_grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/artist_name"
         app:layout_constraintRight_toLeftOf="@id/track_time"

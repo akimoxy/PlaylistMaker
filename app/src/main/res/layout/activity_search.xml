@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -53,17 +54,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/dp14"
-            android:layout_marginTop="@dimen/dp8.5"
+            android:layout_marginTop="@dimen/dp8"
             android:layout_marginEnd="@dimen/dp40"
-            android:layout_marginBottom="@dimen/dp8.5"
+            android:layout_marginBottom="@dimen/dp8"
             android:autofillHints=""
             android:background="@drawable/rounded_edit_text"
             android:drawableStart="@drawable/search_icon_light"
             android:drawablePadding="@dimen/search_icon_padding10"
             android:gravity="start"
             android:hint="@string/search"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@color/text_black_search"
             android:textCursorDrawable="@drawable/text_cursor"
             android:textSize="@dimen/mini_text_size16"
@@ -73,8 +76,8 @@
         <Button
             android:id="@+id/clear_icon_search"
             style="@style/search_line"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp40"
+            android:layout_height="@dimen/dp36"
             android:layout_gravity="end|center_vertical"
             android:background="@android:color/transparent"
             android:textColor="@color/text_black_search"
@@ -87,9 +90,23 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <include
+        android:id="@+id/no_results_search_include"
+        layout="@layout/no_results_search_item"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:itemCount="5"
-        tools:listitem="@layout/track_item">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:visibility="gone"
+        tools:listitem="@layout/no_results_search_item" />
+
+    <include
+        android:id="@+id/server_error_include"
+        layout="@layout/server_error_search_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:listitem="@layout/server_error_search_item" />
+
 </LinearLayout>

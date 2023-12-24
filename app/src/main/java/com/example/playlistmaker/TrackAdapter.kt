@@ -7,6 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 class TrackAdapter(
     private var arrayOfTrack: ArrayList<Track>
 ) : RecyclerView.Adapter<SearchViewHolder>() {
+    fun addTracks(arrayOfTrack: ArrayList<Track>) {
+        arrayOfTrack.addAll(arrayOfTrack)
+        notifyItemRangeInserted(0, arrayOfTrack.size)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_item, parent, false)
