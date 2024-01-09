@@ -5,9 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
     @SuppressLint("UseSwitchCompatOrMaterialCode", "MissingInflatedId")
@@ -19,16 +18,11 @@ class SettingsActivity : AppCompatActivity() {
         buttonBackInSettings.setOnClickListener {
             finish()
         }
-        AppCompatDelegate.getDefaultNightMode()
-
-        val switchDarkTheme = findViewById<Switch>(R.id.night_theme_switch_settings)
+        val switchDarkTheme = findViewById<SwitchMaterial>(R.id.night_theme_switch_settings)
         switchDarkTheme.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
+            (applicationContext as App).switchTheme(this,isChecked)
         }
+        switchDarkTheme.isChecked=(applicationContext as App).switchBtn()
         val linkToAndroidCourseString = getString(R.string.link_to_android_course)
         val buttonShareSettings = findViewById<Button>(R.id.share_button_settings)
         buttonShareSettings.setOnClickListener {

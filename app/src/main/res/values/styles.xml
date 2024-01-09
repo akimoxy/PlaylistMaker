@@ -29,6 +29,15 @@
         <item name="iconTint">@color/text_grey</item>
         <item name="iconPadding">@dimen/padding16</item>
     </style>
+    <style name="settings_btn_switch" parent="Widget.MaterialComponents.Button">
+        <item name="buttonStyle">@style/settings_btn_switch</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="thumbTint">@color/text_grey</item>
+        <item name="trackTint">@color/light_grey</item>
+        <item name="iconPadding">@dimen/padding16</item>
+    </style>
+
+
 
     <style name="settings_btn_title" parent="Widget.MaterialComponents.Button">
         <item name="buttonStyle">@style/settings_btn_title</item>
@@ -85,6 +94,7 @@
 
     <style name="search_line" parent="">
         <item name="android:textColorHint">@color/text_grey</item>
+
         <item name="tint">@color/text_grey</item>
         <item name="iconTint">@color/text_grey</item>
     </style>

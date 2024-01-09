@@ -22,6 +22,7 @@
     <dimen name="dp120">120dp</dimen>
 
     <dimen name="sp11">11sp</dimen>
+    <dimen name="sp14">14sp</dimen>
     <dimen name="mini_text_size16">16sp</dimen>
     <dimen name="text_size_small">18sp</dimen>
     <dimen name="sp19">19sp</dimen>
