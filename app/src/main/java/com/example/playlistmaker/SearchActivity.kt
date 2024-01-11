@@ -6,13 +6,13 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -25,21 +25,23 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText: EditText
     private var text = ""
     private var tracks = ArrayList<Track>()
-    //private var tracksHistory = ArrayList<Track>()
     private var errorView: View? = null
     private var noResultsView: View? = null
     private var textViewYourSearch: View? = null
     private var trackItem: View? = null
     private var clearButton: Button? = null
+    private var upd: Button? = null
     private var clearTrackHistoryBtn: Button? = null
     private var buttonBackInSettings: Button? = null
     private var rvTrack: RecyclerView? = null
     private var rvTrackHist: RecyclerView? = null
-    private val trackAdapter = TrackAdapter(tracks)
-    //private val trackHistoryAdapter = TrackAdapter(tracksHistory)
+    lateinit var trackAdapter: TrackAdapter
+    private lateinit var adapterForHistoryTracks: TrackAdapter
     lateinit var history: SearchHistory
     private val iTunsBaseUrl = "https://itunes.apple.com"
+    private lateinit var sharedPr: SharedPreferences
     private val serverCode200 = 200
+    private lateinit var clickListener: RecyclerViewEvent
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunsBaseUrl)
         .addConverterFactory(GsonConverterFactory.create())
@@ -53,25 +55,25 @@ class SearchActivity : AppCompatActivity() {
 
         findBiId()
 
-        val sharedPr: SharedPreferences =
-            getSharedPreferences(TRACK_HISTORY, Context.MODE_PRIVATE)
+        sharedPr = getSharedPreferences(TRACK_HISTORY, Context.MODE_PRIVATE)
+        history = SearchHistory(sharedPr)
 
-        rvTrack?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        rvTrack?.adapter = trackAdapter
-
-        history = SearchHistory(sharedPr, object : RecyclerViewEvent {
+        clickListener = object : RecyclerViewEvent {
             override fun onItemClick(track: Track) {
                 history.saveTrack(track)
             }
-        })
-        rvTrackHist?.adapter = history.adapterForHistoryTracks
+        }
+        adapterForHistoryTracks = TrackAdapter(history.trackHistoryArray, clickListener)
+        rvTrackHist?.adapter = adapterForHistoryTracks
         rvTrackHist?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
+        trackAdapter = TrackAdapter(tracks, clickListener)
+        rvTrack?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        rvTrack?.adapter = trackAdapter
 
         buttonBackInSettings?.setOnClickListener {
             finish()
         }
-
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 inputEditText.setOnClickListener {
@@ -81,23 +83,21 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
-
+        clearTrackHistoryBtn?.visibility = View.GONE
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
-            //  (applicationContext)
-            if (!hasFocus || tracks.isEmpty() || history.trackHistoryArray.isNotEmpty()) {
-                history.getItemsFromCache()
-                if (rvTrackHist?.isNotEmpty() == true) {
-                    clearTrackHistoryBtn?.visibility = View.VISIBLE
-                    textViewYourSearch?.visibility = View.VISIBLE
-                    history.getItemsFromCache()
-                }
-            } else if (tracks.isEmpty() || rvTrackHist?.isNotEmpty() == true) {
-                history.getItemsFromCache()
-                clearTrackHistoryBtn?.visibility = View.VISIBLE
-                textViewYourSearch?.visibility = View.VISIBLE
+            history.getItems()
+            adapterForHistoryTracks.updateList(history.trackHistoryArray)
+            if (hasFocus && tracks.isEmpty() && history.trackHistoryArray.isNotEmpty()) {
+              history.getItems()
+              history.getItemsFromCache()
+              clearTrackHistoryBtn?.visibility = View.VISIBLE
+              textViewYourSearch?.visibility = View.VISIBLE
+
+            } else if ((tracks.isEmpty() && history.trackHistoryArray.isEmpty())) {
+                clearTrackHistoryBtn?.visibility = View.GONE
+                textViewYourSearch?.visibility = View.GONE
             }
         }
-
         clearButton!!.setOnClickListener {
             inputEditText.setText("")
             tracks.clear()
@@ -105,7 +105,6 @@ class SearchActivity : AppCompatActivity() {
             errorView!!.visibility = View.GONE
             noResultsView!!.visibility = View.GONE
         }
-
         fun clearButtonVisibility(s: CharSequence?): Int {
             return if (s.isNullOrEmpty()) {
                 View.GONE
@@ -113,7 +112,15 @@ class SearchActivity : AppCompatActivity() {
                 View.VISIBLE
             }
         }
+        rvTrackHist?.adapter = adapterForHistoryTracks
+        clearTrackHistoryBtn?.setOnClickListener {
+            history.clearTrackHistory()
+            history.getItems()
+            adapterForHistoryTracks.updateList(history.trackHistoryArray)
+            clearTrackHistoryBtn?.visibility = View.GONE
+            textViewYourSearch?.visibility = View.GONE
 
+        }
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
@@ -134,7 +141,6 @@ class SearchActivity : AppCompatActivity() {
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
     }
-
     private fun search() {
         iTunesService.findTrack(inputEditText.text.toString())
             .enqueue(object : Callback<TrackResponse> {
@@ -150,48 +156,39 @@ class SearchActivity : AppCompatActivity() {
                         noResults()
                     }
                 }
-
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                     serverError()
                 }
             })
     }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(KEY, text)
     }
-
     companion object {
         const val KEY = "someKey"
     }
-
     @SuppressLint("SetTextI18n")
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         text = savedInstanceState.getString(KEY)!!
         inputEditText.setText(text)
     }
-
     fun serverError() {
         noResultsView!!.visibility = View.GONE
         errorView!!.visibility = View.VISIBLE
-        val upd = findViewById<Button>(R.id.update_search_server_error)
-        upd.setOnClickListener {
+        upd?.setOnClickListener {
             search()
         }
     }
-
     fun noResults() {
         noResultsView!!.visibility = View.VISIBLE
     }
-
     private fun View.hideKeyboard() {
         val inputManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(windowToken, 0)
     }
-
     private fun findBiId() {
         clearButton = findViewById(R.id.clear_icon_search)
         noResultsView = findViewById(R.id.no_results_search_include)
@@ -203,6 +200,9 @@ class SearchActivity : AppCompatActivity() {
         rvTrack = findViewById(R.id.recyclerView)
         rvTrackHist = findViewById(R.id.recyclerViewHist)
         textViewYourSearch = findViewById(R.id.text_view_your_search)
+        upd = findViewById(R.id.update_search_server_error)
     }
+
+
 }
 

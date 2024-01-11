@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SearchActivity">
+    tools:context=".SearchActivity"
+    tools:ignore="ExtraText">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -100,18 +101,33 @@
     android:fontFamily="@font/ys_display_medium"
     android:visibility="gone"
     />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp8"
         android:orientation="vertical" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewHist"
+
+
+
+
+
+    <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp8"
-        android:orientation="vertical" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewHist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp8"
+                android:orientation="vertical"
+                />
     <Button
         android:id="@+id/clear_track_history"
         android:layout_width="wrap_content"
@@ -125,10 +141,10 @@
         android:paddingBottom="@dimen/dp12"
         android:text="@string/clear_history"
         android:textSize="@dimen/sp14"
-        android:fontFamily="@font/ys_display_medium"
-        android:visibility="gone"
+        android:fontFamily="@font/ys_display_medium" />
+        </LinearLayout>
+    </ScrollView>
 
-        />
 
     <include
         android:id="@+id/no_results_search_include"
