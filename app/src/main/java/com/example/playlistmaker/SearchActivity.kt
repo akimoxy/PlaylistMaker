@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -20,6 +19,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText: EditText
@@ -57,13 +57,15 @@ class SearchActivity : AppCompatActivity() {
 
         sharedPr = getSharedPreferences(TRACK_HISTORY, Context.MODE_PRIVATE)
         history = SearchHistory(sharedPr)
-
         clickListener = object : RecyclerViewEvent {
             override fun onItemClick(track: Track) {
                 history.saveTrack(track)
+
             }
+
         }
         adapterForHistoryTracks = TrackAdapter(history.trackHistoryArray, clickListener)
+
         rvTrackHist?.adapter = adapterForHistoryTracks
         rvTrackHist?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -83,24 +85,45 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+        textViewYourSearch?.visibility = View.GONE
         clearTrackHistoryBtn?.visibility = View.GONE
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
             history.getItems()
             adapterForHistoryTracks.updateList(history.trackHistoryArray)
             if (hasFocus && tracks.isEmpty() && history.trackHistoryArray.isNotEmpty()) {
-              history.getItems()
-              history.getItemsFromCache()
-              clearTrackHistoryBtn?.visibility = View.VISIBLE
-              textViewYourSearch?.visibility = View.VISIBLE
-
+                clearTrackHistoryBtn?.visibility = View.VISIBLE
+                textViewYourSearch?.visibility = View.VISIBLE
             } else if ((tracks.isEmpty() && history.trackHistoryArray.isEmpty())) {
                 clearTrackHistoryBtn?.visibility = View.GONE
                 textViewYourSearch?.visibility = View.GONE
             }
         }
+        inputEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (inputEditText.hasFocus() && inputEditText.text.isEmpty()) {
+                    history.getItems()
+                    adapterForHistoryTracks.updateList(history.trackHistoryArray)
+                    if (history.trackHistoryArray.isNotEmpty()) {
+                        clearTrackHistoryBtn?.visibility = View.VISIBLE
+                        textViewYourSearch?.visibility = View.VISIBLE
+                    } else {
+                        clearTrackHistoryBtn?.visibility = View.INVISIBLE
+                        textViewYourSearch?.visibility = View.INVISIBLE
+                        //здесь Invisible,а не gone, потому что gone отрабатывает не корректно
+                    }
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
         clearButton!!.setOnClickListener {
             inputEditText.setText("")
             tracks.clear()
+            trackAdapter.updateList(tracks)
             it.hideKeyboard()
             errorView!!.visibility = View.GONE
             noResultsView!!.visibility = View.GONE
@@ -119,7 +142,6 @@ class SearchActivity : AppCompatActivity() {
             adapterForHistoryTracks.updateList(history.trackHistoryArray)
             clearTrackHistoryBtn?.visibility = View.GONE
             textViewYourSearch?.visibility = View.GONE
-
         }
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(
@@ -141,6 +163,7 @@ class SearchActivity : AppCompatActivity() {
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
     }
+
     private fun search() {
         iTunesService.findTrack(inputEditText.text.toString())
             .enqueue(object : Callback<TrackResponse> {
@@ -152,28 +175,35 @@ class SearchActivity : AppCompatActivity() {
                     tracks.clear()
                     tracks.addAll(response.body()?.results!!)
                     trackAdapter.addTracks(tracks)
+                    textViewYourSearch?.visibility = View.GONE
+                    clearTrackHistoryBtn?.visibility = View.GONE
                     if (tracks.isEmpty() || response.code() == serverCode200) {
                         noResults()
                     }
                 }
+
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                     serverError()
                 }
             })
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(KEY, text)
     }
+
     companion object {
         const val KEY = "someKey"
     }
+
     @SuppressLint("SetTextI18n")
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         text = savedInstanceState.getString(KEY)!!
         inputEditText.setText(text)
     }
+
     fun serverError() {
         noResultsView!!.visibility = View.GONE
         errorView!!.visibility = View.VISIBLE
@@ -181,14 +211,17 @@ class SearchActivity : AppCompatActivity() {
             search()
         }
     }
+
     fun noResults() {
         noResultsView!!.visibility = View.VISIBLE
     }
+
     private fun View.hideKeyboard() {
         val inputManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(windowToken, 0)
     }
+
     private fun findBiId() {
         clearButton = findViewById(R.id.clear_icon_search)
         noResultsView = findViewById(R.id.no_results_search_include)
@@ -202,7 +235,5 @@ class SearchActivity : AppCompatActivity() {
         textViewYourSearch = findViewById(R.id.text_view_your_search)
         upd = findViewById(R.id.update_search_server_error)
     }
-
-
 }
 

@@ -1,4 +1,5 @@
 package com.example.playlistmaker
+
 import android.annotation.SuppressLint
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -12,30 +13,37 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
 
 class TrackAdapter(
-    private var arrayOfTrack: ArrayList<Track>, private var clickListener:RecyclerViewEvent
+    private var arrayOfTrack: ArrayList<Track>, private var clickListener: RecyclerViewEvent
 ) : RecyclerView.Adapter<TrackAdapter.SearchViewHolder>() {
     fun addTracks(item: ArrayList<Track>) {
         arrayOfTrack.addAll(item)
         notifyItemRangeInserted(0, arrayOfTrack.size)
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.track_item, parent, false,
+        val view = LayoutInflater.from(parent.context).inflate(
+            R.layout.track_item, parent, false,
         )
         return SearchViewHolder(view)
     }
+
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.bind(arrayOfTrack[position])
-       holder.itemView.setOnClickListener {
-        clickListener.onItemClick(arrayOfTrack[position])
+        holder.itemView.setOnClickListener {
+            clickListener.onItemClick(arrayOfTrack[position])
         }
     }
+
     fun updateList(newList: ArrayList<Track>) {
         arrayOfTrack = newList
+        notifyItemRangeRemoved(0, arrayOfTrack.size)
         notifyItemRangeInserted(0, arrayOfTrack.size)
     }
+
     override fun getItemCount(): Int {
         return arrayOfTrack.size
     }
+
     inner class SearchViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val artistNameView: TextView = itemView.findViewById(R.id.artist_name)
         private val trackNameView: TextView = itemView.findViewById(R.id.track_name)
@@ -52,6 +60,7 @@ class TrackAdapter(
                 .placeholder(R.drawable.placeholder)
                 .into(artworkUrlView)
         }
+
         @SuppressLint("SimpleDateFormat")
         fun trackTime(trackTimeMillis: Long): String {
             val dateFormat = SimpleDateFormat("mm:ss")
@@ -65,8 +74,8 @@ class TrackAdapter(
                 .toInt()
         }
     }
-
 }
+
 interface RecyclerViewEvent {
     fun onItemClick(track: Track)
 }

@@ -4,25 +4,31 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
+    var switchDarkTheme: SwitchMaterial? = null
+
     @SuppressLint("UseSwitchCompatOrMaterialCode", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
         val buttonBackInSettings = findViewById<Button>(R.id.back_button)
+
         buttonBackInSettings.setOnClickListener {
             finish()
         }
-        val switchDarkTheme = findViewById<SwitchMaterial>(R.id.night_theme_switch_settings)
-        switchDarkTheme.setOnCheckedChangeListener { _, isChecked ->
-            (applicationContext as App).switchTheme(this,isChecked)
+        switchDarkTheme = findViewById(R.id.night_theme_switch_settings)
+
+        switchDarkTheme?.isChecked = (applicationContext as App).switchBtn(this)
+        Log.d("ghghgh", switchDarkTheme?.isChecked.toString())
+        switchDarkTheme?.setOnCheckedChangeListener { _, isChecked ->
+            (applicationContext as App).switchTheme(this, isChecked)
         }
-        switchDarkTheme.isChecked=(applicationContext as App).switchBtn()
         val linkToAndroidCourseString = getString(R.string.link_to_android_course)
         val buttonShareSettings = findViewById<Button>(R.id.share_button_settings)
         buttonShareSettings.setOnClickListener {
@@ -58,6 +64,8 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+
 }
 
 

@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -41,7 +40,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/padding16"
@@ -109,10 +107,6 @@
         android:layout_marginTop="@dimen/dp8"
         android:orientation="vertical" />
 
-
-
-
-
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
@@ -128,23 +122,23 @@
                 android:layout_marginTop="@dimen/dp8"
                 android:orientation="vertical"
                 />
-    <Button
-        android:id="@+id/clear_track_history"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        style="@style/black_white_button"
-        android:layout_marginTop="@dimen/dp24"
-        android:paddingStart="@dimen/dp16"
-        android:paddingEnd="@dimen/dp16"
-        android:paddingTop="@dimen/dp12"
-        android:paddingBottom="@dimen/dp12"
-        android:text="@string/clear_history"
-        android:textSize="@dimen/sp14"
-        android:fontFamily="@font/ys_display_medium" />
+            <Button
+                android:id="@+id/clear_track_history"
+                style="@style/black_white_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp24"
+                android:layout_marginBottom="@dimen/dp16"
+                android:paddingStart="@dimen/dp16"
+                android:paddingTop="@dimen/dp12"
+                app:cornerRadius="@dimen/tittle_text_size22"
+                android:paddingEnd="@dimen/dp16"
+                android:paddingBottom="@dimen/dp12"
+                android:textSize="@dimen/sp14"
+                android:text="@string/clear_history"/>
         </LinearLayout>
     </ScrollView>
-
 
     <include
         android:id="@+id/no_results_search_include"

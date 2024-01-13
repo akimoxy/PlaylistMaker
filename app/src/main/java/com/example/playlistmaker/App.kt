@@ -5,15 +5,15 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 
 class App : Application() {
-
-    private var darkTheme = false
+    private var darkTheme: Boolean = false
     override fun onCreate() {
         super.onCreate()
     }
 
-    fun switchBtn(): Boolean {
-        val sharedPrefs = getSharedPreferences(PLAYLIST_PREFERENCES, Context.MODE_PRIVATE)
-        return sharedPrefs.getBoolean(EDIT_SWITCH_SETTINGS_KEY, darkTheme).also { darkTheme = it }
+    fun switchBtn(context: Context): Boolean {
+        val sharedPrefs = context.getSharedPreferences(PLAYLIST_PREFERENCES, Context.MODE_PRIVATE)
+        return sharedPrefs.getBoolean(EDIT_SWITCH_SETTINGS_KEY, darkTheme)
+
     }
 
     private fun saveSwitchTheme(context: Context) {
@@ -32,16 +32,13 @@ class App : Application() {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
+        switchBtn(context)
         saveSwitchTheme(context)
-        switchBtn()
     }
-
 
     companion object {
         const val PLAYLIST_PREFERENCES = "practicum_preferences"
         const val EDIT_SWITCH_SETTINGS_KEY = "key_for_dark_theme"
 
     }
-
-
 }
