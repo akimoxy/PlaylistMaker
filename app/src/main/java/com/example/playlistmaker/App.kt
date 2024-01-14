@@ -2,6 +2,8 @@ package com.example.playlistmaker
 
 import android.app.Application
 import android.content.Context
+import android.content.res.Configuration
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 
 class App : Application() {
@@ -9,21 +11,45 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
     }
-
-    fun switchBtn(context: Context): Boolean {
+    private fun returnBooleanShPrefNightTheme(context: Context): Boolean {
         val sharedPrefs = context.getSharedPreferences(PLAYLIST_PREFERENCES, Context.MODE_PRIVATE)
         return sharedPrefs.getBoolean(EDIT_SWITCH_SETTINGS_KEY, darkTheme)
-
     }
-
-    private fun saveSwitchTheme(context: Context) {
+     private fun saveSwitchTheme(context: Context) {
         val sharedPrefs = context.getSharedPreferences(PLAYLIST_PREFERENCES, Context.MODE_PRIVATE)
         sharedPrefs.edit()
             .putBoolean(EDIT_SWITCH_SETTINGS_KEY, darkTheme)
             .apply()
+        applyTheme(context)
     }
-
-    fun switchTheme(context: Context, darkThemeEnabled: Boolean) {
+   private fun applyTheme(context: Context):Boolean {
+       val nightModeEnabled =  returnBooleanShPrefNightTheme(context)
+       if (nightModeEnabled) {
+           AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+       } else {
+           AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+       }
+       return nightModeEnabled
+   }
+    fun switchBtnState(context: Context): Boolean {
+        val sharedPrefs = context.getSharedPreferences(PLAYLIST_PREFERENCES, Context.MODE_PRIVATE)
+       if (sharedPrefs.contains(EDIT_SWITCH_SETTINGS_KEY)) {
+              darkTheme =applyTheme(context)
+           Log.d("1",darkTheme.toString())
+           }else if(isDarkThemeOn()){
+               darkTheme=isDarkThemeOn()
+           Log.d("2",darkTheme.toString())
+           }else{
+               darkTheme=false
+           Log.d("3",darkTheme.toString())
+           }
+        return darkTheme
+    }
+    private fun Context.isDarkThemeOn(): Boolean {
+        return resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+    }
+    fun switchTheme(context: Context, darkThemeEnabled: Boolean): Boolean {
         darkTheme = darkThemeEnabled
         AppCompatDelegate.setDefaultNightMode(
             if (darkTheme) {
@@ -32,10 +58,10 @@ class App : Application() {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
-        switchBtn(context)
+        returnBooleanShPrefNightTheme(context)
         saveSwitchTheme(context)
+        return darkThemeEnabled
     }
-
     companion object {
         const val PLAYLIST_PREFERENCES = "practicum_preferences"
         const val EDIT_SWITCH_SETTINGS_KEY = "key_for_dark_theme"
