@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        (applicationContext as App).switchBtnState(this)
         val buttonSearch = findViewById<Button>(R.id.search_button_main)
 
         buttonSearch.setOnClickListener {

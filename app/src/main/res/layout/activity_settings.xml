@@ -54,9 +54,11 @@
             android:text="@string/nigt_theme"
             tools:ignore="DuplicateSpeakableTextCheck,RtlSymmetry,VisualLintBounds" />
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/night_theme_switch_settings"
-            style="@style/settings_btn"
+            style="@style/settings_btn_switch"
+            app:useMaterialThemeColors="false"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:ignore="ExtraText,UseSwitchCompatOrMaterialXml,VisualLintButtonSize" />

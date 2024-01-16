@@ -44,5 +44,7 @@
     <string name="server_error">Проблемы со связью</string>
     <string name="server_error2">Загрузка не удалась.Проверьте подключение к интернету</string>
     <string name="update">Обновить</string>
+    <string name="you_were_looking_for">Вы искали</string>
+    <string name="clear_history">Очистить историю</string>
 
 </resources>
