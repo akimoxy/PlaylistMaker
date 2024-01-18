@@ -135,6 +135,7 @@
                 app:cornerRadius="@dimen/tittle_text_size22"
                 android:paddingEnd="@dimen/dp16"
                 android:paddingBottom="@dimen/dp12"
+                android:letterSpacing="0"
                 android:textSize="@dimen/sp14"
                 android:text="@string/clear_history"/>
         </LinearLayout>

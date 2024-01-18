@@ -2,6 +2,7 @@ package com.example.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
@@ -14,6 +15,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,13 +56,15 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         findBiId()
-
+         val gson= Gson()
         sharedPr = getSharedPreferences(TRACK_HISTORY, Context.MODE_PRIVATE)
         history = SearchHistory(sharedPr)
         clickListener = object : RecyclerViewEvent {
             override fun onItemClick(track: Track) {
                 history.saveTrack(track)
-
+             //   intent.putExtra(TRACK,gson.toJson(track))
+              val buttonSearchIntent = Intent(this@SearchActivity, AudioPlayerActivity::class.java)
+                startActivity(buttonSearchIntent)
             }
 
         }
@@ -195,6 +199,7 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val KEY = "someKey"
+        const val TRACK = "track"
     }
 
     @SuppressLint("SetTextI18n")

@@ -3,7 +3,6 @@ package com.example.playlistmaker
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 
 class App : Application() {
@@ -35,13 +34,10 @@ class App : Application() {
         val sharedPrefs = context.getSharedPreferences(PLAYLIST_PREFERENCES, Context.MODE_PRIVATE)
        if (sharedPrefs.contains(EDIT_SWITCH_SETTINGS_KEY)) {
               darkTheme =applyTheme(context)
-           Log.d("1",darkTheme.toString())
            }else if(isDarkThemeOn()){
                darkTheme=isDarkThemeOn()
-           Log.d("2",darkTheme.toString())
            }else{
                darkTheme=false
-           Log.d("3",darkTheme.toString())
            }
         return darkTheme
     }

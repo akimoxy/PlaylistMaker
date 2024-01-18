@@ -8,6 +8,7 @@ const val TRACK_HISTORY_KEY = "track_history_key"
 
 class SearchHistory(private val shP: SharedPreferences) {
     var trackHistoryArray: ArrayList<Track> = arrayListOf()
+
     private val gson: Gson = Gson()
 
     private fun getItemsFromCache(): ArrayList<Track> {
