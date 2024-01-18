@@ -115,7 +115,7 @@
         style="@style/btn_play_player"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:contentDescription="ewfw"
+        android:contentDescription="image"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@id/textsBarrier"
         app:layout_constraintDimensionRatio="1:1"
@@ -129,6 +129,7 @@
         style="@style/btn_like_playlist"
         android:layout_width="51dp"
         android:layout_height="51dp"
+        android:contentDescription=""
         app:layout_constraintBottom_toTopOf="@id/textsBarrier"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintTop_toBottomOf="@id/textsBarrier1"
@@ -172,7 +173,7 @@
 
     <TextView
         android:id="@+id/collection_name_text_view"
-        style="@style/color_rv_search_small_text"
+        android:textColor="@color/text_grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
@@ -187,7 +188,6 @@
 
     <TextView
         android:id="@+id/year_text_view"
-        style="@style/color_rv_search_small_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
@@ -195,15 +195,15 @@
         android:paddingTop="@dimen/dp9"
         android:paddingBottom="@dimen/dp8"
         android:text="@string/year"
+        android:textColor="@color/text_grey"
         android:textSize="@dimen/sp13"
         app:layout_constraintBottom_toTopOf="@id/genre_text_view"
         app:layout_constraintStart_toStartOf="parent"
-
         tools:ignore="TextContrastCheck" />
 
     <TextView
         android:id="@+id/genre_text_view"
-        style="@style/color_rv_search_small_text"
+        android:textColor="@color/text_grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
@@ -219,7 +219,7 @@
 
     <TextView
         android:id="@+id/country_text_view"
-        style="@style/color_rv_search_small_text"
+        android:textColor="@color/text_grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
@@ -237,7 +237,7 @@
 
     <TextView
         android:id="@+id/track_time"
-        style="@style/color_rv_search_small_text"
+      android:textColor="@color/text_grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
@@ -285,7 +285,7 @@ style="@style/white_at_night_black_at_day_regular"
         android:textSize="@dimen/sp13"
         app:layout_constraintBottom_toTopOf="@id/year_text_player"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="TextContrastCheck"
+        tools:ignore="RtlSymmetry,TextContrastCheck"
         tools:text="Альбом" />
 
     <TextView
@@ -304,7 +304,7 @@ style="@style/white_at_night_black_at_day_regular"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Год"
 
-        />
+        tools:ignore="RtlSymmetry" />
 
     <TextView
         style="@style/white_at_night_black_at_day_regular"
@@ -320,7 +320,8 @@ style="@style/white_at_night_black_at_day_regular"
         app:layout_constraintBottom_toTopOf="@id/country_text_player"
         app:layout_constraintEnd_toEndOf="parent"
 
-        tools:text="Жанр" />
+        tools:text="Жанр"
+        tools:ignore="RtlSymmetry" />
 
     <TextView
         style="@style/white_at_night_black_at_day_regular"
@@ -337,6 +338,7 @@ style="@style/white_at_night_black_at_day_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
-        tools:text="Страна" />
+        tools:text="Страна"
+        tools:ignore="RtlSymmetry" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
