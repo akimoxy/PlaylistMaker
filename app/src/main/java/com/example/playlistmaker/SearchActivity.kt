@@ -2,6 +2,7 @@ package com.example.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
@@ -54,13 +55,16 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         findBiId()
-
         sharedPr = getSharedPreferences(TRACK_HISTORY, Context.MODE_PRIVATE)
         history = SearchHistory(sharedPr)
         clickListener = object : RecyclerViewEvent {
+            @SuppressLint("SuspiciousIndentation")
             override fun onItemClick(track: Track) {
                 history.saveTrack(track)
-
+                val buttonSearchIntent =
+                    Intent(this@SearchActivity, AudioPlayerActivity::class.java)
+                buttonSearchIntent.putExtra(TRACK, track)
+                startActivity(buttonSearchIntent)
             }
 
         }
@@ -195,6 +199,7 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val KEY = "someKey"
+        const val TRACK = "track"
     }
 
     @SuppressLint("SetTextI18n")

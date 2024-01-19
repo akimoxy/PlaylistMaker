@@ -29,6 +29,7 @@
         <item name="iconTint">@color/text_grey</item>
         <item name="iconPadding">@dimen/padding16</item>
     </style>
+
     <style name="settings_btn_switch" parent="Widget.MaterialComponents.Button">
         <item name="buttonStyle">@style/settings_btn_switch</item>
         <item name="android:gravity">left|center_vertical</item>
@@ -36,8 +37,6 @@
         <item name="trackTint">@color/light_grey</item>
         <item name="iconPadding">@dimen/padding16</item>
     </style>
-
-
 
     <style name="settings_btn_title" parent="Widget.MaterialComponents.Button">
         <item name="buttonStyle">@style/settings_btn_title</item>
@@ -78,21 +77,21 @@
         <item name="iconTint">@color/text_grey</item>
     </style>
 
-    <style name="main_menu" parent="">
+    <style name="main_menu">
         <item name="android:background">@color/blue</item>
     </style>
 
-    <style name="color_rv_search" parent="">
+    <style name="color_rv_search">
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="color_rv_search_small_text" parent="">
+    <style name="color_rv_search_small_text">
         <item name="android:textColor">@color/text_grey</item>
         <item name="android:textSize">@dimen/sp11</item>
         <item name="iconTint">@color/text_grey</item>
     </style>
 
-    <style name="search_line" parent="">
+    <style name="search_line">
         <item name="android:textColorHint">@color/text_grey</item>
 
         <item name="tint">@color/text_grey</item>
@@ -116,6 +115,48 @@
         <item name="cornerRadius">@dimen/dp16</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
 
+    </style>
+
+    <style name="track_icon_player" parent="Widget.MaterialComponents.Button">
+        <item name="buttonStyle">@style/track_icon_player</item>
+        <item name="iconTint">@color/text_grey</item>
+    </style>
+
+    <style name="btn_small_player" parent="Widget.MaterialComponents.Button">
+        <item name="buttonStyle">@style/btn_small_player</item>
+        <item name="iconTint">@color/text_grey</item>
+    </style>
+
+    <style name="btn_play_player" parent="Widget.MaterialComponents.Button">
+        <item name="buttonStyle">@style/btn_play_player</item>
+        <item name="iconTint">@color/black</item>
+        <item name="android:background">@android:color/transparent</item>
+
+        <item name="android:src">@drawable/play_btn_day</item>
+    </style>
+
+    <style name="white_at_night_black_at_day">
+        <item name="buttonStyle">@style/white_at_night_black_at_day</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="white_at_night_black_at_day_medium" parent="@style/white_at_night_black_at_day">
+        <item name="buttonStyle" type="style">@style/white_at_night_black_at_day_medium</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
+    <style name="white_at_night_black_at_day_regular" parent="@style/white_at_night_black_at_day">
+        <item name="buttonStyle" type="style">@style/white_at_night_black_at_day_regular</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="btn_add_to_playlist">
+        <item name="buttonStyle" type="style">@style/btn_add_to_playlist</item>
+        <item name="android:src">@drawable/add_to_playlist_btn_d</item>
+    </style>
+    <style name="btn_like_playlist">
+        <item name="buttonStyle" type="style">@style/btn_like_playlist</item>
+        <item name="android:src">@drawable/btn_like_day_playlist</item>
     </style>
 
 </resources>
