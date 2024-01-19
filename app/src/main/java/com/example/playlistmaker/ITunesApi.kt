@@ -8,4 +8,5 @@ interface ITunesApi {
     @GET("/search?entity=song")
     fun findTrack(@Query("term") text: String): Call<TrackResponse>
 }
+
 data class TrackResponse(val results: ArrayList<Track>)

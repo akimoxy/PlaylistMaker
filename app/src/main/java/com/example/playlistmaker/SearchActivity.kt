@@ -7,7 +7,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -16,7 +15,6 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -57,28 +55,15 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         findBiId()
-        val gson = Gson()
         sharedPr = getSharedPreferences(TRACK_HISTORY, Context.MODE_PRIVATE)
         history = SearchHistory(sharedPr)
         clickListener = object : RecyclerViewEvent {
             @SuppressLint("SuspiciousIndentation")
             override fun onItemClick(track: Track) {
                 history.saveTrack(track)
-              //  val json = Json.encodeToString(Track(track.trackName,track.artistName,track.collectionName,track.releaseDate,track.primaryGenreName,track.country,track.trackTimeMillis,track.artworkUrl100,track.trackId))
-
                 val buttonSearchIntent =
                     Intent(this@SearchActivity, AudioPlayerActivity::class.java)
-                buttonSearchIntent.putExtra(TRACK,gson.toJson(track))
-                buttonSearchIntent.putExtra("trackName", track.trackName)
-                buttonSearchIntent.putExtra("artistName", track.artistName)
-                buttonSearchIntent.putExtra("trackTimeMillis", track.trackTimeMillis)
-                buttonSearchIntent.putExtra("artworkUrl100", track.artworkUrl100)
-                buttonSearchIntent.putExtra("collectionName", track.collectionName)
-                buttonSearchIntent.putExtra("releaseDate", track.releaseDate)
-                buttonSearchIntent.putExtra("primaryGenreName", track.primaryGenreName)
-                buttonSearchIntent.putExtra("country", track.country)
-                buttonSearchIntent.putExtra("trackId", track.trackId)
-                Log.d("проверка888", intent.getStringExtra("trackName").toString())
+                buttonSearchIntent.putExtra(TRACK, track)
                 startActivity(buttonSearchIntent)
             }
 

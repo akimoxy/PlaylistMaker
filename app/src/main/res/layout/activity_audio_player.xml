@@ -43,7 +43,7 @@
         android:id="@+id/track_album_image_player"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="26dp"
+        android:paddingTop="@dimen/dp26"
         android:contentDescription="@string/trackAlbumDescr"
         android:maxWidth="512dp"
         android:maxHeight="512dp"
