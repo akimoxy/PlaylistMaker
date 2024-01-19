@@ -89,6 +89,7 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+
         textViewYourSearch?.visibility = View.GONE
         clearTrackHistoryBtn?.visibility = View.GONE
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
@@ -102,6 +103,8 @@ class SearchActivity : AppCompatActivity() {
                 textViewYourSearch?.visibility = View.GONE
             }
         }
+
+
         inputEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -124,6 +127,8 @@ class SearchActivity : AppCompatActivity() {
             override fun afterTextChanged(p0: Editable?) {
             }
         })
+
+
         clearButton!!.setOnClickListener {
             inputEditText.setText("")
             tracks.clear()
@@ -132,6 +137,7 @@ class SearchActivity : AppCompatActivity() {
             errorView!!.visibility = View.GONE
             noResultsView!!.visibility = View.GONE
         }
+
         fun clearButtonVisibility(s: CharSequence?): Int {
             return if (s.isNullOrEmpty()) {
                 View.GONE
@@ -146,6 +152,7 @@ class SearchActivity : AppCompatActivity() {
             adapterForHistoryTracks.updateList(history.trackHistoryArray)
             clearTrackHistoryBtn?.visibility = View.GONE
             textViewYourSearch?.visibility = View.GONE
+
         }
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(
@@ -211,6 +218,7 @@ class SearchActivity : AppCompatActivity() {
 
     fun serverError() {
         noResultsView!!.visibility = View.GONE
+
         errorView!!.visibility = View.VISIBLE
         upd?.setOnClickListener {
             search()

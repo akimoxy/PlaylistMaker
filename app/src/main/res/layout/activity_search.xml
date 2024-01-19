@@ -99,14 +99,26 @@
     android:fontFamily="@font/ys_display_medium"
     android:visibility="gone"
     />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp8"
         android:orientation="vertical" />
-
+    <include
+        android:id="@+id/no_results_search_include"
+        layout="@layout/no_results_search_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:listitem="@layout/no_results_search_item" />
+    <include
+        android:id="@+id/server_error_include"
+        layout="@layout/server_error_search_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:listitem="@layout/server_error_search_item" />
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
@@ -138,23 +150,9 @@
                 android:letterSpacing="0"
                 android:textSize="@dimen/sp14"
                 android:text="@string/clear_history"/>
+
         </LinearLayout>
+
     </ScrollView>
-
-    <include
-        android:id="@+id/no_results_search_include"
-        layout="@layout/no_results_search_item"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:listitem="@layout/no_results_search_item" />
-
-    <include
-        android:id="@+id/server_error_include"
-        layout="@layout/server_error_search_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        tools:listitem="@layout/server_error_search_item" />
 
 </LinearLayout>
