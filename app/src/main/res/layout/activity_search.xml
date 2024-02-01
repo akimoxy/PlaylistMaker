@@ -105,6 +105,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp8"
         android:orientation="vertical" />
+    <ProgressBar android:id="@+id/progress_bar_search_activity"
+        android:layout_width="@dimen/dp44"
+        android:layout_height="@dimen/dp44"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"/>
     <include
         android:id="@+id/no_results_search_include"
         layout="@layout/no_results_search_item"
