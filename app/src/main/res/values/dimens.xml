@@ -24,6 +24,7 @@
     <dimen name="dp45">45dp</dimen>
     <dimen name="dp48">48dp</dimen>
     <dimen name="dp120">120dp</dimen>
+    <dimen name="dp100">100dp</dimen>
 
     <dimen name="sp11">11sp</dimen>
     <dimen name="sp13">13sp</dimen>

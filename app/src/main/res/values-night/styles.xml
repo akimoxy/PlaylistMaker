@@ -109,11 +109,11 @@
         <item name="buttonStyle">@style/btn_play_player</item>
         <item name="iconTint">@color/white</item>
         <item name="cornerRadius">@dimen/dp26</item>
-
         <item name="android:src">@drawable/play_btn_night</item>
-
     </style>
-
+    <style name="btn_pause_player" parent="@style/btn_play_player">
+        <item name="android:src">@drawable/pause_button_night</item>
+    </style>
 
     <style name="white_at_night_black_at_day">
         <item name="buttonStyle">@style/white_at_night_black_at_day</item>
@@ -129,6 +129,7 @@
         <item name="buttonStyle" type="style">@style/white_at_night_black_at_day_medium</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
+
     <style name="btn_add_to_playlist">
         <item name="buttonStyle" type="style">@style/btn_add_to_playlist</item>
         <item name="android:src">@drawable/add_to_playlist_night</item>

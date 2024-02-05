@@ -73,7 +73,6 @@ class SearchActivity : AppCompatActivity() {
                 buttonSearchIntent.putExtra(TRACK, json)
                 startActivity(buttonSearchIntent)
             }
-
         }
         adapterForHistoryTracks = TrackAdapter(history.trackHistoryArray, clickListener)
 
@@ -92,11 +91,10 @@ class SearchActivity : AppCompatActivity() {
                 inputEditText.setOnClickListener {
                     it.hideKeyboard()
                 }
-                search()
+                searchDebounce()
             }
             false
         }
-
         textViewYourSearch?.visibility = View.GONE
         clearTrackHistoryBtn?.visibility = View.GONE
         textViewYourSearch?.visibility = View.INVISIBLE
@@ -107,7 +105,6 @@ class SearchActivity : AppCompatActivity() {
             if (hasFocus && tracks.isEmpty() && history.trackHistoryArray.isNotEmpty()) {
                 clearTrackHistoryBtn?.visibility = View.VISIBLE
                 textViewYourSearch?.visibility = View.VISIBLE
-
             } else if ((tracks.isEmpty() && history.trackHistoryArray.isEmpty())) {
                 textViewYourSearch?.visibility = View.INVISIBLE
                 clearTrackHistoryBtn?.visibility = View.GONE
@@ -115,7 +112,6 @@ class SearchActivity : AppCompatActivity() {
 
             }
         }
-
         fun clearButtonVisibility(s: CharSequence?): Int {
             return if (s.isNullOrEmpty()) {
                 View.GONE
@@ -126,9 +122,7 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
-
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
                 text = p0.toString()
                 clearButton!!.visibility = clearButtonVisibility(p0)
 
@@ -152,7 +146,6 @@ class SearchActivity : AppCompatActivity() {
                     }
                 }
             }
-
             override fun afterTextChanged(p0: Editable?) {
             }
         })
@@ -198,7 +191,6 @@ class SearchActivity : AppCompatActivity() {
                         noResults()
                     }
                 }
-
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                     searchProgressBar?.visibility = View.GONE
                     serverError()
@@ -261,7 +253,5 @@ class SearchActivity : AppCompatActivity() {
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-
     }
 }
-

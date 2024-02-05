@@ -1,6 +1,5 @@
 package com.example.playlistmaker
 
-import android.annotation.SuppressLint
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TrackAdapter(
     private var arrayOfTrack: ArrayList<Track>, private var clickListener: RecyclerViewEvent
@@ -52,20 +52,17 @@ class TrackAdapter(
         fun bind(item: Track) {
             trackNameView.text = item.trackName
             artistNameView.text = item.artistName
-            trackTimeView.text = trackTime(item.trackTimeMillis)
+            trackTimeView.text = SimpleDateFormat(
+                "mm:ss",
+                Locale.getDefault()
+            ).format(item.trackTimeMillis)
+
             Glide.with(itemView)
                 .load(item.artworkUrl100)
                 .centerCrop()
                 .transform(RoundedCorners(dpToPx(itemView, 2f)))
                 .placeholder(R.drawable.placeholder)
                 .into(artworkUrlView)
-        }
-
-        @SuppressLint("SimpleDateFormat")
-        fun trackTime(trackTimeMillis: Long): String {
-            val dateFormat = SimpleDateFormat("mm:ss")
-            val trackTimeMillis777 = dateFormat.format(trackTimeMillis)
-            return trackTimeMillis777.toString()
         }
 
         private fun dpToPx(view: View, dp: Float): Int {

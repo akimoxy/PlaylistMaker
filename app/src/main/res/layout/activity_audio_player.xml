@@ -12,16 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05"
-        />
+        app:layout_constraintGuide_percent="0.05" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/rightBorder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95"
-        />
+        app:layout_constraintGuide_percent="0.95" />
 
     <Button
         android:id="@+id/back_button_audio_player"
@@ -33,40 +31,42 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTag="back_btn"
         tools:ignore="MissingConstraints,RtlHardcoded,TouchTargetSizeCheck,VisualLintBounds,VisualLintButtonSize" />
+
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/textsBarrier0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
         app:constraint_referenced_tags="back_btn" />
+
     <ImageView
         android:id="@+id/track_album_image_player"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingTop="@dimen/dp26"
         android:contentDescription="@string/trackAlbumDescr"
+        android:gravity="center"
         android:maxWidth="512dp"
         android:maxHeight="512dp"
+        android:paddingTop="@dimen/dp26"
         android:paddingBottom="@dimen/dp24"
         android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toBottomOf="@id/textsBarrier0"
         app:layout_constraintBottom_toTopOf="@id/textsBarrier01"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
-        android:gravity="center"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/textsBarrier0"
         tools:ignore="ContentDescription" />
+
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/textsBarrier01"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         app:barrierDirection="top"
         app:constraint_referenced_tags="track_artist_name_tag" />
 
     <TextView
-        style="@style/white_at_night_black_at_day_medium"
         android:id="@+id/album_big_text_player"
+        style="@style/white_at_night_black_at_day_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_medium"
@@ -74,19 +74,18 @@
         android:paddingTop="@dimen/dp24"
         android:textSize="@dimen/tittle_text_size22"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTag="track_artist_name_tag"
         app:layout_constraintTop_toBottomOf="@id/track_album_image_player"
-        tools:text="Альбом"
-        app:layout_constraintTag="track_artist_name_tag"/>
+        tools:text="Альбом" />
 
     <TextView
-        style="@style/white_at_night_black_at_day_medium"
         android:id="@+id/track_artist_player"
-        android:maxLines="1"
+        style="@style/white_at_night_black_at_day_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:paddingTop="@dimen/dp12"
         android:paddingBottom="@dimen/dp12"
-
         android:textSize="@dimen/sp14"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintTag="artist_name"
@@ -98,60 +97,84 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:layout_constraintWidth_percent=".6"
         app:constraint_referenced_tags="artist_name"
-     />
+        app:layout_constraintWidth_percent=".6" />
 
     <ImageView
         style="@style/btn_add_to_playlist"
         android:layout_width="51dp"
         android:layout_height="51dp"
-        app:layout_constraintBottom_toTopOf="@id/textsBarrier"
+        android:contentDescription="@string/add_to_playlist_btn_dscr"
+        app:layout_constraintBottom_toTopOf="@id/textsBarrier3"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintTop_toBottomOf="@id/textsBarrier1"
         tools:ignore="ImageContrastCheck" />
+
     <ImageView
         android:id="@+id/play_icon"
         style="@style/btn_play_player"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:contentDescription="image"
+        android:layout_width="@dimen/dp100"
+        android:layout_height="@dimen/dp100"
+        android:contentDescription="@string/play_btn_dscr"
+        android:paddingBottom="@dimen/dp9"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@id/textsBarrier"
+        app:layout_constraintBottom_toTopOf="@id/textsBarrier3"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/textsBarrier1"
+        app:layout_constraintTop_toBottomOf="@id/textsBarrier1" />
 
-        />
+    <ImageView
+        android:id="@+id/pause_icon"
+        style="@style/btn_pause_player"
+        android:layout_width="@dimen/dp100"
+        android:layout_height="@dimen/dp100"
+        android:contentDescription="@string/pause_btn_dscr"
+        android:paddingBottom="@dimen/dp9"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/textsBarrier3"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/textsBarrier1" />
 
     <ImageView
         style="@style/btn_like_playlist"
         android:layout_width="51dp"
         android:layout_height="51dp"
-        android:contentDescription=""
-        app:layout_constraintBottom_toTopOf="@id/textsBarrier"
+        android:contentDescription="@string/like_btn_dscr"
+        app:layout_constraintBottom_toTopOf="@id/textsBarrier3"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintTop_toBottomOf="@id/textsBarrier1"
         tools:ignore="ImageContrastCheck" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/textsBarrier3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_tags="timing" />
+
     <TextView
+        android:id="@+id/track_timing"
+        style="@style/white_at_night_black_at_day_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_medium"
+        android:paddingTop="@dimen/dp9"
         android:text="@string/track_time_30sek"
         android:textSize="@dimen/sp14"
+        app:layout_constraintBottom_toTopOf="@id/textsBarrier3"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/play_icon"
-        app:layout_constraintBottom_toTopOf="@+id/textsBarrier"
-
-        />
+        app:layout_constraintTag="timing"
+        app:layout_constraintTop_toBottomOf="@+id/textsBarrier" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/textsBarrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         app:barrierDirection="top"
         app:constraint_referenced_tags="track_time_text_vie_tag" />
 
@@ -173,7 +196,6 @@
 
     <TextView
         android:id="@+id/collection_name_text_view"
-        android:textColor="@color/text_grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
@@ -181,6 +203,7 @@
         android:paddingTop="@dimen/dp9"
         android:paddingBottom="@dimen/dp8"
         android:text="@string/colectionname"
+        android:textColor="@color/text_grey"
         android:textSize="@dimen/sp13"
         app:layout_constraintBottom_toTopOf="@id/year_text_view"
         app:layout_constraintStart_toStartOf="parent"
@@ -203,15 +226,14 @@
 
     <TextView
         android:id="@+id/genre_text_view"
-        android:textColor="@color/text_grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
-
         android:fontFamily="@font/ys_display_regular"
         android:paddingTop="@dimen/dp9"
         android:paddingBottom="@dimen/dp8"
         android:text="@string/genre"
+        android:textColor="@color/text_grey"
         android:textSize="@dimen/sp13"
         app:layout_constraintBottom_toTopOf="@id/country_text_view"
         app:layout_constraintStart_toStartOf="parent"
@@ -219,25 +241,22 @@
 
     <TextView
         android:id="@+id/country_text_view"
-        android:textColor="@color/text_grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
         android:layout_marginBottom="@dimen/dp20"
-
         android:fontFamily="@font/ys_display_regular"
         android:paddingTop="@dimen/dp9"
         android:paddingBottom="@dimen/dp8"
         android:text="@string/country"
+        android:textColor="@color/text_grey"
         android:textSize="@dimen/sp13"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="TextContrastCheck" />
 
-
     <TextView
         android:id="@+id/track_time"
-      android:textColor="@color/text_grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
@@ -245,35 +264,32 @@
         android:paddingTop="@dimen/dp9"
         android:paddingBottom="@dimen/dp8"
         android:text="@string/track_time"
+        android:textColor="@color/text_grey"
         android:textSize="@dimen/sp13"
         app:layout_constraintBottom_toTopOf="@id/collection_name_text_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTag="track_time_result"
         tools:ignore="TextContrastCheck"
-
         />
 
     <TextView
         android:id="@+id/track_time_mediapl"
-style="@style/white_at_night_black_at_day_regular"
+        style="@style/white_at_night_black_at_day_regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
-
         android:paddingTop="@dimen/dp9"
         android:paddingEnd="@dimen/dp16"
         android:paddingBottom="@dimen/dp8"
         android:textSize="@dimen/sp13"
         app:layout_constraintBottom_toTopOf="@id/collection_name_player"
         app:layout_constraintEnd_toEndOf="parent"
-
-        tools:text="Длительность"
-
-        />
+        tools:ignore="RtlSymmetry"
+        tools:text="Длительность" />
 
     <TextView
-        style="@style/white_at_night_black_at_day_regular"
         android:id="@+id/collection_name_player"
+        style="@style/white_at_night_black_at_day_regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
@@ -281,7 +297,6 @@ style="@style/white_at_night_black_at_day_regular"
         android:paddingTop="@dimen/dp9"
         android:paddingEnd="@dimen/dp16"
         android:paddingBottom="@dimen/dp8"
-
         android:textSize="@dimen/sp13"
         app:layout_constraintBottom_toTopOf="@id/year_text_player"
         app:layout_constraintEnd_toEndOf="parent"
@@ -289,56 +304,49 @@ style="@style/white_at_night_black_at_day_regular"
         tools:text="Альбом" />
 
     <TextView
-        style="@style/white_at_night_black_at_day_regular"
         android:id="@+id/year_text_player"
+        style="@style/white_at_night_black_at_day_regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
-
         android:paddingTop="@dimen/dp9"
         android:paddingEnd="@dimen/dp16"
         android:paddingBottom="@dimen/dp8"
         android:textSize="@dimen/sp13"
-
         app:layout_constraintBottom_toTopOf="@id/genre_text_player"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Год"
-
-        tools:ignore="RtlSymmetry" />
+        tools:ignore="RtlSymmetry"
+        tools:text="Год" />
 
     <TextView
-        style="@style/white_at_night_black_at_day_regular"
         android:id="@+id/genre_text_player"
+        style="@style/white_at_night_black_at_day_regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
-
         android:paddingTop="@dimen/dp9"
         android:paddingEnd="@dimen/dp16"
         android:paddingBottom="@dimen/dp8"
         android:textSize="@dimen/sp13"
         app:layout_constraintBottom_toTopOf="@id/country_text_player"
         app:layout_constraintEnd_toEndOf="parent"
-
-        tools:text="Жанр"
-        tools:ignore="RtlSymmetry" />
+        tools:ignore="RtlSymmetry"
+        tools:text="Жанр" />
 
     <TextView
-        style="@style/white_at_night_black_at_day_regular"
         android:id="@+id/country_text_player"
+        style="@style/white_at_night_black_at_day_regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
         android:layout_marginBottom="@dimen/dp20"
-
         android:paddingTop="@dimen/dp9"
         android:paddingEnd="@dimen/dp16"
         android:paddingBottom="@dimen/dp8"
         android:textSize="@dimen/sp13"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
-        tools:text="Страна"
-        tools:ignore="RtlSymmetry" />
+        tools:ignore="RtlSymmetry"
+        tools:text="Страна" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
