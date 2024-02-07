@@ -127,16 +127,6 @@
         <item name="iconTint">@color/text_grey</item>
     </style>
 
-    <style name="btn_play_player" parent="Widget.MaterialComponents.Button">
-        <item name="buttonStyle">@style/btn_play_player</item>
-        <item name="iconTint">@color/black</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:src">@drawable/play_btn_day</item>
-    </style>
-    <style name="btn_pause_player" parent="@style/btn_play_player">
-        <item name="android:src">@drawable/pause_button_day</item>
-    </style>
-
     <style name="white_at_night_black_at_day">
         <item name="buttonStyle">@style/white_at_night_black_at_day</item>
         <item name="android:textColor">@color/black</item>
@@ -156,9 +146,17 @@
         <item name="buttonStyle" type="style">@style/btn_add_to_playlist</item>
         <item name="android:src">@drawable/add_to_playlist_btn_d</item>
     </style>
+
     <style name="btn_like_playlist">
         <item name="buttonStyle" type="style">@style/btn_like_playlist</item>
         <item name="android:src">@drawable/btn_like_day_playlist</item>
+    </style>
+
+    <style name="btn_play_pause_playlist">
+        <item name="buttonStyle" type="style">@style/btn_play_pause_playlist</item>
+        <item name="android:src">@drawable/play_btn_day</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:tint">@color/black</item>
     </style>
 
 </resources>

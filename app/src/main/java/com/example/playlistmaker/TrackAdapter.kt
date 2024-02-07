@@ -49,13 +49,11 @@ class TrackAdapter(
         private val trackNameView: TextView = itemView.findViewById(R.id.track_name)
         private val trackTimeView: TextView = itemView.findViewById(R.id.track_time)
         private val artworkUrlView: ImageView = itemView.findViewById(R.id.track_image_url)
+        private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
         fun bind(item: Track) {
             trackNameView.text = item.trackName
             artistNameView.text = item.artistName
-            trackTimeView.text = SimpleDateFormat(
-                "mm:ss",
-                Locale.getDefault()
-            ).format(item.trackTimeMillis)
+            trackTimeView.text = dateFormat.format(item.trackTimeMillis)
 
             Glide.with(itemView)
                 .load(item.artworkUrl100)
