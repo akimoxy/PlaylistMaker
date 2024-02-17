@@ -1,8 +1,6 @@
 package com.example.playlistmaker
 
-import android.content.SharedPreferences
-import com.google.gson.Gson
-
+/*
 const val TRACK_HISTORY = "track_history_preferences"
 const val TRACK_HISTORY_KEY = "track_history_key"
 
@@ -43,3 +41,4 @@ class SearchHistory(private val shP: SharedPreferences) {
     }
 }
 
+*/

@@ -1,5 +1,6 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui.UiSearchActivity
 
+import android.icu.text.SimpleDateFormat
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import java.text.SimpleDateFormat
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.models.Track
 import java.util.Locale
 
 class TrackAdapter(
@@ -49,11 +51,12 @@ class TrackAdapter(
         private val trackNameView: TextView = itemView.findViewById(R.id.track_name)
         private val trackTimeView: TextView = itemView.findViewById(R.id.track_time)
         private val artworkUrlView: ImageView = itemView.findViewById(R.id.track_image_url)
-        private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
+       private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
         fun bind(item: Track) {
             trackNameView.text = item.trackName
             artistNameView.text = item.artistName
             trackTimeView.text = dateFormat.format(item.trackTimeMillis)
+
 
             Glide.with(itemView)
                 .load(item.artworkUrl100)
