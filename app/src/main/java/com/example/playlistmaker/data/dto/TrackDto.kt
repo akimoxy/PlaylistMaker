@@ -1,10 +1,6 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.data.dto
 
-
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class Track(
+class TrackDto(
     var trackName: String,
     var artistName: String,
     var collectionName: String,
@@ -14,8 +10,5 @@ data class Track(
     var trackTimeMillis: Long,
     var artworkUrl100: String,
     var trackId: String,
-    var previewUrl:String
-) {
-    fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
-
-}
+    var previewUrl: String
+)
