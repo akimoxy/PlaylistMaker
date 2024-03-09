@@ -21,13 +21,11 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.95" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/back_button_audio_player"
         style="@style/settings_btn_title_icon"
         android:contentDescription="@string/back_button"
-        app:icon="@drawable/back_icon"
-        app:iconGravity="textStart"
-        app:iconSize="@dimen/dp48"
+        android:drawableStart="@drawable/back_icon"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTag="back_btn"
         tools:ignore="MissingConstraints,RtlHardcoded,TouchTargetSizeCheck,VisualLintBounds,VisualLintButtonSize" />

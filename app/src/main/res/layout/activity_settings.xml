@@ -13,13 +13,13 @@
         android:paddingStart="@dimen/dp4"
         tools:ignore="RtlSymmetry">
 
-        <Button
-            android:id="@+id/back_button"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/back_button_settings"
             style="@style/settings_btn_title_icon"
             android:layout_gravity="start"
             android:contentDescription="@string/back_button"
-            app:icon="@drawable/back_icon"
-            app:iconGravity="textStart"
+            android:drawableStart="@drawable/back_icon"
+
             app:iconSize="@dimen/dp48"
             app:layout_constraintLeft_toLeftOf="parent"
             tools:ignore="MissingConstraints,RtlHardcoded,TouchTargetSizeCheck,VisualLintBounds,VisualLintButtonSize" />
@@ -34,7 +34,7 @@
             android:paddingBottom="@dimen/dp12"
             android:text="@string/settings"
             android:textSize="@dimen/tittle_text_size22"
-            app:layout_constraintLeft_toRightOf="@id/back_button"
+            app:layout_constraintLeft_toRightOf="@id/back_button_settings"
             tools:ignore="DuplicateSpeakableTextCheck,MissingConstraints,NestedWeights,RtlSymmetry" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -54,13 +54,13 @@
             android:text="@string/nigt_theme"
             tools:ignore="DuplicateSpeakableTextCheck,RtlSymmetry,VisualLintBounds" />
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/night_theme_switch_settings"
             style="@style/settings_btn_switch"
-            app:useMaterialThemeColors="false"
-
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
+            app:useMaterialThemeColors="false"
             tools:ignore="ExtraText,UseSwitchCompatOrMaterialXml,VisualLintButtonSize" />
     </LinearLayout>
 
@@ -80,15 +80,15 @@
             android:text="@string/share"
             tools:ignore="DuplicateSpeakableTextCheck,RtlSymmetry" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/share_button_settings"
             style="@style/settings_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp16"
             android:contentDescription="@string/share"
+            android:drawableEnd="@drawable/light_mode_share"
             android:minHeight="@dimen/dp48"
-            app:icon="@drawable/light_mode_share"
-            app:iconGravity="textEnd"
             tools:ignore="VisualLintButtonSize" />
     </LinearLayout>
 
@@ -108,15 +108,15 @@
             android:text="@string/support"
             tools:ignore="DuplicateSpeakableTextCheck,RtlSymmetry" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/write_to_support_button"
             style="@style/settings_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp16"
             android:contentDescription="@string/support"
+            android:drawableEnd="@drawable/light_mode_support"
             android:minHeight="@dimen/dp48"
-            app:icon="@drawable/light_mode_support"
-            app:iconGravity="textEnd"
             tools:ignore="VisualLintButtonSize" />
     </LinearLayout>
 
@@ -136,16 +136,15 @@
             android:text="@string/terms_of_use"
             tools:ignore="DuplicateSpeakableTextCheck,RtlSymmetry" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/terms_of_use_button"
             style="@style/settings_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp16"
             android:contentDescription="@string/terms_of_use"
+            android:drawableEnd="@drawable/light_mode_arrow_forward"
             android:minHeight="@dimen/dp48"
-            app:icon="@drawable/light_mode_arrow_forward"
-            app:iconGravity="textEnd"
             tools:ignore="VisualLintButtonSize" />
     </LinearLayout>
 </LinearLayout>
-
