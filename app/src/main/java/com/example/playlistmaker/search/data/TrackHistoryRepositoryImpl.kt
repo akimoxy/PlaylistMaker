@@ -4,10 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.playlistmaker.search.domain.api.TrackHistoryRepository
 import com.example.playlistmaker.search.domain.models.Track
-import com.example.playlistmaker.search.ui.SearchActivity
 import com.google.gson.Gson
 
 const val TRACK_HISTORY_KEY = "track_history_key"
+const val TRACK_HISTORY = "track_history_preferences"
 
 class TrackHistoryRepositoryImpl(context: Context) : TrackHistoryRepository {
     private val gson: Gson = Gson()
@@ -18,7 +18,7 @@ class TrackHistoryRepositoryImpl(context: Context) : TrackHistoryRepository {
     }
 
     private fun getSharedPreferences(context: Context): SharedPreferences {
-        return context.getSharedPreferences(SearchActivity.TRACK_HISTORY, Context.MODE_PRIVATE)
+        return context.getSharedPreferences(TRACK_HISTORY, Context.MODE_PRIVATE)
     }
 
     override fun getItems(): ArrayList<Track> {

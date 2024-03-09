@@ -2,11 +2,11 @@ package com.example.playlistmaker.search.data.network
 
 import com.example.playlistmaker.search.data.dto.Response
 import com.example.playlistmaker.search.data.dto.TrackSearchRequest
+import com.example.playlistmaker.search.ui.SERVER_CODE_400
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitNetworkClient : NetworkClient {
-    private val resulCode400 = 400
     private val iTunsBaseUrl = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunsBaseUrl)
@@ -23,10 +23,10 @@ class RetrofitNetworkClient : NetworkClient {
                     resultCode = resp.code()
                 }
             } else {
-                return Response().apply { resultCode = resulCode400 }
+                return Response().apply { resultCode = SERVER_CODE_400 }
             }
         } catch (e: Throwable) {
-            Response().apply { resultCode = resulCode400 }
+            Response().apply { resultCode = SERVER_CODE_400 }
         }
     }
 }

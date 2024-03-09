@@ -1,6 +1,5 @@
 package com.example.playlistmaker.settings.domain
 
-import android.content.Context
 import com.example.playlistmaker.settings.data.SettingsRepository
 
 class SettingsInteractorImpl(var settings: SettingsRepository) : SettingsInteractor {
@@ -11,7 +10,7 @@ class SettingsInteractorImpl(var settings: SettingsRepository) : SettingsInterac
     override fun switchTheme(darkThemeEnabled: Boolean): Boolean {
         return settings.switchTheme(darkThemeEnabled)
     }
-    override fun switchBtnState(context: Context): Boolean {
-        return settings.switchBtnState(context)
+    override fun switchBtnState(): Boolean {
+        return settings.switchBtnState()
     }
 }

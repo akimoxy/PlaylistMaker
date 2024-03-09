@@ -17,11 +17,11 @@ import com.example.playlistmaker.sharing.domain.SharingInteractor
 class SettingsViewModel(
     private val sharingInteractor: SharingInteractor,
     private val settingsInteractor: SettingsInteractor,
-    app: Application
-) : AndroidViewModel(app) {
+
+) : ViewModel() {
 
     private var switchAppThemeLiveData = MutableLiveData<Boolean>()
-    private val context = getApplication<Application>().applicationContext
+ //   private val context = getApplication<Application>().applicationContext
     //контекст здесь,чтобы передать состояние темы приложению при первом включении, когда еще нет префов. Надеюсь утечек не будет))
     init {
         Log.d("TEST", "init!")
@@ -42,14 +42,14 @@ class SettingsViewModel(
                     return SettingsViewModel(
                         sharingInteractor = Creator.getSharingInterator(application),
                         settingsInteractor = (application as App).provideSettingsInteractor(),
-                        application
+
                     ) as T
                 }
             }
     }
 
     fun firstInitTheme(): Boolean {
-        return settingsInteractor.switchBtnState(context)
+        return settingsInteractor.switchBtnState()
     }
     fun onSwitchClick(isChecked: Boolean): Boolean {
         return settingsInteractor.switchTheme(isChecked)

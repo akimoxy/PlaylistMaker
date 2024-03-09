@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -18,13 +17,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.presentation.ui.UiAudioPlayerActivity.AudioPlayerActivity
-import com.example.playlistmaker.search.domain.api.TrackHistoryInteractor
-import com.example.playlistmaker.search.domain.api.TrackInteractor
+import com.example.playlistmaker.presentation.ui.UiAudioPlayerActivity.TRACK
 import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-
+const val KEY = "someKey"
 class SearchActivity : AppCompatActivity() {
     private var text = ""
     private var errorView: View? = null
@@ -39,9 +37,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var adapterForHistoryTracks: TrackAdapter
     lateinit var binding: ActivitySearchBinding
     private lateinit var clickListener: RecyclerViewEvent
-    private lateinit var trackInteractor: TrackInteractor
-    lateinit var history: TrackHistoryInteractor
     lateinit var viewModel: SearchViewModel
+    private var arrayList: ArrayList<Track> = arrayListOf()
+    private var arrayListHistory: ArrayList<Track> = arrayListOf()
 
     @SuppressLint("MissingInflatedId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,13 +53,10 @@ class SearchActivity : AppCompatActivity() {
             SearchViewModel.getViewModelFactory()
         )[SearchViewModel::class.java]
 
-        history = viewModel.getTrackHistoryInteractor()
-        trackInteractor = viewModel.getTrackInteractor()
-
         clickListener = object : RecyclerViewEvent {
             @SuppressLint("SuspiciousIndentation")
             override fun onItemClick(track: Track) {
-                history.saveTrack(track)
+                viewModel.saveTrackToHistory(track)
                 val buttonSearchIntent =
                     Intent(this@SearchActivity, AudioPlayerActivity::class.java)
                 val json = Json.encodeToString(track)
@@ -70,12 +65,13 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        adapterForHistoryTracks = TrackAdapter(history.getItems(), clickListener)
+        adapterForHistoryTracks =
+            TrackAdapter(viewModel.getHistoryItems(), clickListener)
 
         rvTrackHist?.adapter = adapterForHistoryTracks
         rvTrackHist?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        trackAdapter = TrackAdapter(viewModel.getTracks(), clickListener)
+        trackAdapter = TrackAdapter(arrayList, clickListener)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = trackAdapter
@@ -88,24 +84,26 @@ class SearchActivity : AppCompatActivity() {
                 binding.inputEditText.setOnClickListener {
                     it.hideKeyboard()
                 }
-                viewModel.getTracks().clear()
-                trackAdapter.addTracks(viewModel.getTracks())
-                viewModel.searchDebounce(binding.inputEditText.text.toString())
-                trackAdapter.updateList(viewModel.getTracks())
-                Log.d("треки", viewModel.getTracks().toString())
                 showView()
+                arrayList.clear()
+                trackAdapter.addTracks(arrayList)
+                viewModel.searchDebounce(binding.inputEditText.text.toString())
+                trackAdapter.updateList(arrayList)
             }
             false
         }
 
         binding.inputEditText.setOnFocusChangeListener { _, hasFocus ->
-            history.getItems()
             rvTrackHist?.visibility = View.VISIBLE
-            adapterForHistoryTracks.updateList(history.getItems())
-            trackAdapter.updateList(viewModel.getTracks())
-            if (hasFocus && viewModel.getTracks().isEmpty() && history.getItems().isNotEmpty()) {
+            adapterForHistoryTracks.updateList(viewModel.getHistoryItems())
+            trackAdapter.updateList(arrayList)
+            if (hasFocus && arrayList.isEmpty() && viewModel.getHistoryItems()
+                    .isNotEmpty()
+            ) {
                 showHistoryView()
-            } else if ((viewModel.getTracks().isEmpty() && history.getItems().isEmpty())) {
+            } else if ((arrayList.isEmpty() && viewModel.getHistoryItems()
+                    .isEmpty())
+            ) {
                 textViewYourSearch?.visibility = View.INVISIBLE
                 clearTrackHistoryBtn?.visibility = View.GONE
                 textViewYourSearch?.visibility = View.GONE
@@ -118,7 +116,6 @@ class SearchActivity : AppCompatActivity() {
                 View.VISIBLE
             }
         }
-
         binding.inputEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -128,22 +125,24 @@ class SearchActivity : AppCompatActivity() {
                 text = p0.toString()
                 binding.clearIconSearch.visibility = clearButtonVisibility(p0)
                 if (binding.inputEditText.text.isNotEmpty()) {
-                    viewModel.getTracks().clear()
+                    arrayList.clear()
                     viewModel.searchDebounce(binding.inputEditText.text.toString())
-                    trackAdapter.updateList(viewModel.getTracks())
+                    trackAdapter.updateList(arrayList)
                 }
                 if (binding.inputEditText.hasFocus() && binding.inputEditText.text.isEmpty()) {
-                    viewModel.getTracks().clear()
-                    trackAdapter.updateList(viewModel.getTracks())
-                    history.getItems()
-                    adapterForHistoryTracks.updateList(history.getItems())
+                    arrayList.clear()
+                    trackAdapter.updateList(arrayList)
+                    viewModel.getHistoryItems()
+                    adapterForHistoryTracks.updateList(
+                        viewModel.getHistoryItems()
+                    )
                     rvTrackHist?.visibility = View.VISIBLE
                 }
-                if (history.getItems().isNotEmpty()) {
+                if (viewModel.getHistoryItems().isNotEmpty()) {
                     showHistoryView()
                 } else {
-                    viewModel.getTracks().clear()
-                    trackAdapter.updateList(viewModel.getTracks())
+                    arrayList.clear()
+                    trackAdapter.updateList(arrayList)
                     clearTrackHistoryBtn?.visibility = View.INVISIBLE
                     textViewYourSearch?.visibility = View.INVISIBLE
                     //здесь Invisible,а не gone, потому что gone отрабатывает не корректно
@@ -155,8 +154,8 @@ class SearchActivity : AppCompatActivity() {
         })
         binding.clearIconSearch.setOnClickListener {
             binding.inputEditText.setText("")
-            viewModel.getTracks().clear()
-            trackAdapter.updateList(viewModel.getTracks())
+            arrayList.clear()
+            trackAdapter.updateList(arrayList)
             binding.recyclerView.visibility = View.GONE
             rvTrackHist
             it.hideKeyboard()
@@ -166,9 +165,9 @@ class SearchActivity : AppCompatActivity() {
         }
         rvTrackHist?.adapter = adapterForHistoryTracks
         clearTrackHistoryBtn?.setOnClickListener {
-            history.clearTrackHistory()
-            history.getItems()
-            adapterForHistoryTracks.updateList(history.getItems())
+            viewModel.clearTrackHistory()
+            viewModel.getHistoryItems()
+            adapterForHistoryTracks.updateList(viewModel.getHistoryItems())
             clearTrackHistoryBtn?.visibility = View.GONE
             textViewYourSearch?.visibility = View.GONE
         }
@@ -180,10 +179,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val KEY = "someKey"
-        const val TRACK = "track"
-        const val SEARCH_DEBOUNCE_DELAY = 2000L
-        const val TRACK_HISTORY = "track_history_preferences"
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -214,6 +210,8 @@ class SearchActivity : AppCompatActivity() {
         searchProgressBar?.visibility = View.GONE
         textViewYourSearch?.visibility = View.INVISIBLE
         noResultsView!!.visibility = View.GONE
+        rvTrackHist!!.visibility = View.GONE
+        clearTrackHistoryBtn?.visibility = View.GONE
         searchProgressBar?.visibility = View.VISIBLE
     }
 
@@ -235,31 +233,35 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showView() {
-        viewModel.activityStateLiveData().observe(this@SearchActivity) { SearchActivityState ->
-            when (SearchActivityState!!) {
-                com.example.playlistmaker.search.domain.models.SearchActivityState.SEARCH_TRACKS -> {
+        viewModel.activityStateLiveData().observe(this) {
+            when (it) {
+                is SearchActivityState.SearchTracks -> {
                     binding.recyclerView.visibility = View.VISIBLE
-                    trackAdapter.updateList(viewModel.getTracks())
+                    arrayList = it.history as ArrayList<Track>
+                    trackAdapter.updateList(arrayList)
                     textViewYourSearch?.visibility = View.GONE
                     clearTrackHistoryBtn?.visibility = View.GONE
                     searchProgressBar?.visibility = View.GONE
                 }
 
-                com.example.playlistmaker.search.domain.models.SearchActivityState.SEARCH_HISTORY -> {
+                is SearchActivityState.SearchHistory -> {
+                    arrayListHistory = it.history
                     showHistoryView()
                 }
 
-                com.example.playlistmaker.search.domain.models.SearchActivityState.LOADING -> {
+                is SearchActivityState.Loading -> {
                     loading()
                 }
 
-                com.example.playlistmaker.search.domain.models.SearchActivityState.NO_RESULTS -> {
+                is SearchActivityState.NoResult -> {
                     noResults()
                 }
 
-                com.example.playlistmaker.search.domain.models.SearchActivityState.SERVER_ERROR -> {
+                is SearchActivityState.ServerError -> {
                     serverError()
                 }
+
+                else -> {}
             }
         }
     }
@@ -275,4 +277,3 @@ class SearchActivity : AppCompatActivity() {
         searchProgressBar = findViewById(R.id.progress_bar_search_activity)
     }
 }
-

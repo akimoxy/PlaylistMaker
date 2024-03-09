@@ -16,12 +16,13 @@ import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.example.playlistmaker.player.ui.PlayerViewModel
 import com.example.playlistmaker.player.ui.ScreenState
 import com.example.playlistmaker.search.domain.models.Track
-import com.example.playlistmaker.search.ui.SearchActivity.Companion.TRACK
 import kotlinx.serialization.json.Json
 import java.io.Serializable
 import java.util.Locale
 
 const val DELAY_1SEC = 1000L
+const val FOUR = 4
+const val TRACK = "track"
 
 class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAudioPlayerBinding
@@ -38,10 +39,11 @@ class AudioPlayerActivity : AppCompatActivity() {
             finish()
         }
 
-        val json = getSerializable(intent, TRACK, String::class.java)
+        val json = getSerializableExtraCompat(intent, TRACK, String::class.java)
 
         track = Json.decodeFromString(json)
-        if (track.releaseDate.length > 4) track.releaseDate = track.releaseDate.substring(0, 4)
+        if (track.releaseDate.length > FOUR) track.releaseDate =
+            track.releaseDate.substring(0, FOUR)
         track.artworkUrl100 = track.getCoverArtwork()
         binding.genreTextPlayer.text = track.primaryGenreName
         binding.yearTextPlayer.text = track.releaseDate
@@ -64,8 +66,6 @@ class AudioPlayerActivity : AppCompatActivity() {
             PlayerViewModel.getViewModelFactory(track.previewUrl)
         )[PlayerViewModel::class.java]
 
-        playerViewModel.preparePlayer()
-        playerViewModel.playerInteractor.getMediaPlayerState()
         playerViewModel.observeState().observe(this)
         {
             when (it) {
@@ -162,7 +162,8 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
 }
-private fun <T : Serializable?> getSerializable(
+
+private fun <T : Serializable?> getSerializableExtraCompat(
     intent: Intent,
     key: String,
     className: Class<T>

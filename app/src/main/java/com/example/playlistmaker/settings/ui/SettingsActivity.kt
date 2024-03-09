@@ -24,13 +24,7 @@ class SettingsActivity : AppCompatActivity() {
         binding.backButtonSettings.setOnClickListener {
             finish()
         }
-
-        viewModel.getLoadingLiveData().observe(this) {
-            binding.nightThemeSwitchSettings.isChecked = viewModel.firstInitTheme()
-            //  switch.isChecked = it
-            /*если придать значение it,имея уже темную тему и войти из мэйн в сэттинг,
-       поменять с темной на светлую начинается адский стробоскоп  */
-        }
+        binding.nightThemeSwitchSettings.isChecked = viewModel.firstInitTheme()
         binding.nightThemeSwitchSettings.setOnCheckedChangeListener { _, isChecked ->
             viewModel.onSwitchClick(isChecked)
         }

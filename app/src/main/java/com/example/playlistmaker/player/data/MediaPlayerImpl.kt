@@ -1,22 +1,16 @@
 package com.example.playlistmaker.player.data
 
 import android.media.MediaPlayer
-import com.example.playlistmaker.player.domain.api.MediaPlayerInterf
-import com.example.playlistmaker.player.domain.models.MediaPlayerState
+import com.example.playlistmaker.player.domain.api.MediaPlayerRepository
 
-class MediaPlayerImpl() : MediaPlayerInterf {
-    private var mediaPlState = MediaPlayerState.STATE_DEFAULT
-    val medPl = MediaPlayer()
-    override fun initMediaPlayer(): MediaPlayer {
-        return medPl
-    }
-
+class MediaPlayerImpl : MediaPlayerRepository {
+    private val medPl:MediaPlayer= MediaPlayer()
     override fun prepareMediaPlayer(url: String) {
+
         medPl.reset()
         medPl.setDataSource(url)
         medPl.prepareAsync()
     }
-
     override fun startMediaPlayer() {
         medPl.start()
     }
@@ -24,17 +18,8 @@ class MediaPlayerImpl() : MediaPlayerInterf {
     override fun pauseMediaPlayer() {
         medPl.pause()
     }
-
-    override fun getMediaPlayerState(): MediaPlayerState {
-        return mediaPlState
-    }
-
     override fun mediaPlayerRelease() {
-        initMediaPlayer().release()
-    }
-
-    override fun initPlayerState(state: MediaPlayerState) {
-        mediaPlState = state
+        medPl.release()
     }
 
     override fun getCurrentPosition(): Int {
@@ -44,5 +29,13 @@ class MediaPlayerImpl() : MediaPlayerInterf {
     override fun isPlaying(): Boolean {
         return medPl.isPlaying
 
+    }
+
+    override fun setOnPreparedListnr(setOn: () -> Unit) {
+      medPl.setOnPreparedListener {setOn() }
+    }
+
+    override fun setOnCompletionListnr(setOn: () -> Unit) {
+       medPl.setOnCompletionListener { setOn() }
     }
 }

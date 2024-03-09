@@ -1,18 +1,14 @@
 package com.example.playlistmaker.player.domain.impl
 
-import android.media.MediaPlayer
 import com.example.playlistmaker.player.domain.api.MediaPlayerInteractor
-import com.example.playlistmaker.player.domain.api.MediaPlayerInterf
-import com.example.playlistmaker.player.domain.models.MediaPlayerState
+import com.example.playlistmaker.player.domain.api.MediaPlayerRepository
 
-class MediaPlayerInteractorImpl(val mediaPl: MediaPlayerInterf,val url: String) : MediaPlayerInteractor {
-    override fun initMediaPlayer(): MediaPlayer {
-        return mediaPl.initMediaPlayer()
+class MediaPlayerInteractorImpl(val mediaPl: MediaPlayerRepository, val url: String) :
+    MediaPlayerInteractor {
 
-    }
 
     override fun prepareMediaPlayer() {
-      mediaPl.prepareMediaPlayer(url)
+        mediaPl.prepareMediaPlayer(url)
     }
 
     override fun startMediaPlayer() {
@@ -23,26 +19,24 @@ class MediaPlayerInteractorImpl(val mediaPl: MediaPlayerInterf,val url: String) 
         mediaPl.pauseMediaPlayer()
     }
 
-    override fun getMediaPlayerState(): MediaPlayerState {
-        return mediaPl.getMediaPlayerState()
-    }
-
-    override fun initPlayerState(state: MediaPlayerState) {
-        mediaPl.initPlayerState(state)
-
-    }
-
     override fun getCurrentPosition(): Int {
-       return mediaPl.getCurrentPosition()
+        return mediaPl.getCurrentPosition()
     }
 
     override fun isPlaying(): Boolean {
-      return  mediaPl.isPlaying()
+        return mediaPl.isPlaying()
     }
 
     override fun mediaPlayerRelease() {
         mediaPl.mediaPlayerRelease()
     }
 
+    override fun setOnCompletionListnr(setOn: () -> Unit) {
+        mediaPl.setOnCompletionListnr(setOn)
+    }
+
+    override fun setOnPreparedListnr(setOn: () -> Unit) {
+        mediaPl.setOnPreparedListnr(setOn)
+    }
 
 }
