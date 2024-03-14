@@ -4,11 +4,11 @@ import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -17,6 +17,7 @@ import com.example.playlistmaker.player.ui.PlayerViewModel
 import com.example.playlistmaker.player.ui.ScreenState
 import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.serialization.json.Json
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
 import java.util.Locale
 
@@ -27,11 +28,11 @@ const val TRACK = "track"
 class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAudioPlayerBinding
     private lateinit var track: Track
-    lateinit var playerViewModel: PlayerViewModel
+   private  val playerViewModel by viewModel<PlayerViewModel>()
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+Log.d("он криейт","ыпцкп")
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -60,11 +61,6 @@ class AudioPlayerActivity : AppCompatActivity() {
             .transform(RoundedCorners(dpToPx(binding.trackAlbumImagePlayer, 12f)))
             .placeholder(R.drawable.placeholder)
             .into(binding.trackAlbumImagePlayer)
-
-        playerViewModel = ViewModelProvider(
-            this,
-            PlayerViewModel.getViewModelFactory(track.previewUrl)
-        )[PlayerViewModel::class.java]
 
         playerViewModel.observeState().observe(this)
         {
@@ -99,7 +95,7 @@ class AudioPlayerActivity : AppCompatActivity() {
                     )
                 }
 
-                else -> { //
+                else -> { preparePlayer()
                 }
             }
         }
@@ -128,7 +124,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private fun preparePlayer() {
         binding.playIcon.visibility = View.VISIBLE
-        playerViewModel.preparePlayer()
+        playerViewModel.preparePlayer(track.previewUrl)
         binding.playIcon.isEnabled = true
         binding.trackTiming.text = getString(R.string.start_timing_mm_ss)
 

@@ -4,10 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.settings.domain.SettingsRepository
 import com.example.playlistmaker.settings.domain.ThemeSettings
 
-class SettingsRepositoryImpl(var sharedPrefs: SharedPreferences,val context: Context) : SettingsRepository {
-    private var darkTheme = ThemeSettings(false)
+class SettingsRepositoryImpl(var sharedPrefs: SharedPreferences,val context: Context,var darkTheme:ThemeSettings) :
+    SettingsRepository {
     override fun getThemeSettings(): Boolean {
         return sharedPrefs.getBoolean(EDIT_SWITCH_SETTINGS_KEY, darkTheme.themeSettings)
     }
@@ -21,7 +22,6 @@ class SettingsRepositoryImpl(var sharedPrefs: SharedPreferences,val context: Con
     override fun switchBtnState(): Boolean {
         if (sharedPrefs.contains(EDIT_SWITCH_SETTINGS_KEY)) {
             darkTheme.themeSettings = getThemeSettings()
-            //         applyTheme()
         } else if (context.isDarkThemeOn()) {
             darkTheme.themeSettings = context.isDarkThemeOn()
         } else {

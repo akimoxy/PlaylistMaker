@@ -1,17 +1,20 @@
 package com.example.playlistmaker
 
 import android.app.Application
-import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.settings.domain.SettingsInteractor
+import com.example.playlistmaker.di.dataModule
+import com.example.playlistmaker.di.domainModule
+import com.example.playlistmaker.di.presentationModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext.startKoin
 
 class App : Application() {
-    fun provideSettingsInteractor(): SettingsInteractor {
-        return Creator.getSettingsInteractor()
-    }
 
     override fun onCreate() {
         super.onCreate()
-        Creator.init(this)
+        startKoin {
+            androidContext(this@App)
+            modules(dataModule, domainModule, presentationModule)
+        }
     }
 }
 

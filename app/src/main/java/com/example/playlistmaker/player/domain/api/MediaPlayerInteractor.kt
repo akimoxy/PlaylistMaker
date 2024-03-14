@@ -1,7 +1,7 @@
 package com.example.playlistmaker.player.domain.api
 
 interface MediaPlayerInteractor {
-    fun prepareMediaPlayer()
+    fun prepareMediaPlayer(url:String)
     fun startMediaPlayer()
     fun pauseMediaPlayer()
     fun mediaPlayerRelease()
@@ -9,4 +9,6 @@ interface MediaPlayerInteractor {
     fun isPlaying(): Boolean
     fun setOnCompletionListnr(setOn: () -> Unit)
     fun setOnPreparedListnr(setOn: () -> Unit)
+
+
 }

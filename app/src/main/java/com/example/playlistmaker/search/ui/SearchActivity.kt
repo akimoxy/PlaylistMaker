@@ -11,7 +11,6 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
@@ -21,6 +20,7 @@ import com.example.playlistmaker.presentation.ui.UiAudioPlayerActivity.TRACK
 import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val KEY = "someKey"
 class SearchActivity : AppCompatActivity() {
@@ -37,7 +37,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var adapterForHistoryTracks: TrackAdapter
     lateinit var binding: ActivitySearchBinding
     private lateinit var clickListener: RecyclerViewEvent
-    lateinit var viewModel: SearchViewModel
+    private val viewModel  by viewModel <SearchViewModel>()
     private var arrayList: ArrayList<Track> = arrayListOf()
     private var arrayListHistory: ArrayList<Track> = arrayListOf()
 
@@ -48,10 +48,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(binding.root)
         findBiId()
         allViewGone()
-        viewModel = ViewModelProvider(
-            this,
-            SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
+
 
         clickListener = object : RecyclerViewEvent {
             @SuppressLint("SuspiciousIndentation")

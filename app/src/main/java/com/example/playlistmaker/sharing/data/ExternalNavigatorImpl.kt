@@ -5,9 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import com.example.playlistmaker.sharing.domain.EmailData
 
-class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
+class ExternalNavigatorImpl(private val context: Context,var intent: Intent) : ExternalNavigator {
     override fun shareLink(link: String) {
-        val intent = Intent()
+      //  val intent = Intent()
         intent.action = Intent.ACTION_SEND
         intent.putExtra(
             Intent.EXTRA_TEXT,
@@ -19,7 +19,7 @@ class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
     }
     override fun openLink(link: String) {
 
-        val intent = Intent(Intent.ACTION_VIEW)
+        intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(link)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
