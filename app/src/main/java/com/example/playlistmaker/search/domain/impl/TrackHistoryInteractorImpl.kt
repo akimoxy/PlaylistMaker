@@ -11,11 +11,9 @@ class TrackHistoryInteractorImpl(var history: TrackHistoryRepository) : TrackHis
     override fun getItemsFromCache(): ArrayList<Track> {
         return history.getItemsFromCache()
     }
-
     override fun getItems(): ArrayList<Track> {
         return history.getItems()
     }
-
     override fun saveTrack(track: Track) {
         val trackHistoryArray = getItemsFromCache()
         trackHistoryArray.removeIf { it.trackId == track.trackId }

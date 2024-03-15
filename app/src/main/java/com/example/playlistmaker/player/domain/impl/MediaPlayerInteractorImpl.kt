@@ -3,40 +3,39 @@ package com.example.playlistmaker.player.domain.impl
 import com.example.playlistmaker.player.domain.api.MediaPlayerInteractor
 import com.example.playlistmaker.player.domain.api.MediaPlayerRepository
 
-class MediaPlayerInteractorImpl(val mediaPl: MediaPlayerRepository, val url: String) :
+class MediaPlayerInteractorImpl(val mediaPlayerRepository: MediaPlayerRepository) :
     MediaPlayerInteractor {
 
 
-    override fun prepareMediaPlayer() {
-        mediaPl.prepareMediaPlayer(url)
+    override fun prepareMediaPlayer(url: String) {
+        mediaPlayerRepository.prepareMediaPlayer(url)
     }
 
     override fun startMediaPlayer() {
-        mediaPl.startMediaPlayer()
+        mediaPlayerRepository.startMediaPlayer()
     }
 
     override fun pauseMediaPlayer() {
-        mediaPl.pauseMediaPlayer()
+        mediaPlayerRepository.pauseMediaPlayer()
     }
 
     override fun getCurrentPosition(): Int {
-        return mediaPl.getCurrentPosition()
+        return mediaPlayerRepository.getCurrentPosition()
     }
 
     override fun isPlaying(): Boolean {
-        return mediaPl.isPlaying()
+        return mediaPlayerRepository.isPlaying()
     }
 
     override fun mediaPlayerRelease() {
-        mediaPl.mediaPlayerRelease()
+        mediaPlayerRepository.mediaPlayerRelease()
     }
 
     override fun setOnCompletionListnr(setOn: () -> Unit) {
-        mediaPl.setOnCompletionListnr(setOn)
+        mediaPlayerRepository.setOnCompletionListnr(setOn)
     }
 
     override fun setOnPreparedListnr(setOn: () -> Unit) {
-        mediaPl.setOnPreparedListnr(setOn)
+        mediaPlayerRepository.setOnPreparedListnr(setOn)
     }
-
 }

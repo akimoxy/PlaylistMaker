@@ -9,4 +9,5 @@ interface MediaPlayerRepository {
     fun isPlaying(): Boolean
     fun setOnCompletionListnr(setOn: () -> Unit)
     fun setOnPreparedListnr(setOn: () -> Unit)
+     fun setUrl(url:String):String
 }

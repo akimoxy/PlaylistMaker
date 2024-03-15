@@ -1,7 +1,5 @@
 package com.example.playlistmaker.settings.domain
 
-import com.example.playlistmaker.settings.data.SettingsRepository
-
 class SettingsInteractorImpl(var settings: SettingsRepository) : SettingsInteractor {
 
     override fun getThemeSettings(): Boolean {

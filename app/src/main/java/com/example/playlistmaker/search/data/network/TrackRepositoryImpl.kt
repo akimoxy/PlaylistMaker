@@ -27,15 +27,11 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepos
                     it.previewUrl
                 )
             }
-            return TrackResponseDomain( trackList as ArrayList<Track>, response.resultCode)
+            return TrackResponseDomain(trackList as ArrayList<Track>, response.resultCode)
 
         } else {
             return TrackResponseDomain(emptyArray, response.resultCode)
         }
     }
-
-
-
-
 }
 
