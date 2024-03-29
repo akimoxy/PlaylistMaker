@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.databinding.ActivityMainBinding
 import com.example.playlistmaker.mediateka.ui.MediatekaActivity
 import com.example.playlistmaker.search.ui.SearchActivity
-import com.example.playlistmaker.settings.ui.SettingsActivity
-import com.example.playlistmaker.settings.ui.SettingsViewModel
+import com.example.playlistmaker.player.settings.ui.SettingsActivity
+import com.example.playlistmaker.player.settings.ui.SettingsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {

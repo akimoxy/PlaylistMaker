@@ -65,7 +65,7 @@
         android:paddingEnd="@dimen/padding16"
         android:text="@string/update"
         android:textSize="@dimen/mini_text_size16"
-        app:cornerRadius="@dimen/tittle_text_size22"
+        app:cornerRadius="@dimen/dp24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/server_error2"

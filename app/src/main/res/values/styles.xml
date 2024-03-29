@@ -160,4 +160,12 @@
         <item name="android:tint">@color/black</item>
     </style>
 
+    <style name="tablayout_mediateka" parent="Widget.Design.TabLayout">
+        <item name="buttonStyle" type="style">@style/tablayout_mediateka</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/sp14</item>
+        <item name="rippleColor">@color/black</item>
+        <item name="tabTextColor">@color/black</item>
+        <item name="tabIndicatorColor">@color/black</item>
+    </style>
 </resources>
