@@ -2,34 +2,34 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    style="@style/day_night_theme"
     android:layout_height="match_parent"
-    android:layout_gravity="center_horizontal|center_vertical"
-    android:gravity="center"
-    android:orientation="vertical"
-    style="@style/day_night_theme">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
-        android:id="@+id/no_results_image"
+        android:id="@+id/no_results_image_favorite"
         style="@style/no_results_placeholder"
         android:layout_width="@dimen/dp120"
         android:layout_height="@dimen/dp120"
+        android:layout_marginTop="@dimen/dp106"
+        android:layout_marginBottom="@dimen/dp16"
         android:contentDescription="@string/no_results_search"
-        app:layout_constraintBottom_toTopOf="@+id/no_results_text"
+        app:layout_constraintBottom_toTopOf="@id/mediateka_text_view_favorite"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="@dimen/dp16"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:id="@+id/no_results_text"
+        android:id="@+id/mediateka_text_view_favorite"
         style="@style/no_results_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/ys_display_regular"
-        android:text="@string/no_results_search"
+        android:layout_marginTop="@dimen/dp16"
+        android:fontFamily="@font/ys_display_medium"
         android:textSize="@dimen/sp19"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/no_results_image_favorite"
+        tools:text="@string/mediateka_empty_text"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

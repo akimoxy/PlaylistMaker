@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/day_night_theme">
+
+    <Button
+        android:id="@+id/new_playlist_btn_mediateka"
+        style="@style/black_white_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp24"
+        android:layout_marginBottom="@dimen/dp46"
+        android:paddingStart="@dimen/padding16"
+        android:paddingTop="@dimen/dp16"
+        android:paddingEnd="@dimen/padding16"
+        android:paddingBottom="@dimen/dp16"
+        android:text="@string/mediateka_new_playlist"
+        android:textSize="@dimen/mini_text_size16"
+        app:cornerRadius="@dimen/dp24"
+        app:layout_constraintBottom_toTopOf="@id/no_results_image_playlists"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/no_results_image_playlists"
+        style="@style/no_results_placeholder"
+        android:layout_width="@dimen/dp120"
+        android:layout_height="@dimen/dp120"
+        android:contentDescription="@string/no_results_search"
+        app:layout_constraintBottom_toTopOf="@id/mediateka_text_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/mediateka_text_view"
+        style="@style/no_results_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        android:fontFamily="@font/ys_display_medium"
+        android:gravity="center"
+        android:textSize="@dimen/sp19"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/no_results_image_playlists"
+        tools:text="@string/mediateka_playlist" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

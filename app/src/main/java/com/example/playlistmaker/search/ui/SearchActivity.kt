@@ -23,6 +23,7 @@ import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val KEY = "someKey"
+
 class SearchActivity : AppCompatActivity() {
     private var text = ""
     private var errorView: View? = null
@@ -37,7 +38,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var adapterForHistoryTracks: TrackAdapter
     lateinit var binding: ActivitySearchBinding
     private lateinit var clickListener: RecyclerViewEvent
-    private val viewModel  by viewModel <SearchViewModel>()
+    private val viewModel by viewModel<SearchViewModel>()
     private var arrayList: ArrayList<Track> = arrayListOf()
     private var arrayListHistory: ArrayList<Track> = arrayListOf()
 
@@ -78,9 +79,7 @@ class SearchActivity : AppCompatActivity() {
         }
         binding.inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                binding.inputEditText.setOnClickListener {
-                    it.hideKeyboard()
-                }
+                binding.inputEditText.hideKeyboard()
                 showView()
                 arrayList.clear()
                 trackAdapter.addTracks(arrayList)
@@ -89,13 +88,12 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
-
         binding.inputEditText.setOnFocusChangeListener { _, hasFocus ->
+            binding.inputEditText.showKeyboard()
             rvTrackHist?.visibility = View.VISIBLE
             adapterForHistoryTracks.updateList(viewModel.getHistoryItems())
             trackAdapter.updateList(arrayList)
-            if (hasFocus && arrayList.isEmpty() && viewModel.getHistoryItems()
-                    .isNotEmpty()
+            if (hasFocus && arrayList.isEmpty() && viewModel.getHistoryItems().isNotEmpty()
             ) {
                 showHistoryView()
             } else if ((arrayList.isEmpty() && viewModel.getHistoryItems()
@@ -140,9 +138,8 @@ class SearchActivity : AppCompatActivity() {
                 } else {
                     arrayList.clear()
                     trackAdapter.updateList(arrayList)
-                    clearTrackHistoryBtn?.visibility = View.INVISIBLE
-                    textViewYourSearch?.visibility = View.INVISIBLE
-                    //здесь Invisible,а не gone, потому что gone отрабатывает не корректно
+                    clearTrackHistoryBtn?.visibility = View.GONE
+                    textViewYourSearch?.visibility = View.GONE
                 }
             }
 
@@ -155,7 +152,7 @@ class SearchActivity : AppCompatActivity() {
             trackAdapter.updateList(arrayList)
             binding.recyclerView.visibility = View.GONE
             rvTrackHist
-            it.hideKeyboard()
+            //it.hideKeyboard()
             errorView!!.visibility = View.GONE
             noResultsView!!.visibility = View.GONE
 
@@ -173,10 +170,6 @@ class SearchActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(KEY, text)
-    }
-
-    companion object {
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -200,7 +193,7 @@ class SearchActivity : AppCompatActivity() {
         rvTrackHist?.visibility = View.GONE
         textViewYourSearch?.visibility = View.GONE
         clearTrackHistoryBtn?.visibility = View.GONE
-        textViewYourSearch?.visibility = View.INVISIBLE
+        textViewYourSearch?.visibility = View.GONE
     }
 
     private fun loading() {
@@ -218,8 +211,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun noResults() {
-        searchProgressBar?.visibility = View.INVISIBLE
-        textViewYourSearch?.visibility = View.INVISIBLE
+        searchProgressBar?.visibility = View.GONE
+        textViewYourSearch?.visibility = View.GONE
         noResultsView!!.visibility = View.VISIBLE
     }
 
@@ -227,6 +220,11 @@ class SearchActivity : AppCompatActivity() {
         val inputManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    private fun View.showKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(this, 0)
     }
 
     private fun showView() {

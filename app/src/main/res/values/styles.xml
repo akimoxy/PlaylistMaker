@@ -20,7 +20,7 @@
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textSize">@dimen/mini_text_size16</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
@@ -158,6 +158,22 @@
         <item name="android:src">@drawable/play_btn_day</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:tint">@color/black</item>
+    </style>
+
+    <style name="tablayout_mediateka" >
+        <item name="buttonStyle" type="style">@style/tablayout_mediateka</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/sp14</item>
+        <item name="tabTextColor">@color/black</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="tabIndicatorColor">@color/black</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="day_night_theme" >
+        <item name="buttonStyle" type="style">@style/day_night_theme</item>
+        <item name="android:background">@color/white</item>
     </style>
 
 </resources>

@@ -36,4 +36,11 @@
     <string name="update">Обновить</string>
     <string name="you_were_looking_for">Вы искали</string>
     <string name="clear_history">Очистить историю</string>
+
+    <string name="mediateka">Медиатека</string>
+    <string name="mediateka_empty_text">Ваша медиатека пуста</string>
+    <string name="mediateka_playlist">Вы не создали \n не одного плейлиста</string>
+    <string name="mediateka_new_playlist">Новый плейлист</string>
+    <string name="mediateka_favorite_tracks_tablayout">Избранные треки</string>
+    <string name="mediateka_playlists_tablayout">Плейлисты</string>
 </resources>

@@ -23,16 +23,17 @@ import java.util.Locale
 
 const val DELAY_1SEC = 1000L
 const val FOUR = 4
+const val THIRTY = 30
 const val TRACK = "track"
 
 class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAudioPlayerBinding
     private lateinit var track: Track
-   private  val playerViewModel by viewModel<PlayerViewModel>()
+    private val playerViewModel by viewModel<PlayerViewModel>()
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-Log.d("он криейт","ыпцкп")
+        Log.d("он криейт", "ыпцкп")
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -45,6 +46,8 @@ Log.d("он криейт","ыпцкп")
         track = Json.decodeFromString(json)
         if (track.releaseDate.length > FOUR) track.releaseDate =
             track.releaseDate.substring(0, FOUR)
+        if (track.artistName.length > THIRTY) track.artistName =
+            track.artistName.substring(0, THIRTY) + ("...")
         track.artworkUrl100 = track.getCoverArtwork()
         binding.genreTextPlayer.text = track.primaryGenreName
         binding.yearTextPlayer.text = track.releaseDate
@@ -95,7 +98,8 @@ Log.d("он криейт","ыпцкп")
                     )
                 }
 
-                else -> { preparePlayer()
+                else -> {
+                    preparePlayer()
                 }
             }
         }
