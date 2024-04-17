@@ -1,4 +1,4 @@
-package com.example.playlistmaker.player.settings.domain
+package com.example.playlistmaker.settings.domain
 
 class SettingsInteractorImpl(var settings: SettingsRepository) : SettingsInteractor {
 

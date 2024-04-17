@@ -1,5 +1,5 @@
 package com.example.playlistmaker.mediateka.ui
-
+/*
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.R
@@ -41,3 +41,5 @@ class MediatekaActivity : AppCompatActivity() {
         tabMediator.detach()
     }
 }
+
+*/

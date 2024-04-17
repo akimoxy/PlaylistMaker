@@ -2,7 +2,7 @@ package com.example.playlistmaker.di
 
 import com.example.playlistmaker.mediateka.ui.FavoriteTracksViewModel
 import com.example.playlistmaker.mediateka.ui.PlayListsViewModel
-import com.example.playlistmaker.player.settings.ui.SettingsViewModel
+import com.example.playlistmaker.settings.ui.SettingsViewModel
 import com.example.playlistmaker.player.ui.PlayerViewModel
 import com.example.playlistmaker.search.ui.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel

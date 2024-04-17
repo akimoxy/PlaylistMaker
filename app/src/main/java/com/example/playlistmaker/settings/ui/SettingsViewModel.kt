@@ -1,7 +1,7 @@
-package com.example.playlistmaker.player.settings.ui
+package com.example.playlistmaker.settings.ui
 
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.player.settings.domain.SettingsInteractor
+import com.example.playlistmaker.settings.domain.SettingsInteractor
 import com.example.playlistmaker.sharing.domain.SharingInteractor
 
 class SettingsViewModel(
