@@ -190,7 +190,7 @@
         <item name="android:color">@android:color/transparent</item>
     </style>
     <style name="color_for_btm_nav_view_top" >
-        <item name="tint">@color/light_grey</item>
+        <item name="android:background">@color/light_grey</item>
     </style>
 
 </resources>

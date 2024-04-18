@@ -19,13 +19,13 @@
         app:navGraph="@navigation/main_navigation_graph"
         tools:layout="@layout/fragment_mediateka" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/btm_nav_view_top_line"
+        style="@style/color_for_btm_nav_view_top"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        style="@style/color_for_btm_nav_view_top"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-         />
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         style="@style/day_night_bottom_navigation_view"
