@@ -12,10 +12,10 @@ import com.example.playlistmaker.search.domain.api.TrackInteractor
 import com.example.playlistmaker.search.domain.api.TrackRepository
 import com.example.playlistmaker.search.domain.impl.TrackHistoryInteractorImpl
 import com.example.playlistmaker.search.domain.impl.TrackInteractorImpl
-import com.example.playlistmaker.player.settings.data.SettingsRepositoryImpl
-import com.example.playlistmaker.player.settings.domain.SettingsInteractor
-import com.example.playlistmaker.player.settings.domain.SettingsInteractorImpl
-import com.example.playlistmaker.player.settings.domain.SettingsRepository
+import com.example.playlistmaker.settings.data.SettingsRepositoryImpl
+import com.example.playlistmaker.settings.domain.SettingsInteractor
+import com.example.playlistmaker.settings.domain.SettingsInteractorImpl
+import com.example.playlistmaker.settings.domain.SettingsRepository
 import com.example.playlistmaker.sharing.domain.SharingInteractor
 import com.example.practicum.playlist.domain.sharing.impl.SharingInteractorImpl
 import org.koin.dsl.module

@@ -11,8 +11,8 @@ import org.koin.core.parameter.parametersOf
 
 class PlayListsFragment : Fragment() {
 
-    private lateinit var binding: FragmentPlaylistsBinding
-
+    private var _binding:  FragmentPlaylistsBinding? = null
+    private val binding get() = _binding!!
     companion object {
         private const val PLAYLIST = "playlist"
 
@@ -33,7 +33,7 @@ class PlayListsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
+        _binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -42,5 +42,10 @@ class PlayListsFragment : Fragment() {
         binding.mediatekaTextView.text = requireArguments().getString(PLAYLIST)
         //   playListsViewModel.observePlaylists().observe(viewLifecycleOwner) {
         // }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding=null
     }
 }

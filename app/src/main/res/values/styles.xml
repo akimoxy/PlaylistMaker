@@ -28,8 +28,12 @@
         <item name="iconSize">@dimen/dp24</item>
         <item name="android:drawableTint">@color/text_grey</item>
 
-        <item name="iconPadding">@dimen/padding16</item>
+
     </style>
+
+
+
+
 
     <style name="settings_btn_switch" parent="Widget.MaterialComponents.Button">
         <item name="buttonStyle">@style/settings_btn_switch</item>
@@ -42,9 +46,6 @@
     <style name="settings_btn_title" parent="Widget.MaterialComponents.Button">
         <item name="buttonStyle">@style/settings_btn_title</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:layout_marginTop">@dimen/margin_top18</item>
-        <item name="android:layout_weight">1</item>
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:textColor">@color/black</item>
@@ -160,7 +161,7 @@
         <item name="android:tint">@color/black</item>
     </style>
 
-    <style name="tablayout_mediateka" >
+    <style name="tablayout_mediateka">
         <item name="buttonStyle" type="style">@style/tablayout_mediateka</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/sp14</item>
@@ -171,9 +172,25 @@
         <item name="android:background">@color/white</item>
     </style>
 
-    <style name="day_night_theme" >
+    <style name="day_night_theme">
         <item name="buttonStyle" type="style">@style/day_night_theme</item>
         <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="day_night_bottom_navigation_view">
+        <item name="buttonStyle" type="style">@style/day_night_bottom_navigation_view</item>
+        <item name="itemTextColor">@color/bottom_nav_view_color_day</item>
+        <item name="itemIconTint">@color/bottom_nav_view_color_day</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/sp12</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="Theme.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@android:color/transparent</item>
+    </style>
+    <style name="color_for_btm_nav_view_top" >
+        <item name="android:background">@color/light_grey</item>
     </style>
 
 </resources>

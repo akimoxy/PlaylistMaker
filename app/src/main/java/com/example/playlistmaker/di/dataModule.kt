@@ -8,8 +8,8 @@ import com.example.playlistmaker.search.data.network.ITunesApi
 import com.example.playlistmaker.search.data.network.NetworkClient
 import com.example.playlistmaker.search.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.search.data.network.TrackRepositoryImpl
-import com.example.playlistmaker.player.settings.data.SettingsRepositoryImpl
-import com.example.playlistmaker.player.settings.domain.ThemeSettings
+import com.example.playlistmaker.settings.data.SettingsRepositoryImpl
+import com.example.playlistmaker.settings.domain.ThemeSettings
 import com.example.playlistmaker.sharing.data.ExternalNavigator
 import com.example.playlistmaker.sharing.data.ExternalNavigatorImpl
 import com.google.gson.Gson
