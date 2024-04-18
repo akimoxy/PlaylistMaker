@@ -12,13 +12,20 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintBottom_toTopOf="@id/btm_nav_view_top_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/main_navigation_graph"
         tools:layout="@layout/fragment_mediateka" />
 
+    <ImageView
+        android:id="@+id/btm_nav_view_top_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        style="@style/color_for_btm_nav_view_top"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+         />
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         style="@style/day_night_bottom_navigation_view"

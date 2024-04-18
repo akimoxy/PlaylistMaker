@@ -12,7 +12,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediatekaFragment : Fragment() {
-    private lateinit var binding: FragmentMediatekaBinding
+    private var _binding: FragmentMediatekaBinding? = null
+    private val binding get() = _binding!!
     private lateinit var tabMediator: TabLayoutMediator
     private val viewModelTheme by viewModel<SettingsViewModel>()
     override fun onCreateView(
@@ -20,7 +21,7 @@ class MediatekaFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMediatekaBinding.inflate(inflater, container, false)
+        _binding = FragmentMediatekaBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -52,5 +53,8 @@ class MediatekaFragment : Fragment() {
         super.onDestroyView()
         super.onDestroy()
         tabMediator.detach()
+        _binding = null
     }
+
+
 }

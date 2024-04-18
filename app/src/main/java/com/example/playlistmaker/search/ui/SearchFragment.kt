@@ -31,13 +31,15 @@ class SearchFragment : Fragment() {
     private val viewModel by viewModel<SearchViewModel>()
     private var arrayList: ArrayList<Track> = arrayListOf()
     private var arrayListHistory: ArrayList<Track> = arrayListOf()
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding:   FragmentSearchBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         if (savedInstanceState != null) {
             text = savedInstanceState.getString(KEY)!!
             binding.inputEditText.setText(text)
@@ -169,6 +171,11 @@ class SearchFragment : Fragment() {
             binding.clearTrackHistory.visibility = View.GONE
             binding.textViewYourSearch.visibility = View.GONE
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding=null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
