@@ -55,13 +55,14 @@ class SearchFragment : Fragment() {
         clickListener = object : RecyclerViewEvent {
             @SuppressLint("SuspiciousIndentation")
             override fun onItemClick(track: Track) {
+                if(viewModel.clickDebounce()){
                 viewModel.saveTrackToHistory(track)
                 val buttonSearchIntent =
                     Intent(requireContext(), AudioPlayerActivity::class.java)
                 val json = Json.encodeToString(track)
                 buttonSearchIntent.putExtra(TRACK, json)
                 startActivity(buttonSearchIntent)
-            }
+            }  }
         }
 
         adapterForHistoryTracks =

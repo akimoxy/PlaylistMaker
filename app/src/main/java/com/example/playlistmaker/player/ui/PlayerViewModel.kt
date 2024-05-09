@@ -10,7 +10,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale
-const val DELAY_300_MILLISEC = 300L
+private const val DELAY_300_MILLISEC = 300L
 class PlayerViewModel(val playerInteractor: MediaPlayerInteractor) : ViewModel() {
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
     private val playerLiveData = MutableLiveData<ScreenState>(ScreenState.Default)

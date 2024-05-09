@@ -11,11 +11,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-const val SERVER_CODE_200 = 200
-const val SERVER_CODE_400 = 400
-const val SEARCH_DEBOUNCE_DELAY = 2000L
+ const val SERVER_CODE_200 = 200
+ const val SERVER_CODE_400 = 400
+private const val SEARCH_DEBOUNCE_DELAY = 2000L
+private const val CLICK_DEBOUNCE_DELAY = 1000L
 private var latestSearchText: String? = null
 private var searchJob: Job? = null
+private var isClickAllowed = true
 
 class SearchViewModel(
     private val trackInteractor: TrackInteractor,
@@ -46,7 +48,6 @@ class SearchViewModel(
             }
         }
     }
-
     private fun setHistory() {
         updateState(SearchActivityState.SearchHistory(getHistoryItems()))
     }
@@ -63,7 +64,17 @@ class SearchViewModel(
             search(text)
         }
     }
-
+    fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewModelScope.launch{
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
+    }
 
     fun getHistoryItems(): ArrayList<Track> {
         return trackHistoryInteractor.getItems()

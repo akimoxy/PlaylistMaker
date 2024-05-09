@@ -13,7 +13,7 @@ class RetrofitNetworkClient(val iTunesService: ITunesApi) : NetworkClient {
             withContext(Dispatchers.IO) {
                 try {
                     val resp = iTunesService.findTrack(dto.expression)
-                    resp.apply { resultCode = 200 }
+                    resp.apply { resultCode = SERVER_CODE_200 }
                 } catch (e: Throwable) {
                     Response().apply { resultCode = SERVER_CODE_400 }
                 }
