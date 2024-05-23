@@ -31,9 +31,8 @@ class SearchFragment : Fragment() {
     private val viewModel by viewModel<SearchViewModel>()
     private var arrayList: ArrayList<Track> = arrayListOf()
     private var arrayListHistory: ArrayList<Track> = arrayListOf()
-    private var _binding:   FragmentSearchBinding? = null
+    private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,13 +55,14 @@ class SearchFragment : Fragment() {
         clickListener = object : RecyclerViewEvent {
             @SuppressLint("SuspiciousIndentation")
             override fun onItemClick(track: Track) {
+                if(viewModel.clickDebounce()){
                 viewModel.saveTrackToHistory(track)
                 val buttonSearchIntent =
                     Intent(requireContext(), AudioPlayerActivity::class.java)
                 val json = Json.encodeToString(track)
                 buttonSearchIntent.putExtra(TRACK, json)
                 startActivity(buttonSearchIntent)
-            }
+            }  }
         }
 
         adapterForHistoryTracks =
@@ -75,6 +75,7 @@ class SearchFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = trackAdapter
 
+
         binding.inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 binding.inputEditText.hideKeyboard()
@@ -86,6 +87,8 @@ class SearchFragment : Fragment() {
             }
             false
         }
+
+
         binding.inputEditText.setOnFocusChangeListener { _, hasFocus ->
             binding.inputEditText.showKeyboard()
             binding.recyclerViewHist.visibility = View.VISIBLE
@@ -102,6 +105,7 @@ class SearchFragment : Fragment() {
                 binding.textViewYourSearch.visibility = View.GONE
             }
         }
+
         fun clearButtonVisibility(s: CharSequence?): Int {
             return if (s.isNullOrEmpty()) {
                 View.GONE
@@ -109,6 +113,7 @@ class SearchFragment : Fragment() {
                 View.VISIBLE
             }
         }
+
         binding.inputEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -159,9 +164,9 @@ class SearchFragment : Fragment() {
             arrayList.clear()
             trackAdapter.updateList(arrayList)
             binding.recyclerView.visibility = View.GONE
+            binding.progressBarSearchActivity.visibility = View.GONE
             binding.serverErrorInclude.root.visibility = View.GONE
             binding.noResultsSearchInclude.root.visibility = View.GONE
-
         }
         binding.recyclerViewHist.adapter = adapterForHistoryTracks
         binding.clearTrackHistory.setOnClickListener {
@@ -175,7 +180,7 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding=null
+        _binding = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

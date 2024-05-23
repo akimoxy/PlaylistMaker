@@ -4,7 +4,6 @@ import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
 import java.util.Locale
 
-const val DELAY_1SEC = 1000L
+
 const val FOUR = 4
 const val THIRTY = 30
 const val TRACK = "track"
@@ -33,7 +32,6 @@ class AudioPlayerActivity : AppCompatActivity() {
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("он криейт", "ыпцкп")
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
