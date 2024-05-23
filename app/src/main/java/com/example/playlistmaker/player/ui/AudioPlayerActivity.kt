@@ -15,6 +15,7 @@ import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.example.playlistmaker.player.ui.PlayerViewModel
 import com.example.playlistmaker.player.ui.ScreenState
 import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.settings.ui.SettingsViewModel
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
@@ -30,6 +31,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var track: Track
     private val playerViewModel by viewModel<PlayerViewModel>()
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
+    private val viewModelTheme by viewModel<SettingsViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
@@ -40,6 +42,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
 
         val json = getSerializableExtraCompat(intent, TRACK, String::class.java)
+
 
         track = Json.decodeFromString(json)
         if (track.releaseDate.length > FOUR) track.releaseDate =
@@ -63,15 +66,17 @@ class AudioPlayerActivity : AppCompatActivity() {
             .placeholder(R.drawable.placeholder)
             .into(binding.trackAlbumImagePlayer)
 
-        playerViewModel.observeState().observe(this)
-        {
-            when (it) {
+
+        playerViewModel.mediatorLiveDataObserver.observe(this@AudioPlayerActivity) { pair ->
+            val screenState = pair.first
+            val isFavorite = pair.second
+            when (screenState) {
                 is ScreenState.Default -> {
                     preparePlayer()
                 }
 
                 is ScreenState.Pause -> {
-                    binding.trackTiming.text = it.time
+                    binding.trackTiming.text = screenState.time
                     binding.playIcon.setImageDrawable(
                         ResourcesCompat.getDrawable(
                             resources,
@@ -90,7 +95,7 @@ class AudioPlayerActivity : AppCompatActivity() {
                 }
 
                 is ScreenState.PlayingTime -> {
-                    binding.trackTiming.text = it.time
+                    binding.trackTiming.text = screenState.time
                     binding.playIcon.setImageDrawable(
                         ResourcesCompat.getDrawable(resources, R.drawable.pause_button_day, theme)
                     )
@@ -99,6 +104,21 @@ class AudioPlayerActivity : AppCompatActivity() {
                 else -> {
                     preparePlayer()
                 }
+            }
+            track.isFavorite = isFavorite!!
+            if (isFavorite) {
+                likeView()
+            } else {
+                dontLikeView()
+            }
+        }
+
+
+        binding.likeButton.setOnClickListener {
+            if (track.isFavorite) {
+                playerViewModel.deleteFromFavTrack(track)
+            } else {
+                playerViewModel.addToFavTracks(track)
             }
         }
         binding.playIcon.setOnClickListener {
@@ -126,15 +146,39 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private fun preparePlayer() {
         binding.playIcon.visibility = View.VISIBLE
-        playerViewModel.preparePlayer(track.previewUrl)
+        playerViewModel.preparePlayer(track.previewUrl, track)
         binding.playIcon.isEnabled = true
         binding.trackTiming.text = getString(R.string.start_timing_mm_ss)
 
     }
 
+    private fun likeView() {
+        if (viewModelTheme.firstInitTheme()) {
+            binding.likeButton.setImageDrawable(getDrawable(R.drawable.button_like_night_red))
+        } else {
+            binding.likeButton.setImageDrawable(getDrawable(R.drawable.button_like_day_red))
+        }
+    }
+
+    private fun dontLikeView() {
+        if (viewModelTheme.firstInitTheme()) {
+            binding.likeButton.setImageDrawable(
+                ResourcesCompat.getDrawable(resources, R.drawable.btn_like_night_playlist, theme)
+            )
+        } else {
+            binding.likeButton.setImageDrawable(
+                ResourcesCompat.getDrawable(resources, R.drawable.btn_like_day_playlist, theme)
+            )
+        }
+    }
+
     private fun playbackControl() {
-        when (playerViewModel.observeState().value) {
-            is ScreenState.Default -> preparePlayer()
+        when (playerViewModel.mediatorLiveDataObserver.value!!.first) {
+            is ScreenState.Default -> {
+                preparePlayer()
+
+            }
+
             is ScreenState.PlayingTime -> {
                 pausePlayer()
             }
@@ -158,7 +202,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics)
             .toInt()
     }
-
 }
 
 private fun <T : Serializable?> getSerializableExtraCompat(

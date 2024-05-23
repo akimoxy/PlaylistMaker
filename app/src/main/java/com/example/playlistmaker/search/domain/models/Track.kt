@@ -14,7 +14,9 @@ data class Track(
     var trackTimeMillis: Long,
     var artworkUrl100: String,
     var trackId: String,
-    var previewUrl: String
+    var previewUrl: String,
+    var isFavorite: Boolean
 ) {
+
     fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
 }

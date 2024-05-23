@@ -15,15 +15,14 @@ import kotlinx.coroutines.launch
  const val SERVER_CODE_400 = 400
 private const val SEARCH_DEBOUNCE_DELAY = 2000L
 private const val CLICK_DEBOUNCE_DELAY = 1000L
-private var latestSearchText: String? = null
-private var searchJob: Job? = null
-private var isClickAllowed = true
-
 class SearchViewModel(
     private val trackInteractor: TrackInteractor,
     private val trackHistoryInteractor: TrackHistoryInteractor,
 ) : ViewModel() {
     private val searchLiveData = MutableLiveData<SearchActivityState>(SearchActivityState.Loading)
+    private var latestSearchText: String? = null
+    private var searchJob: Job? = null
+    private var isClickAllowed = true
     fun activityStateLiveData(): LiveData<SearchActivityState> = searchLiveData
 
     init {
