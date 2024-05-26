@@ -18,27 +18,28 @@ class TrackRepositoryImpl(
     private var emptyArray: ArrayList<Track> = arrayListOf()
     override fun searchTrack(expression: String): Flow<TrackResponseDomain> = flow {
         val response = networkClient.doRequest(TrackSearchRequest(expression))
-        val trackList = (response as TrackResponse?)!!.results.map {
-            Track(
-                it.trackName,
-                it.artistName,
-                it.collectionName,
-                it.releaseDate,
-                it.primaryGenreName,
-                it.country,
-                it.trackTimeMillis,
-                it.artworkUrl100,
-                it.trackId,
-                it.previewUrl,
-                isFavorite = false
-            )
-        }
+
         if (response.resultCode == SERVER_CODE_200) {
             Log.d("поиск репоз.импл", response.toString())
+            val trackList = (response as TrackResponse?)!!.results.map {
+                Track(
+                    it.trackName,
+                    it.artistName,
+                    it.collectionName,
+                    it.releaseDate,
+                    it.primaryGenreName,
+                    it.country,
+                    it.trackTimeMillis,
+                    it.artworkUrl100,
+                    it.trackId,
+                    it.previewUrl,
+                    isFavorite = false
+                )
+            }
             emit(TrackResponseDomain(trackList as ArrayList<Track>, response.resultCode))
             Log.d("репоз.импл", trackList.toString())
         } else {
-            Log.d("элс поиск репоз.импл", emptyArray.toString())
+            Log.d("элс поиск репоз.импл",response.resultCode.toString())
             emit(TrackResponseDomain(emptyArray, response.resultCode))
         }
     }
