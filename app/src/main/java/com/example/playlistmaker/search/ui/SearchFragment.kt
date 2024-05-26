@@ -80,6 +80,7 @@ class SearchFragment : Fragment() {
             binding.inputEditText.showKeyboard()
             binding.recyclerViewHist.visibility = View.VISIBLE
             adapterForHistoryTracks.updateList(viewModel.getHistoryItems())
+            arrayList.clear()
             trackAdapter.updateList(arrayList)
             if (hasFocus && arrayList.isEmpty() && viewModel.getHistoryItems().isNotEmpty()
             ) {
