@@ -58,11 +58,11 @@ class TrackAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(item: Track) {
-            if (item.artistName.length > TWENTY_FIVE) artistNameView.text =
-                item.artistName.substring(0, TWENTY_FIVE) + ("...") else artistNameView.text =
+            if (item.artistName!!.length > TWENTY_FIVE) artistNameView.text =
+                item.artistName!!.substring(0, TWENTY_FIVE) + ("...") else artistNameView.text =
                 item.artistName
-            if (item.trackName.length > TWENTY_FIVE) artistNameView.text =
-                item.trackName.substring(0, TWENTY_FIVE) + ("...") else trackNameView.text =
+            if (item.trackName!!.length > TWENTY_FIVE) artistNameView.text =
+                item.trackName!!.substring(0, TWENTY_FIVE) + ("...") else trackNameView.text =
                 item.trackName
             trackTimeView.text = dateFormat.format(item.trackTimeMillis)
 

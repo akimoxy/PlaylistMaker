@@ -39,7 +39,7 @@ class PlayerViewModel(
     }
 
     fun preparePlayer(url: String, track: Track) {
-        trackId = track.trackId
+        trackId = track.trackId!!
         playerInteractor.prepareMediaPlayer(url)
         playerInteractor.setOnCompletionListnr {
             playerLiveData.postValue(ScreenState.Prepare)

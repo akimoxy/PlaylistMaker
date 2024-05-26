@@ -45,10 +45,10 @@ class AudioPlayerActivity : AppCompatActivity() {
 
 
         track = Json.decodeFromString(json)
-        if (track.releaseDate.length > FOUR) track.releaseDate =
-            track.releaseDate.substring(0, FOUR)
-        if (track.artistName.length > THIRTY) track.artistName =
-            track.artistName.substring(0, THIRTY) + ("...")
+        if (track.releaseDate!!.length > FOUR) track.releaseDate =
+            track.releaseDate!!.substring(0, FOUR)
+        if (track.artistName!!.length > THIRTY) track.artistName =
+            track.artistName!!.substring(0, THIRTY) + ("...")
         track.artworkUrl100 = track.getCoverArtwork()
         binding.genreTextPlayer.text = track.primaryGenreName
         binding.yearTextPlayer.text = track.releaseDate
@@ -115,7 +115,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
 
         binding.likeButton.setOnClickListener {
-            if (track.isFavorite) {
+            if (track.isFavorite!!) {
                 playerViewModel.deleteFromFavTrack(track)
             } else {
                 playerViewModel.addToFavTracks(track)
@@ -146,7 +146,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private fun preparePlayer() {
         binding.playIcon.visibility = View.VISIBLE
-        playerViewModel.preparePlayer(track.previewUrl, track)
+        playerViewModel.preparePlayer(track.previewUrl!!, track)
         binding.playIcon.isEnabled = true
         binding.trackTiming.text = getString(R.string.start_timing_mm_ss)
 

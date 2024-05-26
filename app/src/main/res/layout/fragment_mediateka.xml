@@ -41,7 +41,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTag="mediateka_2"
         app:layout_constraintTop_toBottomOf="@+id/mediateka_Barrier1"
-        app:tabIndicatorFullWidth="false"
         app:tabMode="fixed"
         app:tabIndicatorGravity="bottom"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"

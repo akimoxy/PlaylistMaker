@@ -78,6 +78,7 @@ class FavoriteTracksFragment : Fragment() {
                     adapter!!.updateList(favoriteTrackList)
                     binding.recyclerViewFavTracks.visibility = View.GONE
                     binding.noResultsImageFavorite.visibility = View.VISIBLE
+                    binding.mediatekaTextViewFavorite.visibility = View.VISIBLE
                 }
             }
         }
