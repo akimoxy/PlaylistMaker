@@ -136,6 +136,7 @@ class SearchFragment : Fragment() {
 
             override fun afterTextChanged(p0: Editable?) {
                 adapterForHistoryTracks.updateList(viewModel.getHistoryItems())
+                arrayList.clear()
                 trackAdapter.updateList(arrayList)
                 if (binding.inputEditText.hasFocus() && arrayList.isEmpty() && viewModel.getHistoryItems()
                         .isNotEmpty()
