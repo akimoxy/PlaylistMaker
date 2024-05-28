@@ -20,10 +20,6 @@ const val TWENTY_FIVE = 25
 class TrackAdapter(
     private var arrayOfTrack: ArrayList<Track>, private var clickListener: RecyclerViewEvent
 ) : RecyclerView.Adapter<TrackAdapter.SearchViewHolder>() {
-    fun addTracks(item: ArrayList<Track>) {
-        arrayOfTrack.addAll(item)
-        notifyItemRangeInserted(0, arrayOfTrack.size)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
@@ -39,10 +35,17 @@ class TrackAdapter(
         }
     }
 
+
+    @SuppressLint("NotifyDataSetChanged")
     fun updateList(newList: ArrayList<Track>) {
-        arrayOfTrack = newList
-        notifyItemRangeRemoved(0, arrayOfTrack.size)
-        notifyItemRangeInserted(0, arrayOfTrack.size)
+        var list: ArrayList<Track> = arrayListOf()
+        list.clear()
+        list.addAll(newList)
+        arrayOfTrack.clear()
+        arrayOfTrack.addAll(list)
+        //   notifyItemRangeRemoved(0, itemCount)
+        //   notifyItemRangeInserted(0, newList.size)
+        this.notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {

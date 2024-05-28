@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.data.network
 
-import android.util.Log
 import com.example.playlistmaker.search.data.dto.TrackResponse
 import com.example.playlistmaker.search.data.dto.TrackSearchRequest
 import com.example.playlistmaker.search.domain.api.TrackRepository
@@ -20,7 +19,6 @@ class TrackRepositoryImpl(
         val response = networkClient.doRequest(TrackSearchRequest(expression))
 
         if (response.resultCode == SERVER_CODE_200) {
-            Log.d("поиск репоз.импл", response.toString())
             val trackList = (response as TrackResponse?)!!.results.map {
                 Track(
                     it.trackName,
@@ -37,9 +35,7 @@ class TrackRepositoryImpl(
                 )
             }
             emit(TrackResponseDomain(trackList as ArrayList<Track>, response.resultCode))
-            Log.d("репоз.импл", trackList.toString())
         } else {
-            Log.d("элс поиск репоз.импл",response.resultCode.toString())
             emit(TrackResponseDomain(emptyArray, response.resultCode))
         }
     }
