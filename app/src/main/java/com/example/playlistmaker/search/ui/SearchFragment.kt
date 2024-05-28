@@ -87,8 +87,7 @@ class SearchFragment : Fragment() {
         binding.inputEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(arrayList.isNotEmpty()){
-                binding.clearIconSearch.isVisible = p0.isNullOrEmpty().not()}
+                binding.clearIconSearch.isVisible = p0.isNullOrEmpty().not()
                 if (!p0.isNullOrEmpty()) {
                     viewModel.searchDebounce(p0.toString())
                 } else if (p0.isNullOrEmpty() && viewModel.getHistoryItems().isEmpty()) {
