@@ -1,4 +1,4 @@
-package com.example.playlistmaker.search.ui
+package com.example.playlistmaker.mediateka.ui.favTracks
 
 import android.annotation.SuppressLint
 import android.icu.text.SimpleDateFormat
@@ -13,46 +13,40 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.search.ui.TWENTY_FIVE
 import java.util.Locale
 
-const val TWENTY_FIVE = 25
+class FavTracksAdapter(
+    private var arrayOfTrack: ArrayList<Track>,
+    private var clickListener: RecyclerViewFavOnItemClick
+) : RecyclerView.Adapter<FavTracksAdapter.FavTracksViewHolder>() {
 
-class TrackAdapter(
-    private var arrayOfTrack: ArrayList<Track>, private var clickListener: RecyclerViewEvent
-) : RecyclerView.Adapter<TrackAdapter.SearchViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavTracksViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
             R.layout.track_item, parent, false,
         )
-        return SearchViewHolder(view)
+        return FavTracksViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FavTracksViewHolder, position: Int) {
         holder.bind(arrayOfTrack[position])
         holder.itemView.setOnClickListener {
             clickListener.onItemClick(arrayOfTrack[position])
         }
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
     fun updateList(newList: ArrayList<Track>) {
-        var list: ArrayList<Track> = arrayListOf()
-        list.clear()
-        list.addAll(newList)
-        arrayOfTrack.clear()
-        arrayOfTrack.addAll(list)
-        //   notifyItemRangeRemoved(0, itemCount)
-        //   notifyItemRangeInserted(0, newList.size)
-        this.notifyDataSetChanged()
+        arrayOfTrack = newList
+        notifyItemRangeRemoved(0, arrayOfTrack.size)
+        notifyItemRangeInserted(0, arrayOfTrack.size)
     }
+
 
     override fun getItemCount(): Int {
         return arrayOfTrack.size
     }
 
-    inner class SearchViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class FavTracksViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val artistNameView: TextView = itemView.findViewById(R.id.artist_name)
         private val trackNameView: TextView = itemView.findViewById(R.id.track_name)
         private val trackTimeView: TextView = itemView.findViewById(R.id.track_time)
@@ -85,8 +79,6 @@ class TrackAdapter(
     }
 }
 
-interface RecyclerViewEvent {
+interface RecyclerViewFavOnItemClick {
     fun onItemClick(track: Track)
 }
-
-

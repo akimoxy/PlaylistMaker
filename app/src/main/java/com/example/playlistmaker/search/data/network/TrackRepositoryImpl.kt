@@ -10,10 +10,14 @@ import kotlinx.coroutines.flow.flow
 
 const val SERVER_CODE_200 = 200
 
-class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepository {
+class TrackRepositoryImpl(
+    private val networkClient: NetworkClient,
+
+    ) : TrackRepository {
     private var emptyArray: ArrayList<Track> = arrayListOf()
     override fun searchTrack(expression: String): Flow<TrackResponseDomain> = flow {
         val response = networkClient.doRequest(TrackSearchRequest(expression))
+
         if (response.resultCode == SERVER_CODE_200) {
             val trackList = (response as TrackResponse?)!!.results.map {
                 Track(
@@ -26,7 +30,8 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepos
                     it.trackTimeMillis,
                     it.artworkUrl100,
                     it.trackId,
-                    it.previewUrl
+                    it.previewUrl,
+                    isFavorite = false
                 )
             }
             emit(TrackResponseDomain(trackList as ArrayList<Track>, response.resultCode))

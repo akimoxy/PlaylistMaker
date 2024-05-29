@@ -11,32 +11,36 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
- const val SERVER_CODE_200 = 200
- const val SERVER_CODE_400 = 400
+const val SERVER_CODE_200 = 200
+const val SERVER_CODE_400 = 400
 private const val SEARCH_DEBOUNCE_DELAY = 2000L
 private const val CLICK_DEBOUNCE_DELAY = 1000L
-private var latestSearchText: String? = null
-private var searchJob: Job? = null
-private var isClickAllowed = true
 
 class SearchViewModel(
     private val trackInteractor: TrackInteractor,
     private val trackHistoryInteractor: TrackHistoryInteractor,
 ) : ViewModel() {
-    private val searchLiveData = MutableLiveData<SearchActivityState>(SearchActivityState.Loading)
+    private val searchLiveData =
+        MutableLiveData<SearchActivityState>(SearchActivityState.NoTextOrFocusState)
+    private var latestSearchText: String? = null
+    private var searchJob: Job? = null
+    private var isClickAllowed = true
+
     fun activityStateLiveData(): LiveData<SearchActivityState> = searchLiveData
 
     init {
-        setHistory()
+        updateState(SearchActivityState.NoTextOrFocusState)
     }
 
-    private fun updateState(state: SearchActivityState) {
-        searchLiveData.postValue(state)
+    fun updateState(state: SearchActivityState) {
+        searchLiveData.value = state
     }
 
+    private val searchJobDetails: Job? = null
     private fun search(text: String) {
+        searchJobDetails?.cancel()
         updateState(SearchActivityState.Loading)
-        viewModelScope.launch {
+        searchJobDetails != viewModelScope.launch {
             trackInteractor.searchTrack(text).collect { foundTracks ->
                 if (foundTracks.result.isNotEmpty() && foundTracks.resulCode == SERVER_CODE_200) {
                     updateState(SearchActivityState.SearchTracks(foundTracks.result))
@@ -48,27 +52,28 @@ class SearchViewModel(
             }
         }
     }
-    private fun setHistory() {
-        updateState(SearchActivityState.SearchHistory(getHistoryItems()))
+
+    fun setHistory() {
+        val tracks = getHistoryItems()
+        if (tracks.isNotEmpty()) {
+            updateState(SearchActivityState.SearchHistory)
+        }
     }
 
     fun searchDebounce(text: String) {
-        if (latestSearchText == text) {
-            return
-        }
         latestSearchText = text
-        updateState(SearchActivityState.Loading)
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY)
             search(text)
         }
     }
+
     fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            viewModelScope.launch{
+            viewModelScope.launch {
                 delay(CLICK_DEBOUNCE_DELAY)
                 isClickAllowed = true
             }

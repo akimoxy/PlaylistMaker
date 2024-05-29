@@ -152,6 +152,9 @@
     <style name="btn_like_playlist">
         <item name="buttonStyle" type="style">@style/btn_like_playlist</item>
         <item name="android:src">@drawable/btn_like_day_playlist</item>
+
+
+
     </style>
 
     <style name="btn_play_pause_playlist">
@@ -159,6 +162,7 @@
         <item name="android:src">@drawable/play_btn_day</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:tint">@color/black</item>
+
     </style>
 
     <style name="tablayout_mediateka">

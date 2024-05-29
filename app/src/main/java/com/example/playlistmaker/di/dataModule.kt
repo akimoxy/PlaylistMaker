@@ -2,6 +2,9 @@ package com.example.playlistmaker.di
 
 import android.content.Context
 import android.media.MediaPlayer
+import androidx.room.Room
+import com.example.playlistmaker.db.data.AppDataBase
+import com.example.playlistmaker.db.data.TrackDBConvertor
 import com.example.playlistmaker.player.data.MediaPlayerImpl
 import com.example.playlistmaker.search.data.TrackHistoryRepositoryImpl
 import com.example.playlistmaker.search.data.network.ITunesApi
@@ -48,4 +51,9 @@ val dataModule = module {
     single { TrackHistoryRepositoryImpl(context = get(), gson = get(), sharedPreferences = get()) }
 
     single { Gson() }
+
+    single {
+        Room.databaseBuilder(androidContext(),AppDataBase::class.java,"database.db").build()
+    }
+    factory { TrackDBConvertor() }
 }

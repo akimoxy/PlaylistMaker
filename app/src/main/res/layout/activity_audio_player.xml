@@ -124,6 +124,7 @@
 
     <ImageView
         style="@style/btn_like_playlist"
+        android:id="@+id/like_button"
         android:layout_width="51dp"
         android:layout_height="51dp"
         android:contentDescription="@string/like_btn_dscr"

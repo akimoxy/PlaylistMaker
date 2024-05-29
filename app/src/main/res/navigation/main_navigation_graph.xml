@@ -11,8 +11,12 @@
         android:label="RootActivity" />
     <fragment
         android:id="@+id/mediatekaFragment"
-        android:name="com.example.playlistmaker.mediateka.ui.MediatekaFragment"
-        android:label="MediatekaFragment" />
+        android:name="com.example.playlistmaker.mediateka.ui.playlists.MediatekaFragment"
+        android:label="MediatekaFragment" >
+        <action
+            android:id="@+id/action_mediatekaFragment_to_audioPlayerActivity"
+            app:destination="@id/audioPlayerActivity" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.playlistmaker.settings.ui.SettingsFragment"
