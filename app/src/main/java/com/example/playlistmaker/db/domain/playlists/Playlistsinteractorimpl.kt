@@ -16,7 +16,10 @@ class Playlistsinteractorimpl(val plRepository: PlaylistsRepository):PlaylistsIn
         plRepository.addToPlaylists(track)
     }
 
-    override fun getTrackId(): Flow<List<String>> {
-      return  plRepository.getTrackId()
+    override fun getTrackIds(): Flow<List<String>> {
+      return  plRepository.getTrackIds()
+    }
+    override fun updatePlaylistEntity( playlist: PlaylistsModel){
+        plRepository.updatePlaylistEntity(playlist)
     }
 }

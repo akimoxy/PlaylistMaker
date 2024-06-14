@@ -14,7 +14,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.mediateka.domain.models.PlaylistsModel
 
 class PlayerBottomSheetAdapter(
-    private var arrayOfPlaylists: ArrayList<PlaylistsModel>
+    private var arrayOfPlaylists: ArrayList<PlaylistsModel>, val rv:RVEvent
 ) : RecyclerView.Adapter<PlayerBottomSheetAdapter.BottomSheetPlayerViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -29,11 +29,14 @@ class PlayerBottomSheetAdapter(
 
     override fun onBindViewHolder(holder: BottomSheetPlayerViewHolder, position: Int) {
         holder.bind(arrayOfPlaylists[position])
+        holder.itemView.setOnClickListener {
+            rv.onItemClick(arrayOfPlaylists[position])
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(newList: ArrayList<PlaylistsModel>) {
-        var list: ArrayList<PlaylistsModel> = arrayListOf()
+        val list: ArrayList<PlaylistsModel> = arrayListOf()
         list.clear()
         list.addAll(newList)
         arrayOfPlaylists.clear()
@@ -64,12 +67,12 @@ class PlayerBottomSheetAdapter(
                 .into(imageView)
         }
     }
-
     private fun dpToPx(view: View, dp: Float): Int {
         val displayMetrics = view.resources.displayMetrics
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics)
             .toInt()
     }
 }
-
-
+interface RVEvent {
+    fun onItemClick(playlist: PlaylistsModel)
+}

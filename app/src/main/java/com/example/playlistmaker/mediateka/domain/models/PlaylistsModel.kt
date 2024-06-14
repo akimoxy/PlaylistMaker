@@ -8,7 +8,7 @@ data class PlaylistsModel(
     var playlistDescription: String?,
     var imageStorageLink: Uri?,
     var playlistsImageName:String,
-    var tracksId: List<String>,
+    var tracksId: ArrayList<String>,
     var countOfTracks: Int
 
 )

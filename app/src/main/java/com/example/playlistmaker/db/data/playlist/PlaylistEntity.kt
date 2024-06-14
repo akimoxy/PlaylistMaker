@@ -11,8 +11,8 @@ data class PlaylistEntity(
     val playlistDescription: String,
     val imageStorageLink: String,
     var playlistsImageName: String,
-    val tracksId: String,
-    val countOfTracks: Int
+    var tracksId: String,
+    var countOfTracks: Int
 )
 
 

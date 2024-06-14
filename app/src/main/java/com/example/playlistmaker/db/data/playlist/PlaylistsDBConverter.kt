@@ -71,12 +71,15 @@ class PlaylistsDBConverter(private val context: Context) {
         )
     }
     @TypeConverter
-    fun fromString(stringListString: String): List<String> {
-        return stringListString.split(",").map { it }
+    fun fromString(string: String): ArrayList<String> {
+        val list=string.split(",").map { it }
+        val arrayList= arrayListOf<String>()
+        arrayList.addAll(list)
+        return arrayList
     }
 
     @TypeConverter
-    fun toString(stringList: List<String>): String {
+    fun toString(stringList: ArrayList<String>): String {
         return stringList.joinToString(separator = ",")
     }
 

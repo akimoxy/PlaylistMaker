@@ -20,6 +20,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.mediateka.domain.models.PlaylistsModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -63,9 +64,6 @@ class NewPlaylistFragment : Fragment() {
                 }
             }
         binding.descriptionNewPlaylistEdittext.setOnFocusChangeListener { view, hasFocus ->
-            if (binding.descriptionNewPlaylistEdittext.text.isNotEmpty() || hasFocus.not()) {
-
-            }
         }
         binding.edittextPlaylistName.setOnFocusChangeListener { view, hasFocus ->
             if (binding.edittextPlaylistName.text.isNotEmpty()) {
@@ -101,7 +99,6 @@ class NewPlaylistFragment : Fragment() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
             }
-
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewModel.changeDescription(p0.toString())
             }
@@ -120,13 +117,7 @@ class NewPlaylistFragment : Fragment() {
                 binding.edittextPlaylistName.hideKeyboard()
             }
             false
-        }
-
-
-
-
-
-    }
+        } }
 
     private fun View.hideKeyboard() {
         val inputManager =
@@ -162,7 +153,6 @@ class NewPlaylistFragment : Fragment() {
                 is NewPlaylistScreenState.NamePlaylists -> namePlaylist = it.name
                 is NewPlaylistScreenState.DescriptionPlaylists -> descriptionPlaylist =
                     it.description
-
                 is NewPlaylistScreenState.PlaylistsUri -> uri = it.uri
                 is NewPlaylistScreenState.ImageName -> nameImage = it.name
                 is NewPlaylistScreenState.Empty -> {}
@@ -173,32 +163,20 @@ class NewPlaylistFragment : Fragment() {
                 playlistDescription = descriptionPlaylist,
                 imageStorageLink = uri,
                 playlistsImageName = nameImage,
-                tracksId = listOf(),
+                tracksId = arrayListOf(),
                 countOfTracks = 0
             )
-
-            /*          viewModel.playlist = PlaylistsModel(
-                playlistId = null,
-                playlistName =,
-                playlistDescription = stateLiveData.value!!.toString(),
-                imageStorageLink = stateLiveData.value!!.toUri(),
-                tracksId = "",
-                countOfTracks = 0
-            )
-
-   */
         }
-
     }
 
     fun showDialog() {
         if (binding.edittextPlaylistName.text.isNotEmpty() || binding.descriptionNewPlaylistEdittext.text.isNotEmpty() || uri != null) {
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Завершить создание плейлиста?") // Заголовок диалога
-                .setMessage("Все несохраненные данные будут потеряны") // Описание диалога
-                .setNeutralButton("Отмена") { dialog, which ->
+                .setTitle(requireContext().getString(R.string.end_create_new_playlist))
+                .setMessage(requireContext().getString(R.string.all_unsaved_data_will_be_lost))
+                .setNeutralButton(requireContext().getString(R.string.cancel)) { dialog, which ->
                 }
-                .setPositiveButton("Завершить") { dialog, which ->
+                .setPositiveButton(requireContext().getString(R.string.finished)) { dialog, which ->
                     findNavController().navigateUp()
                 }
                 .show()

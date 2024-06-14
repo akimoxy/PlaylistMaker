@@ -1,3 +1,5 @@
+
+import android.annotation.SuppressLint
 import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
@@ -5,6 +7,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -18,6 +21,7 @@ import com.example.playlistmaker.mediateka.domain.models.PlaylistsModel
 import com.example.playlistmaker.player.ui.PlayerBottomSheetAdapter
 import com.example.playlistmaker.player.ui.PlayerBottomSheetState
 import com.example.playlistmaker.player.ui.PlayerViewModel
+import com.example.playlistmaker.player.ui.RVEvent
 import com.example.playlistmaker.player.ui.ScreenState
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.settings.ui.SettingsViewModel
@@ -36,6 +40,7 @@ class AudioPlayerFragment : Fragment() {
     private lateinit var _binding: FragmentAudioPlayerBinding
     private val binding get() = _binding!!
     private lateinit var track: Track
+    private lateinit var clickListener: RVEvent
     private val playerViewModel by viewModel<PlayerViewModel>()
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
     private val viewModelTheme by viewModel<SettingsViewModel>()
@@ -81,8 +86,8 @@ class AudioPlayerFragment : Fragment() {
             .transform(RoundedCorners(dpToPx(binding.trackAlbumImagePlayer, 12f)))
             .placeholder(R.drawable.placeholder)
             .into(binding.trackAlbumImagePlayer)
-
-        adapter = PlayerBottomSheetAdapter(playLists)
+        clickListener = clickListenerFun()
+        adapter = PlayerBottomSheetAdapter(playLists, clickListener)
         recyclerViewPlaylists = binding.rvPlayerPlaylists
         binding.rvPlayerPlaylists.adapter = adapter
 
@@ -153,7 +158,7 @@ class AudioPlayerFragment : Fragment() {
         }
 
         binding.newPlaylistBtnPlayer.setOnClickListener {
-
+            findNavController().navigate(R.id.action_audioPlayerFragment_to_newPlaylist)
         }
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet).apply {
@@ -177,6 +182,13 @@ class AudioPlayerFragment : Fragment() {
                         playLists.clear()
                         adapter.updateList(playLists)
 
+                    }
+                    is PlayerBottomSheetState.AddToPlaylist->{
+                        val playlistsModel=it.playlistsModel
+                        Toast.makeText(
+                            requireContext(),
+                            " Трек добавлен в плейлист « ${playlistsModel.playlistName} » ", Toast.LENGTH_SHORT
+                        ).show()
                     }
 
                     else -> {}
@@ -228,6 +240,7 @@ class AudioPlayerFragment : Fragment() {
 
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun likeView() {
         if (viewModelTheme.firstInitTheme()) {
             binding.likeButton.setImageDrawable(requireActivity().getDrawable(R.drawable.button_like_night_red))
@@ -285,6 +298,13 @@ class AudioPlayerFragment : Fragment() {
         val displayMetrics = view.resources.displayMetrics
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics)
             .toInt()
+    }
+
+    private fun clickListenerFun() = object : RVEvent {
+        @SuppressLint("SuspiciousIndentation")
+        override fun onItemClick(playlistsModel: PlaylistsModel) {
+            playerViewModel.addTrackToPlaylist(track, playlistsModel)
+        }
     }
 }
 

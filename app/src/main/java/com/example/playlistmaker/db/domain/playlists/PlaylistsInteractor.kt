@@ -8,6 +8,7 @@ interface PlaylistsInteractor {
     fun getPlaylists(): Flow<List<PlaylistsModel>>
     suspend fun insertPlaylist(playlist: PlaylistsModel)
     suspend fun addToPlaylists(track: Track)
-    fun getTrackId(): Flow<List<String>>
+    fun getTrackIds(): Flow<List<String>>
+    fun updatePlaylistEntity( playlist: PlaylistsModel)
 
 }

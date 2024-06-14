@@ -24,7 +24,12 @@ class PlaylistsRepositoryimpl(val appDataBase: AppDataBase, val conv: PlaylistsD
         appDataBase.trackEntityInPlDao().insertTrack(trackEnt)
     }
 
-    override fun getTrackId(): Flow<List<String>> {
-      return  appDataBase.trackEntityInPlDao().getTrackId()
+    override fun getTrackIds(): Flow<List<String>> {
+      return  appDataBase.trackEntityInPlDao().getTrackIds()
+    }
+
+    override fun updatePlaylistEntity( playlist: PlaylistsModel) {
+        val trackEnt=  conv.mapInToPlaylistEntity(playlist)
+        appDataBase.playlistDao().updatePlaylistEntity(trackEnt)
     }
 }
