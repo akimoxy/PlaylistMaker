@@ -1,21 +1,27 @@
-package com.example.playlistmaker.presentation.ui.UiAudioPlayerActivity
-
-import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
+import com.example.playlistmaker.databinding.FragmentAudioPlayerBinding
+import com.example.playlistmaker.mediateka.domain.models.PlaylistsModel
+import com.example.playlistmaker.player.ui.PlayerBottomSheetAdapter
+import com.example.playlistmaker.player.ui.PlayerBottomSheetState
 import com.example.playlistmaker.player.ui.PlayerViewModel
 import com.example.playlistmaker.player.ui.ScreenState
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.settings.ui.SettingsViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
@@ -26,25 +32,35 @@ const val FOUR = 4
 const val THIRTY = 30
 const val TRACK = "track"
 
-class AudioPlayerActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAudioPlayerBinding
+class AudioPlayerFragment : Fragment() {
+    private lateinit var _binding: FragmentAudioPlayerBinding
+    private val binding get() = _binding!!
     private lateinit var track: Track
     private val playerViewModel by viewModel<PlayerViewModel>()
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
     private val viewModelTheme by viewModel<SettingsViewModel>()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    lateinit var adapter: PlayerBottomSheetAdapter
+    private val playLists = ArrayList<PlaylistsModel>()
+    private var recyclerViewPlaylists: RecyclerView? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.backButtonAudioPlayer.setOnClickListener {
-            finish()
+            findNavController().navigateUp()
         }
-
-        val json = getSerializableExtraCompat(intent, TRACK, String::class.java)
-
-
-        track = Json.decodeFromString(json)
+        val arg = requireArguments()
+        val json = getSerializableExtraCompat(arg, TRACK, String::class.java)
+        track = Json.decodeFromString(json!!)
         if (track.releaseDate!!.length > FOUR) track.releaseDate =
             track.releaseDate!!.substring(0, FOUR)
         if (track.artistName!!.length > THIRTY) track.artistName =
@@ -66,8 +82,22 @@ class AudioPlayerActivity : AppCompatActivity() {
             .placeholder(R.drawable.placeholder)
             .into(binding.trackAlbumImagePlayer)
 
+        adapter = PlayerBottomSheetAdapter(playLists)
+        recyclerViewPlaylists = binding.rvPlayerPlaylists
+        binding.rvPlayerPlaylists.adapter = adapter
 
-        playerViewModel.mediatorLiveDataObserver.observe(this@AudioPlayerActivity) { pair ->
+        binding.rvPlayerPlaylists.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+        binding.likeButton.setOnClickListener {
+            if (track.isFavorite!!) {
+                playerViewModel.deleteFromFavTrack(track)
+            } else {
+                playerViewModel.addToFavTracks(track)
+            }
+        }
+
+        playerViewModel.mediatorLiveDataObserver.observe(viewLifecycleOwner) { pair ->
             val screenState = pair.first
             val isFavorite = pair.second
             when (screenState) {
@@ -80,7 +110,8 @@ class AudioPlayerActivity : AppCompatActivity() {
                     binding.playIcon.setImageDrawable(
                         ResourcesCompat.getDrawable(
                             resources,
-                            R.drawable.play_btn_day, theme
+                            R.drawable.play_btn_day,
+                            requireActivity().theme
                         )
                     )
                 }
@@ -89,7 +120,7 @@ class AudioPlayerActivity : AppCompatActivity() {
                     binding.trackTiming.text = getString(R.string.start_timing_mm_ss)
                     binding.playIcon.setImageDrawable(
                         ResourcesCompat.getDrawable(
-                            resources, R.drawable.play_btn_day, theme
+                            resources, R.drawable.play_btn_day, requireActivity().theme
                         )
                     )
                 }
@@ -97,7 +128,11 @@ class AudioPlayerActivity : AppCompatActivity() {
                 is ScreenState.PlayingTime -> {
                     binding.trackTiming.text = screenState.time
                     binding.playIcon.setImageDrawable(
-                        ResourcesCompat.getDrawable(resources, R.drawable.pause_button_day, theme)
+                        ResourcesCompat.getDrawable(
+                            resources,
+                            R.drawable.pause_button_day,
+                            requireActivity().theme
+                        )
                     )
                 }
 
@@ -113,17 +148,58 @@ class AudioPlayerActivity : AppCompatActivity() {
             }
         }
 
-
-        binding.likeButton.setOnClickListener {
-            if (track.isFavorite!!) {
-                playerViewModel.deleteFromFavTrack(track)
-            } else {
-                playerViewModel.addToFavTracks(track)
-            }
-        }
         binding.playIcon.setOnClickListener {
             playbackControl()
         }
+
+        binding.newPlaylistBtnPlayer.setOnClickListener {
+
+        }
+
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+        binding.addToPlaylistBtn.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+
+            playerViewModel.observeState().observe(viewLifecycleOwner) {
+                adapter.updateList(playLists)
+                when (it) {
+                    is PlayerBottomSheetState.PlaylistsBottomSheet -> {
+                        binding.rvPlayerPlaylists.visibility = View.VISIBLE
+                        playLists.clear()
+                        playLists.addAll(playerViewModel.playlistsList)
+                        adapter.updateList(playLists)
+                    }
+
+                    is PlayerBottomSheetState.Empty -> {
+                        playLists.clear()
+                        adapter.updateList(playLists)
+
+                    }
+
+                    else -> {}
+                }
+            }
+        }
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.visibility = View.GONE
+                    }
+
+                    else -> {
+                        binding.overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
     }
 
     override fun onPause() {
@@ -154,20 +230,28 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private fun likeView() {
         if (viewModelTheme.firstInitTheme()) {
-            binding.likeButton.setImageDrawable(getDrawable(R.drawable.button_like_night_red))
+            binding.likeButton.setImageDrawable(requireActivity().getDrawable(R.drawable.button_like_night_red))
         } else {
-            binding.likeButton.setImageDrawable(getDrawable(R.drawable.button_like_day_red))
+            binding.likeButton.setImageDrawable(requireActivity().getDrawable(R.drawable.button_like_day_red))
         }
     }
 
     private fun dontLikeView() {
         if (viewModelTheme.firstInitTheme()) {
             binding.likeButton.setImageDrawable(
-                ResourcesCompat.getDrawable(resources, R.drawable.btn_like_night_playlist, theme)
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.btn_like_night_playlist,
+                    requireActivity().theme
+                )
             )
         } else {
             binding.likeButton.setImageDrawable(
-                ResourcesCompat.getDrawable(resources, R.drawable.btn_like_day_playlist, theme)
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.btn_like_day_playlist,
+                    requireActivity().theme
+                )
             )
         }
     }
@@ -205,12 +289,12 @@ class AudioPlayerActivity : AppCompatActivity() {
 }
 
 private fun <T : Serializable?> getSerializableExtraCompat(
-    intent: Intent,
+    bundle: Bundle,
     key: String,
     className: Class<T>
 ): T {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-        intent.getSerializableExtra(key, className)!!
+        bundle.getSerializable(key, className) as T
     else
-        intent.getSerializableExtra(key) as T
+        bundle.getSerializable(key) as T
 }

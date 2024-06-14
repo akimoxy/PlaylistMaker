@@ -1,4 +1,4 @@
-package com.example.playlistmaker.mediateka.ui.playlists
+package com.example.playlistmaker.mediateka.ui.mediateka
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -47,6 +47,8 @@ class MediatekaFragment : Fragment() {
             }
         }
         tabMediator.attach()
+
+
     }
 
     override fun onDestroyView() {
