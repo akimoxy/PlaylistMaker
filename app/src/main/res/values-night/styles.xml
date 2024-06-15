@@ -179,5 +179,12 @@
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxBackgroundMode">outline</item>
         <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="android:theme">@style/exampleCursor</item>
+        <item name="android:textColor">@color/text_grey</item>
+    </style>
+
+    <style name="exampleCursor" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="colorControlActivated">@color/blue</item>
+        <item name="android:textColor">@color/text_grey</item>
     </style>
 </resources>

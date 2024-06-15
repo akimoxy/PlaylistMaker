@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
         android:width="160dp"
         android:height="160dp">
         <shape android:shape="oval">
-            <solid android:color="@android:color/transparent" />
         </shape>
     </item>
     <item
+        android:color="?attr/colorOnBackground"
         android:width="104dp"
         android:height="102dp"
         android:drawable="@drawable/placeholder_for_playlists_mediateka"

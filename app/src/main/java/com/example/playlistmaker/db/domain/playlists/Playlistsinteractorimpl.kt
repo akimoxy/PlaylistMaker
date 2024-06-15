@@ -12,14 +12,14 @@ class Playlistsinteractorimpl(val plRepository: PlaylistsRepository):PlaylistsIn
     override suspend fun insertPlaylist(playlist: PlaylistsModel) {
         plRepository.insertPlaylist(playlist)
     }
-    override suspend fun addToPlaylists(track: Track) {
-        plRepository.addToPlaylists(track)
-    }
-
     override fun getTrackIds(): Flow<List<String>> {
       return  plRepository.getTrackIds()
     }
     override fun updatePlaylistEntity( playlist: PlaylistsModel){
         plRepository.updatePlaylistEntity(playlist)
+
     }
+   override suspend fun addTrackToPlaylist(track: Track,playlist: PlaylistsModel):Boolean{
+     return  plRepository.addTrackToPlaylist(track,playlist)
+   }
 }

@@ -52,7 +52,6 @@ class NewPlaylistFragment : Fragment() {
         binding.backButtonNewPlaylist.setOnClickListener { showDialog() }
         viewModel!!.observeState()
         playlist()
-
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
@@ -92,6 +91,8 @@ class NewPlaylistFragment : Fragment() {
                     if (p0.isNullOrEmpty().not()) {
                         viewModel.changeName(p0.toString())
                         binding.buttonCreatePlaylist.isEnabled = true
+                    } else {
+                        binding.buttonCreatePlaylist.isEnabled = false
                     }
                 }
             })
@@ -99,12 +100,14 @@ class NewPlaylistFragment : Fragment() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
             }
+
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewModel.changeDescription(p0.toString())
             }
         })
         binding.imageViewPlaylistPlaceholder.setOnClickListener { view ->
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+
         }
         binding.edittextPlaylistName.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -117,13 +120,15 @@ class NewPlaylistFragment : Fragment() {
                 binding.edittextPlaylistName.hideKeyboard()
             }
             false
-        } }
+        }
+    }
 
     private fun View.hideKeyboard() {
         val inputManager =
             requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(windowToken, 0)
     }
+
     private fun saveImageToPrivateStorage(uri: Uri) {
         val filePath = File(
             requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
@@ -133,7 +138,9 @@ class NewPlaylistFragment : Fragment() {
             filePath.mkdirs()
         }
         val imageName = SimpleDateFormat("yyyy.MM.dd_HH.mm.ss").format(Date()) + ".jpg"
+        viewModel.changeUri(uri)
         viewModel.saveImageName(imageName)
+
         val file = File(filePath, imageName)
         val inputStream = requireActivity().contentResolver.openInputStream(uri)
         val outputStream = FileOutputStream(file)
@@ -153,6 +160,7 @@ class NewPlaylistFragment : Fragment() {
                 is NewPlaylistScreenState.NamePlaylists -> namePlaylist = it.name
                 is NewPlaylistScreenState.DescriptionPlaylists -> descriptionPlaylist =
                     it.description
+
                 is NewPlaylistScreenState.PlaylistsUri -> uri = it.uri
                 is NewPlaylistScreenState.ImageName -> nameImage = it.name
                 is NewPlaylistScreenState.Empty -> {}

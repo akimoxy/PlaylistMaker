@@ -1,4 +1,3 @@
-
 import android.annotation.SuppressLint
 import android.icu.text.SimpleDateFormat
 import android.os.Build
@@ -102,6 +101,7 @@ class AudioPlayerFragment : Fragment() {
             }
         }
 
+
         playerViewModel.mediatorLiveDataObserver.observe(viewLifecycleOwner) { pair ->
             val screenState = pair.first
             val isFavorite = pair.second
@@ -183,12 +183,23 @@ class AudioPlayerFragment : Fragment() {
                         adapter.updateList(playLists)
 
                     }
-                    is PlayerBottomSheetState.AddToPlaylist->{
-                        val playlistsModel=it.playlistsModel
-                        Toast.makeText(
-                            requireContext(),
-                            " Трек добавлен в плейлист « ${playlistsModel.playlistName} » ", Toast.LENGTH_SHORT
-                        ).show()
+
+                    is PlayerBottomSheetState.AddToPlaylist -> {
+                        val playlistsModel = it.playlistsModel
+                        val addToPlaylist: Boolean = it.boolean
+                        if (!addToPlaylist) {
+                            Toast.makeText(
+                                requireContext(),
+                                " Трек уже добавлен в плейлист  « ${playlistsModel.playlistName} » ",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                requireContext(),
+                                " Добавлено в плейлист « ${playlistsModel.playlistName} » ",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
 
                     else -> {}

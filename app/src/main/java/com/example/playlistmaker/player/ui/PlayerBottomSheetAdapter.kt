@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.mediateka.domain.models.PlaylistsModel
 
@@ -61,8 +60,9 @@ class PlayerBottomSheetAdapter(
             countOfTracks.text = playList.countOfTracks.toString()
             Glide.with(itemView)
                 .load(playList.imageStorageLink)
-                .centerCrop()
-                .transform(RoundedCorners(dpToPx(itemView, 2f)))
+
+           //     .centerCrop()
+          //      .transform(RoundedCorners(dpToPx(itemView, 2f)))
                 .placeholder((R.drawable.placeholder))
                 .into(imageView)
         }

@@ -49,7 +49,6 @@ class PlayListsAdapter(private var playlistList: ArrayList<PlaylistsModel>) :
 
             Glide.with(itemView)
                 .load(playList.imageStorageLink)
-
                 .placeholder((R.drawable.placeholder))
                 .into(imageView)
         }

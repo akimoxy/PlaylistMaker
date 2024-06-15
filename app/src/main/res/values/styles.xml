@@ -206,7 +206,12 @@
         <item name="boxCornerRadiusBottomStart">4dp</item>
         <item name="boxCornerRadiusTopEnd">4dp</item>
         <item name="boxCornerRadiusBottomEnd">4dp</item>
+        <item name="android:textCursorDrawable">@drawable/text_cursor</item>
+        <item name="android:theme">@style/exampleCursor</item>
+    </style>
 
+    <style name="exampleCursor" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="colorControlActivated">@color/blue</item>
     </style>
 
 

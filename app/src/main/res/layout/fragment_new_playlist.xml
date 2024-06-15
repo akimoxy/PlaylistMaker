@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/day_night_theme"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
->
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/left_border_new_playlist"
@@ -58,7 +57,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/dp26"
+        android:background="@drawable/background_for_iv_playlist_image_item"
         android:clickable="true"
+        android:clipToOutline="true"
         android:maxWidth="512dp"
         android:maxHeight="512dp"
         android:scaleType="centerCrop"
@@ -92,6 +93,7 @@
 
         <EditText
             android:id="@+id/edittext_playlist_name"
+            style="@style/white_at_night_black_at_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
@@ -99,7 +101,6 @@
             android:paddingTop="@dimen/margin_top18"
             android:paddingBottom="@dimen/margin_top18"
             android:textAllCaps="false"
-            android:textColor="@color/text_black_search"
             android:textSize="@dimen/mini_text_size16"
             app:layout_constraintTag="edit_text_playlist_name" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -117,6 +118,7 @@
 
         <EditText
             android:id="@+id/description_new_playlist_edittext"
+            style="@style/white_at_night_black_at_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
@@ -124,7 +126,6 @@
             android:paddingTop="@dimen/margin_top18"
             android:paddingBottom="@dimen/margin_top18"
             android:textAllCaps="false"
-            android:textColor="@color/text_black_search"
             android:textSize="@dimen/mini_text_size16"
             app:layout_constraintTag="edit_text_description_new_playlist"
             app:layout_constraintTop_toBottomOf="@+id/edittext_playlist_name" />

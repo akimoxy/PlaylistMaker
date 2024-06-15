@@ -1,7 +1,6 @@
 package com.example.playlistmaker.player.ui
 
 import android.icu.text.SimpleDateFormat
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -124,19 +123,14 @@ class PlayerViewModel(
         playlistsLiveData.postValue(state)
     }
     fun addTrackToPlaylist(track: Track, playlist: PlaylistsModel) {
-        val playlistTracks = playlist.tracksId
-        if (playlistTracks.contains(track.trackId!!)) {
-            viewModelScope.launch(Dispatchers.IO) {
-                Log.d("одинаковые id", "ololo")
-            }
-        } else {
-            viewModelScope.launch(Dispatchers.IO) {
-                playlistsInteractor.addToPlaylists(track)
-                playlist.tracksId.add(track.trackId!!)
-                playlist.countOfTracks = playlist.tracksId.size - 1
-                playlistsInteractor.updatePlaylistEntity(playlist)
-                renderState(PlayerBottomSheetState.AddToPlaylist(playlist))
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            val boolean= playlistsInteractor.addTrackToPlaylist(track, playlist)
+            playlistsInteractor.addTrackToPlaylist(track, playlist)
+            renderState(PlayerBottomSheetState.AddToPlaylist(playlist,boolean))
+
         }
-    }
+}
+
+
+
 }
