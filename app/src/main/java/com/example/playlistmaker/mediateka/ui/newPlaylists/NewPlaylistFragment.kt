@@ -36,8 +36,9 @@ class NewPlaylistFragment : Fragment() {
     private val binding get() = _binding!!
     var namePlaylist = ""
     var descriptionPlaylist = ""
-    private var uri: Uri? = null
+
     var nameImage = ""
+    private var imageIsNotEmpty = false
     private val viewModel by viewModel<NewPlaylistViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,13 +57,12 @@ class NewPlaylistFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
                     binding.imageViewPlaylistPlaceholder.setImageURI(uri)
-                    viewModel.changeUri(uri)
                     saveImageToPrivateStorage(uri)
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
             }
-        binding.descriptionNewPlaylistEdittext.setOnFocusChangeListener { view, hasFocus ->
+        binding.descriptionNewPlaylistEdittext.setOnFocusChangeListener { _, _ ->
         }
         binding.edittextPlaylistName.setOnFocusChangeListener { view, hasFocus ->
             if (binding.edittextPlaylistName.text.isNotEmpty()) {
@@ -107,7 +107,7 @@ class NewPlaylistFragment : Fragment() {
         })
         binding.imageViewPlaylistPlaceholder.setOnClickListener { view ->
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-
+            viewModel.imageIsNotEmpty(true)
         }
         binding.edittextPlaylistName.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -123,12 +123,6 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
-    private fun View.hideKeyboard() {
-        val inputManager =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(windowToken, 0)
-    }
-
     private fun saveImageToPrivateStorage(uri: Uri) {
         val filePath = File(
             requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
@@ -138,9 +132,7 @@ class NewPlaylistFragment : Fragment() {
             filePath.mkdirs()
         }
         val imageName = SimpleDateFormat("yyyy.MM.dd_HH.mm.ss").format(Date()) + ".jpg"
-        viewModel.changeUri(uri)
         viewModel.saveImageName(imageName)
-
         val file = File(filePath, imageName)
         val inputStream = requireActivity().contentResolver.openInputStream(uri)
         val outputStream = FileOutputStream(file)
@@ -149,27 +141,22 @@ class NewPlaylistFragment : Fragment() {
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    fun playlist() {
+    private fun playlist() {
         viewModel.observeState().observe(viewLifecycleOwner) {
             when (it) {
                 is NewPlaylistScreenState.NamePlaylists -> namePlaylist = it.name
                 is NewPlaylistScreenState.DescriptionPlaylists -> descriptionPlaylist =
                     it.description
 
-                is NewPlaylistScreenState.PlaylistsUri -> uri = it.uri
                 is NewPlaylistScreenState.ImageName -> nameImage = it.name
+                is NewPlaylistScreenState.ImageIsNotEmpty -> imageIsNotEmpty = it.boolean
                 is NewPlaylistScreenState.Empty -> {}
             }
             viewModel.playlist = PlaylistsModel(
                 playlistId = null,
                 playlistName = namePlaylist,
                 playlistDescription = descriptionPlaylist,
-                imageStorageLink = uri,
+                imageStorageLink = viewModel.uri,
                 playlistsImageName = nameImage,
                 tracksId = arrayListOf(),
                 countOfTracks = 0
@@ -177,14 +164,14 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
-    fun showDialog() {
-        if (binding.edittextPlaylistName.text.isNotEmpty() || binding.descriptionNewPlaylistEdittext.text.isNotEmpty() || uri != null) {
+    private fun showDialog() {
+        if (binding.edittextPlaylistName.text.isNotEmpty() || binding.descriptionNewPlaylistEdittext.text.isNotEmpty() || imageIsNotEmpty) {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(requireContext().getString(R.string.end_create_new_playlist))
                 .setMessage(requireContext().getString(R.string.all_unsaved_data_will_be_lost))
-                .setNeutralButton(requireContext().getString(R.string.cancel)) { dialog, which ->
+                .setNeutralButton(requireContext().getString(R.string.cancel)) { _, which ->
                 }
-                .setPositiveButton(requireContext().getString(R.string.finished)) { dialog, which ->
+                .setPositiveButton(requireContext().getString(R.string.finished)) { _, which ->
                     findNavController().navigateUp()
                 }
                 .show()
@@ -193,4 +180,14 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
+    private fun View.hideKeyboard() {
+        val inputManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

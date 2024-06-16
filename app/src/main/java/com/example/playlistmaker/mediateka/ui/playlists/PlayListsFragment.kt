@@ -1,7 +1,6 @@
 package com.example.playlistmaker.mediateka.ui.playlists
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,22 +49,13 @@ class PlayListsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.mediatekaTextView.text = requireArguments().getString(PLAYLIST)
-        //   playListsViewModel.observePlaylists().observe(viewLifecycleOwner) {
-        // }
         binding.newPlaylistBtnMediateka.setOnClickListener {
             findNavController().navigate(R.id.action_mediatekaFragment_to_newPlaylist)
-
         }
-
-
-
         adapter = PlayListsAdapter(playLists)
-        recyclerViewPlaylists=binding.recyclerViewPlaylists
-        binding.recyclerViewPlaylists.adapter=adapter
-
+        recyclerViewPlaylists = binding.recyclerViewPlaylists
+        binding.recyclerViewPlaylists.adapter = adapter
         binding.recyclerViewPlaylists.layoutManager = GridLayoutManager(requireContext(), 2)
-
-
 
         playListsViewModel.observeState().observe(viewLifecycleOwner) {
             adapter!!.updateList(playLists)
@@ -74,12 +64,6 @@ class PlayListsFragment : Fragment() {
                     binding.recyclerViewPlaylists.visibility = View.VISIBLE
                     playLists.clear()
                     playLists.addAll(playListsViewModel.playlistsList)
-                    Log.d("ololo", playListsViewModel.playlistsList.toString())
-                    Log.d("22222", playLists.toString())
-                    Log.d("22222", playLists[0].playlistName)
-                    Log.d("22222", playLists[0].playlistDescription.toString())
-              //      Log.d("22222", playLists[1].playlistName)
-             //       Log.d("22222", playLists[1].playlistDescription.toString())
                     adapter.updateList(playLists)
                     binding.noResultsImagePlaylists.visibility = View.GONE
                     binding.mediatekaTextView.visibility = View.GONE

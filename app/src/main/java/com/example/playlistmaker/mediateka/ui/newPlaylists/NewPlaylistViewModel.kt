@@ -13,7 +13,7 @@ class NewPlaylistViewModel(val interactor: PlaylistsInteractor) : ViewModel() {
     private val stateLiveData = MutableLiveData<NewPlaylistScreenState>()
     fun observeState(): LiveData<NewPlaylistScreenState> = stateLiveData
     lateinit var playlist: PlaylistsModel
-
+    var uri: Uri? = null
 
     init {
         changeState(NewPlaylistScreenState.Empty)
@@ -27,10 +27,6 @@ class NewPlaylistViewModel(val interactor: PlaylistsInteractor) : ViewModel() {
         viewModelScope.launch { interactor.insertPlaylist(newPlaylist) }
     }
 
-    fun changeUri(uri1: Uri) {
-        changeState(NewPlaylistScreenState.PlaylistsUri(uri1))
-    }
-
     fun changeName(string: String) {
         changeState(NewPlaylistScreenState.NamePlaylists(string))
     }
@@ -38,8 +34,13 @@ class NewPlaylistViewModel(val interactor: PlaylistsInteractor) : ViewModel() {
     fun changeDescription(string: String) {
         changeState(NewPlaylistScreenState.DescriptionPlaylists(string))
     }
+
     fun saveImageName(string: String) {
         changeState(NewPlaylistScreenState.ImageName(string))
+    }
+
+    fun imageIsNotEmpty(boolean: Boolean) {
+        changeState(NewPlaylistScreenState.ImageIsNotEmpty(boolean))
     }
 
 }

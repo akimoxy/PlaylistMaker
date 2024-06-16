@@ -37,7 +37,6 @@ class PlaylistsRepositoryimpl(val appDataBase: AppDataBase, val conv: PlaylistsD
         } else {
             val trackEnt = conv.mapToTrackInPlaylistEntity(track)
             appDataBase.trackEntityInPlDao().insertTrack(trackEnt)
-
             playlist.tracksId.add(track.trackId!!)
             playlist.countOfTracks = playlist.tracksId.size - 1
             updatePlaylistEntity(playlist)

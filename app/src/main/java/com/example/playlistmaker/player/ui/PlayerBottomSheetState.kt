@@ -7,5 +7,6 @@ sealed interface PlayerBottomSheetState {
         PlayerBottomSheetState
 
     object Empty : PlayerBottomSheetState
-    data class AddToPlaylist(val playlistsModel: PlaylistsModel,val boolean: Boolean) : PlayerBottomSheetState
+    data class AddToPlaylist(val playlistsModel: PlaylistsModel, val boolean: Boolean) :
+        PlayerBottomSheetState
 }
