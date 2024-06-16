@@ -54,6 +54,8 @@ class SearchFragment : Fragment() {
         viewModel.updateState(SearchActivityState.NoTextOrFocusState)
         showView()
 
+
+
         adapterForHistoryTracks = TrackAdapter(viewModel.getHistoryItems(), clickListener)
         binding.recyclerViewHist.adapter = adapterForHistoryTracks
         binding.recyclerViewHist.layoutManager =
@@ -70,12 +72,14 @@ class SearchFragment : Fragment() {
             trackAdapter.updateList(arrayList)
             viewModel.setHistory()
             showView()
+
         }
         binding.inputEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 binding.inputEditText.showKeyboard()
                 viewModel.setHistory()
                 showView()
+
             }
         }
         binding.inputEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -95,9 +99,10 @@ class SearchFragment : Fragment() {
                     trackAdapter.updateList(arrayList)
                     viewModel.updateState(SearchActivityState.NoTextOrFocusState)
                     showView()
+
                 } else {
-                   // viewModel.setHistory()
-                  //  showView()
+                    // viewModel.setHistory()
+                    //  showView()
                 }
             }
 
@@ -176,14 +181,16 @@ class SearchFragment : Fragment() {
         override fun onItemClick(track: Track) {
             if (viewModel.clickDebounce()) {
                 viewModel.saveTrackToHistory(track)
-               val json = Json.encodeToString(track)
+                val json = Json.encodeToString(track)
                 var bundle = bundleOf(TRACK to json)
                 findNavController().navigate(
                     R.id.action_searchFragment_to_audioPlayerFragment,
-                    bundle)
+                    bundle
+                )
             }
         }
     }
+
     private fun searchTracks() {
         binding.recyclerView.visibility = View.VISIBLE
         binding.textViewYourSearch.visibility = View.GONE
@@ -193,6 +200,7 @@ class SearchFragment : Fragment() {
         binding.serverErrorInclude.root.visibility = View.GONE
         binding.progressBarSearchActivity.visibility = View.GONE
     }
+
     private fun showHistoryView() {
         binding.clearTrackHistory.visibility = View.VISIBLE
         binding.textViewYourSearch.visibility = View.VISIBLE
@@ -208,6 +216,7 @@ class SearchFragment : Fragment() {
         binding.serverErrorInclude.root.visibility = View.GONE
         binding.progressBarSearchActivity.visibility = View.GONE
     }
+
     private fun loading() {
         binding.progressBarSearchActivity.visibility = View.VISIBLE
         binding.textViewYourSearch.visibility = View.GONE
@@ -217,6 +226,7 @@ class SearchFragment : Fragment() {
         binding.clearTrackHistory.visibility = View.GONE
         binding.serverErrorInclude.root.visibility = View.GONE
     }
+
     private fun serverError() {
         binding.progressBarSearchActivity.visibility = View.GONE
         binding.textViewYourSearch.visibility = View.GONE

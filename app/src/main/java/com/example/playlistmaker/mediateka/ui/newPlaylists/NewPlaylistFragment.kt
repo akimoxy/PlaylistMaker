@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -36,10 +37,14 @@ class NewPlaylistFragment : Fragment() {
     private val binding get() = _binding!!
     var namePlaylist = ""
     var descriptionPlaylist = ""
-
     var nameImage = ""
     private var imageIsNotEmpty = false
     private val viewModel by viewModel<NewPlaylistViewModel>()
+    private val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            showDialog()
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,6 +57,9 @@ class NewPlaylistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.backButtonNewPlaylist.setOnClickListener { showDialog() }
         viewModel!!.observeState()
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+        //прошу прощения, за невнимательность в прочтении задания (◕‿◕)
+
         playlist()
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
