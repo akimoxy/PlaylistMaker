@@ -1,16 +1,17 @@
 package com.example.playlistmaker.mediateka.ui.favTracks
 
-import android.content.Intent
+import TRACK
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentFavoritTracksBinding
-import com.example.playlistmaker.presentation.ui.UiAudioPlayerActivity.AudioPlayerActivity
-import com.example.playlistmaker.presentation.ui.UiAudioPlayerActivity.TRACK
 import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -52,15 +53,12 @@ class FavoriteTracksFragment : Fragment() {
 
         clickListenerFav = clickListener()
 
-        adapter =
-            FavTracksAdapter(favoriteTrackList, clickListenerFav!!)
+        adapter = FavTracksAdapter(favoriteTrackList, clickListenerFav!!)
         favTracksRV = binding.recyclerViewFavTracks
-
 
         binding.recyclerViewFavTracks.adapter = adapter
         binding.recyclerViewFavTracks.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
 
         favoriteTracksViewModel.observeState().observe(viewLifecycleOwner) {
             adapter!!.updateList(favoriteTrackList)
@@ -82,18 +80,17 @@ class FavoriteTracksFragment : Fragment() {
                 }
             }
         }
-
     }
 
     private fun clickListener() = object : RecyclerViewFavOnItemClick {
         override fun onItemClick(track: Track) {
-            val favTracksIntent =
-                Intent(requireContext(), AudioPlayerActivity::class.java)
             val json = Json.encodeToString(track)
-            favTracksIntent.putExtra(TRACK, json)
-            startActivity(favTracksIntent)
+            val bundle = bundleOf(TRACK to json)
+            findNavController().navigate(
+                R.id.action_mediatekaFragment_to_audioPlayerFragment,
+                bundle
+            )
         }
-
     }
 
     override fun onDestroyView() {

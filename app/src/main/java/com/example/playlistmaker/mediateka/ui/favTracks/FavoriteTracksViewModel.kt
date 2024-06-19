@@ -4,14 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.db.domain.FavTracksInteractor
+import com.example.playlistmaker.db.domain.favTracks.FavTracksInteractor
 import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.launch
 
 class FavoriteTracksViewModel(private val favTracksInteractor: FavTracksInteractor) : ViewModel() {
     private val stateLiveData = MutableLiveData<FavTracksState>()
     fun observeState(): LiveData<FavTracksState> = stateLiveData
-
      var trackList: ArrayList<Track> = arrayListOf()
 
 

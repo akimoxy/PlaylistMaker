@@ -1,12 +1,11 @@
-package com.example.playlistmaker.db.domain
+package com.example.playlistmaker.db.domain.favTracks
 
 import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 
 class FavTracksInteractorImpl(
-    private val favTracksRepository: FavTracksRepository,
-
-    ) : FavTracksInteractor {
+    private val favTracksRepository: FavTracksRepository
+) : FavTracksInteractor {
     override fun getFavTracks(): Flow<List<Track>> {
         return favTracksRepository.getFavTracks()
     }

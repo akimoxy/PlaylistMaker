@@ -15,6 +15,7 @@ class App : Application() {
             androidContext(this@App)
             modules(dataModule, domainModule, presentationModule)
         }
+     //   PermissionRequester.initialize(applicationContext)
     }
 }
 

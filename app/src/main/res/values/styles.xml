@@ -32,9 +32,6 @@
     </style>
 
 
-
-
-
     <style name="settings_btn_switch" parent="Widget.MaterialComponents.Button">
         <item name="buttonStyle">@style/settings_btn_switch</item>
         <item name="android:gravity">left|center_vertical</item>
@@ -154,7 +151,6 @@
         <item name="android:src">@drawable/btn_like_day_playlist</item>
 
 
-
     </style>
 
     <style name="btn_play_pause_playlist">
@@ -193,8 +189,30 @@
     <style name="Theme.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@android:color/transparent</item>
     </style>
-    <style name="color_for_btm_nav_view_top" >
+
+    <style name="color_for_btm_nav_view_top">
         <item name="android:background">@color/light_grey</item>
     </style>
+
+    <style name="hint_new_playlist" parent="ThemeOverlay.Material3.TextInputEditText.OutlinedBox">
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="android:textColorHint">@color/text_grey</item>
+        <item name="android:textSize">@dimen/sp12</item>
+        <item name="hintTextColor">@color/btn_create_new_playlist_fragment</item>
+        <item name="boxStrokeColor">@color/btn_create_new_playlist_fragment</item>
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="boxCornerRadiusTopStart">4dp</item>
+        <item name="boxCornerRadiusBottomStart">4dp</item>
+        <item name="boxCornerRadiusTopEnd">4dp</item>
+        <item name="boxCornerRadiusBottomEnd">4dp</item>
+        <item name="android:textCursorDrawable">@drawable/text_cursor</item>
+        <item name="android:theme">@style/exampleCursor</item>
+    </style>
+
+    <style name="exampleCursor" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="colorControlActivated">@color/blue</item>
+    </style>
+
 
 </resources>

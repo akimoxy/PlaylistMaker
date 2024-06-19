@@ -20,7 +20,7 @@
     <string name="start_timing_mm_ss">00:00</string>
 
     <string name="country">Страна</string>
-    <string name="genre">Жарн</string>
+    <string name="genre">Жанр</string>
     <string name="year">Год</string>
     <string name="colectionname">Альбом</string>
     <string name="track_time">Длительность</string>
@@ -43,4 +43,16 @@
     <string name="mediateka_new_playlist">Новый плейлист</string>
     <string name="mediateka_favorite_tracks_tablayout">Избранные треки</string>
     <string name="mediateka_playlists_tablayout">Плейлисты</string>
+
+    <string name="new_playlist_title_text">Новый плейлист</string>
+    <string name="create">Создать</string>
+    <string name="description_new_playlist">Описание</string>
+    <string name="name_new_playlist">Название*</string>
+    <string name="add_to_playlist">Добавить в плейлист</string>
+
+    <string name="end_create_new_playlist">Завершить создание плейлиста?</string>
+    <string name="all_unsaved_data_will_be_lost">Все несохраненные данные будут потеряны</string>
+    <string name="cancel">Отмена</string>
+    <string name="finished">Завершить</string>
+
 </resources>

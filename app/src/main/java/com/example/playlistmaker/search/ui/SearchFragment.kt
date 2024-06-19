@@ -1,8 +1,8 @@
 package com.example.playlistmaker.search.ui
 
+import TRACK
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.provider.Contacts.SettingsColumns.KEY
 import android.text.Editable
@@ -12,12 +12,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
-import com.example.playlistmaker.presentation.ui.UiAudioPlayerActivity.AudioPlayerActivity
-import com.example.playlistmaker.presentation.ui.UiAudioPlayerActivity.TRACK
 import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -32,7 +33,6 @@ class SearchFragment : Fragment() {
     private var arrayList: ArrayList<Track> = arrayListOf()
     lateinit var resultArrayList: ArrayList<Track>
     private var arrayListHistory: ArrayList<Track> = arrayListOf()
-    private val emptyArray: ArrayList<Track> = arrayListOf()
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
@@ -54,6 +54,8 @@ class SearchFragment : Fragment() {
         viewModel.updateState(SearchActivityState.NoTextOrFocusState)
         showView()
 
+
+
         adapterForHistoryTracks = TrackAdapter(viewModel.getHistoryItems(), clickListener)
         binding.recyclerViewHist.adapter = adapterForHistoryTracks
         binding.recyclerViewHist.layoutManager =
@@ -70,12 +72,14 @@ class SearchFragment : Fragment() {
             trackAdapter.updateList(arrayList)
             viewModel.setHistory()
             showView()
+
         }
         binding.inputEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 binding.inputEditText.showKeyboard()
                 viewModel.setHistory()
                 showView()
+
             }
         }
         binding.inputEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -95,9 +99,10 @@ class SearchFragment : Fragment() {
                     trackAdapter.updateList(arrayList)
                     viewModel.updateState(SearchActivityState.NoTextOrFocusState)
                     showView()
+
                 } else {
-                   // viewModel.setHistory()
-                  //  showView()
+                    // viewModel.setHistory()
+                    //  showView()
                 }
             }
 
@@ -176,11 +181,12 @@ class SearchFragment : Fragment() {
         override fun onItemClick(track: Track) {
             if (viewModel.clickDebounce()) {
                 viewModel.saveTrackToHistory(track)
-                val buttonSearchIntent =
-                    Intent(requireContext(), AudioPlayerActivity::class.java)
                 val json = Json.encodeToString(track)
-                buttonSearchIntent.putExtra(TRACK, json)
-                startActivity(buttonSearchIntent)
+                var bundle = bundleOf(TRACK to json)
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_audioPlayerFragment,
+                    bundle
+                )
             }
         }
     }

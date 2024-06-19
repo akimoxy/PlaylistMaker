@@ -11,11 +11,16 @@
         android:label="RootActivity" />
     <fragment
         android:id="@+id/mediatekaFragment"
-        android:name="com.example.playlistmaker.mediateka.ui.playlists.MediatekaFragment"
-        android:label="MediatekaFragment" >
+        android:name="com.example.playlistmaker.mediateka.ui.mediateka.MediatekaFragment"
+        android:label="MediatekaFragment">
         <action
-            android:id="@+id/action_mediatekaFragment_to_audioPlayerActivity"
-            app:destination="@id/audioPlayerActivity" />
+            android:id="@+id/action_mediatekaFragment_to_newPlaylist"
+            app:destination="@id/newPlaylist" />
+        <action
+            android:id="@+id/action_mediatekaFragment_to_audioPlayerFragment"
+            app:destination="@id/audioPlayerFragment" />
+
+
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -28,11 +33,39 @@
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search">
         <action
-            android:id="@+id/action_searchFragment_to_audioPlayerActivity2"
-            app:destination="@id/audioPlayerActivity" />
+            android:id="@+id/action_searchFragment_to_audioPlayerFragment"
+            app:destination="@id/audioPlayerFragment" />
     </fragment>
-    <activity
-        android:id="@+id/audioPlayerActivity"
-        android:name="com.example.playlistmaker.presentation.ui.UiAudioPlayerActivity.AudioPlayerActivity"
-        android:label="activity_audio_player" />
+    <fragment
+        android:id="@+id/newPlaylist"
+        android:name="com.example.playlistmaker.mediateka.ui.newPlaylists.NewPlaylistFragment"
+        android:label="fragment_new_playlist"
+        tools:layout="@layout/fragment_new_playlist">
+        <action
+            android:id="@+id/action_newPlaylist_to_audioPlayerFragment"
+            app:destination="@id/audioPlayerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playListsFragment"
+        android:name="com.example.playlistmaker.mediateka.ui.playlists.PlayListsFragment"
+        android:label="PlayListsFragment">
+        <action
+            android:id="@+id/action_playListsFragment_to_newPlaylist"
+            app:destination="@id/newPlaylist" />
+    </fragment>
+    <fragment
+        android:id="@+id/audioPlayerFragment"
+        android:name="AudioPlayerFragment"
+        android:label="AudioPlayerFragment">
+
+        <action
+            android:id="@+id/action_audioPlayerFragment_to_newPlaylist"
+            app:destination="@id/newPlaylist" />
+        <action
+            android:id="@+id/action_audioPlayerFragment_to_mediatekaFragment"
+            app:destination="@id/mediatekaFragment" />
+        <action
+            android:id="@+id/action_audioPlayerFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
 </navigation>

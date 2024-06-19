@@ -1,6 +1,7 @@
-package com.example.playlistmaker.db.data
+package com.example.playlistmaker.db.data.favTracks
 
-import com.example.playlistmaker.db.domain.FavTracksRepository
+import com.example.playlistmaker.db.data.AppDataBase
+import com.example.playlistmaker.db.domain.favTracks.FavTracksRepository
 import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

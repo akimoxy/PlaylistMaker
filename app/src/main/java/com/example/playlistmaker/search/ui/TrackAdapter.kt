@@ -34,8 +34,6 @@ class TrackAdapter(
             clickListener.onItemClick(arrayOfTrack[position])
         }
     }
-
-
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(newList: ArrayList<Track>) {
         var list: ArrayList<Track> = arrayListOf()
