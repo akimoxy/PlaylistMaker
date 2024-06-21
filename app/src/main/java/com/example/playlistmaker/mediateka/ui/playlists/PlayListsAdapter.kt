@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
-import com.example.playlistmaker.mediateka.domain.models.PlaylistsModel
+import com.example.playlistmaker.mediateka.domain.model.PlaylistsModel
 
-class PlayListsAdapter(private var playlistList: ArrayList<PlaylistsModel>) :
+class PlayListsAdapter(private var playlistList: ArrayList<PlaylistsModel>, val onPlaylistClick: OnPlaylistClick) :
     RecyclerView.Adapter<PlayListsAdapter.PlaylistsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistsViewHolder {
         val view =
@@ -24,6 +24,9 @@ class PlayListsAdapter(private var playlistList: ArrayList<PlaylistsModel>) :
 
     override fun onBindViewHolder(holder: PlaylistsViewHolder, position: Int) {
         holder.bind(playlistList[position])
+        holder.itemView.setOnClickListener {
+            onPlaylistClick.onItemClick(playlistList[position])
+        }
     }
 
     fun updateList(newList: ArrayList<PlaylistsModel>) {
@@ -53,4 +56,7 @@ class PlayListsAdapter(private var playlistList: ArrayList<PlaylistsModel>) :
                 .into(imageView)
         }
     }
+}
+interface OnPlaylistClick {
+    fun onItemClick(playList: PlaylistsModel)
 }

@@ -30,6 +30,7 @@
     <dimen name="dp100">100dp</dimen>
     <dimen name="dp106">106dp</dimen>
     <dimen name="dp160">106dp</dimen>
+    <dimen name="dp266">266dp</dimen>
 
     <dimen name="sp11">11sp</dimen>
     <dimen name="sp12">12sp</dimen>
@@ -39,6 +40,7 @@
     <dimen name="text_size_small">18sp</dimen>
     <dimen name="sp19">19sp</dimen>
     <dimen name="tittle_text_size22">22sp</dimen>
+    <dimen name="sp24">24sp</dimen>
     <dimen name="text_size26">26sp</dimen>
 
 </resources>

@@ -3,9 +3,11 @@ package com.example.playlistmaker.di
 import android.content.Context
 import android.media.MediaPlayer
 import androidx.room.Room
-import com.example.playlistmaker.db.data.AppDataBase
-import com.example.playlistmaker.db.data.favTracks.TrackDBConvertor
-import com.example.playlistmaker.db.data.playlist.PlaylistsDBConverter
+import com.example.playlistmaker.mediateka.data.AppDataBase
+import com.example.playlistmaker.mediateka.data.SharePlaylist
+import com.example.playlistmaker.mediateka.data.SharePlaylistImpl
+import com.example.playlistmaker.mediateka.data.favTracks.TrackDBConvertor
+import com.example.playlistmaker.mediateka.data.playlist.PlaylistsDBConverter
 import com.example.playlistmaker.player.data.MediaPlayerImpl
 import com.example.playlistmaker.search.data.TrackHistoryRepositoryImpl
 import com.example.playlistmaker.search.data.network.ITunesApi
@@ -61,4 +63,8 @@ val dataModule = module {
 
 
     factory { PlaylistsDBConverter(context = get()) }
+    factory<SharePlaylist> {
+        SharePlaylistImpl(appDataBase = get(), context = get(), conv = get())
+    }
+
 }

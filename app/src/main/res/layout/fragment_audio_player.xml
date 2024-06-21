@@ -14,8 +14,6 @@
         android:orientation="vertical"
         tools:context=".presentation.ui.UiAudioPlayerActivity.AudioPlayerActivity">
 
-
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/leftBorder"
             android:layout_width="wrap_content"

@@ -1,13 +1,13 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.db.data.favTracks.FavTracksRepositoryImpl
-import com.example.playlistmaker.db.data.playlist.PlaylistsRepositoryimpl
-import com.example.playlistmaker.db.domain.favTracks.FavTracksInteractor
-import com.example.playlistmaker.db.domain.favTracks.FavTracksInteractorImpl
-import com.example.playlistmaker.db.domain.favTracks.FavTracksRepository
-import com.example.playlistmaker.db.domain.playlists.PlaylistsInteractor
-import com.example.playlistmaker.db.domain.playlists.PlaylistsRepository
-import com.example.playlistmaker.db.domain.playlists.Playlistsinteractorimpl
+import com.example.playlistmaker.mediateka.data.favTracks.FavTracksInteractor
+import com.example.playlistmaker.mediateka.data.favTracks.FavTracksInteractorImpl
+import com.example.playlistmaker.mediateka.data.favTracks.FavTracksRepository
+import com.example.playlistmaker.mediateka.data.favTracks.FavTracksRepositoryImpl
+import com.example.playlistmaker.mediateka.data.playlist.PlaylistsRepositoryimpl
+import com.example.playlistmaker.mediateka.domain.PlaylistsInteractor
+import com.example.playlistmaker.mediateka.domain.PlaylistsRepository
+import com.example.playlistmaker.mediateka.domain.Playlistsinteractorimpl
 import com.example.playlistmaker.player.data.MediaPlayerImpl
 import com.example.playlistmaker.player.domain.api.MediaPlayerInteractor
 import com.example.playlistmaker.player.domain.api.MediaPlayerRepository
@@ -70,10 +70,10 @@ val domainModule = module {
     }
 
     factory<PlaylistsInteractor> {
-        Playlistsinteractorimpl(plRepository = get())
+        Playlistsinteractorimpl(plRepository = get(), sharePlaylist = get())
     }
 
-    factory<Playlistsinteractorimpl> {Playlistsinteractorimpl(plRepository = get())  }
+    factory<Playlistsinteractorimpl> { Playlistsinteractorimpl(plRepository = get(), sharePlaylist = get())  }
     factory<PlaylistsRepository> { PlaylistsRepositoryimpl(appDataBase = get(), conv = get()) }
 
 }

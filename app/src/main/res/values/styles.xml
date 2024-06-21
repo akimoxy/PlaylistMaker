@@ -63,6 +63,16 @@
         <item name="android:drawableTint">@color/black</item>
     </style>
 
+    <style name="playlist_btn_title_icon" parent="Widget.MaterialComponents.Button">
+        <item name="buttonStyle">@style/playlist_btn_title_icon</item>
+        <item name="android:layout_width">@dimen/dp48</item>
+        <item name="android:layout_height">@dimen/dp48</item>
+        <item name="android:layout_marginTop">@dimen/margin_top18</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:drawableTint">@color/black</item>
+    </style>
+
     <style name="track_icon" parent="Widget.MaterialComponents.Button">
         <item name="buttonStyle">@style/track_icon</item>
         <item name="android:layout_width">@dimen/dp45</item>

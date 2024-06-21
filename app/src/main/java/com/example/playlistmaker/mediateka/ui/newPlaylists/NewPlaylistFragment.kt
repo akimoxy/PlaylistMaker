@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
-import com.example.playlistmaker.mediateka.domain.models.PlaylistsModel
+import com.example.playlistmaker.mediateka.domain.model.PlaylistsModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -58,7 +58,6 @@ class NewPlaylistFragment : Fragment() {
         binding.backButtonNewPlaylist.setOnClickListener { showDialog() }
         viewModel!!.observeState()
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-        //прошу прощения, за невнимательность в прочтении задания (◕‿◕)
 
         playlist()
         val pickMedia =

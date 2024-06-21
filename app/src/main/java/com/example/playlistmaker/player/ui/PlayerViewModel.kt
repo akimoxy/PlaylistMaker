@@ -6,9 +6,9 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.db.domain.favTracks.FavTracksInteractor
-import com.example.playlistmaker.db.domain.playlists.PlaylistsInteractor
-import com.example.playlistmaker.mediateka.domain.models.PlaylistsModel
+import com.example.playlistmaker.mediateka.data.favTracks.FavTracksInteractor
+import com.example.playlistmaker.mediateka.domain.PlaylistsInteractor
+import com.example.playlistmaker.mediateka.domain.model.PlaylistsModel
 import com.example.playlistmaker.player.domain.api.MediaPlayerInteractor
 import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Dispatchers
