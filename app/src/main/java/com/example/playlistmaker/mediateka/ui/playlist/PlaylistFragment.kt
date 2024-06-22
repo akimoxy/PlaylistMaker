@@ -5,7 +5,6 @@ import TRACK
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
 
 const val TWENTY = 20
+const val PLAYLIST_TO_UPDATE="playlist_to_update"
 
 class PlaylistFragment : Fragment() {
     private var _binding: FragmentPlaylistBinding? = null
@@ -90,9 +90,7 @@ class PlaylistFragment : Fragment() {
                     }
                     binding.playlistsNameBigText.text = playlist.playlistName
                     binding.playlistsFDescription.text = playlist.playlistDescription
-
                     countOfTracks = playlist.countOfTracks.toString()
-
                     val pluralCount = resources.getQuantityString(
                         R.plurals.plurals_tracks, countOfTracks!!.toInt()
                     )
@@ -100,20 +98,13 @@ class PlaylistFragment : Fragment() {
                     binding.tvAllTracks.text = count
                     tracks.clear()
                     adapter = PlaylistBttmShtAdapter(tracks, clickListener, longClickListnr)
-
                     rvPlaylist = binding.rvPlaylistFragment
                     binding.rvPlaylistFragment.adapter = adapter
                     binding.rvPlaylistFragment.layoutManager =
                         LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                    Log.d("Adapterr before clear", tracks.size.toString())
                     tracks.clear()
-                    Log.d("after  clear", tracks.size.toString())
                     tracks.addAll(it.tracks!!)
-                    Log.d("Adapter1", tracks.size.toString())
                     adapter.updateList(tracks)
-                    Log.d("Adapter22", tracks.size.toString())
-
-
                     timing = it.tracksTiming.toString()
                     val plural = resources.getQuantityString(
                         R.plurals.plurals, it.tracksTiming!!.toInt()
@@ -136,7 +127,6 @@ class PlaylistFragment : Fragment() {
         }
         bottomSheetBehaviorThreeDot.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
-
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
@@ -164,70 +154,75 @@ class PlaylistFragment : Fragment() {
                 .setPositiveButton(requireContext().getString(R.string.yes)) { _, which ->
                     viewModel.deletePlaylistModel(playlist)
                     findNavController().navigateUp()
-
                 }
                 .show()
         }
+        binding.tvChangeInfoPlFr.setOnClickListener {
+            val id = playlist.playlistId.toString()
+            val json = Json.encodeToString(id)
+            var bundle = bundleOf(PLAYLIST_TO_UPDATE to json)
+            findNavController().navigate(
+                R.id.action_playListFragment_to_updPlaylistFragment,
+                bundle
+            )
+        }
+    }
 
-}
+    private fun clickListenerFun() = object : RVonItemClick {
+        @SuppressLint("SuspiciousIndentation")
+        override fun onItemClick(track: Track) {
+            val json = Json.encodeToString(track)
+            var bundle = bundleOf(TRACK to json)
+            findNavController().navigate(
+                R.id.action_playlistFragment_to_audioPlayerFragment,
+                bundle
+            )
+        }
+    }
 
-private fun clickListenerFun() = object : RVonItemClick {
-    @SuppressLint("SuspiciousIndentation")
-    override fun onItemClick(track: Track) {
-        val json = Json.encodeToString(track)
-        var bundle = bundleOf(TRACK to json)
-        findNavController().navigate(
-            R.id.action_playlistFragment_to_audioPlayerFragment,
-            bundle
-        )
+    private fun longClickListnr() = object : OnLongClickListnr {
+        @SuppressLint("SuspiciousIndentation")
+        override fun onItemClick(track: Track, arrayOfTrack: ArrayList<Track>) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(requireContext().getString(R.string.delete_track))
+                .setMessage(requireContext().getString(R.string.delete_track_question))
+                .setNeutralButton(requireContext().getString(R.string.cancel)) { _, which ->
+                }
+                .setPositiveButton(requireContext().getString(R.string.delete)) { _, which ->
+                    viewModel.deleteTrack(track.trackId!!)
+                    tracks.remove(track)
+                    adapter.updateList(tracks)
+                    val plural = resources.getQuantityString(
+                        R.plurals.plurals, timing.toInt()
+                    )
+                    var time = timing.toInt() - track.trackTimeMillis!! / 60000
+                    binding.tvAllTimePlaylist.text = "$time $plural"
+                    val countInt = countOfTracks.toInt() - 1
+                    val pluralCount = resources.getQuantityString(
+                        R.plurals.plurals_tracks, countInt
+                    )
+                    val count = "$countInt $pluralCount"
+                    binding.tvAllTracks.text = count
+                }
+                .show()
+        }
+    }
+
+    fun share() {
+        if (countOfTracks.toInt() > 0) {
+            viewModel.share(playlist)
+
+        } else {
+            Toast.makeText(
+                requireContext(),
+                requireActivity().getString(R.string.dont_have_a_tracks),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }
 
-private fun longClickListnr() = object : OnLongClickListnr {
-    @SuppressLint("SuspiciousIndentation")
-    override fun onItemClick(track: Track, arrayOfTrack: ArrayList<Track>) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(requireContext().getString(R.string.delete_track))
-            .setMessage(requireContext().getString(R.string.delete_track_question))
-            .setNeutralButton(requireContext().getString(R.string.cancel)) { _, which ->
-            }
-            .setPositiveButton(requireContext().getString(R.string.delete)) { _, which ->
-                viewModel.deleteTrack(track.trackId!!)
-                tracks.remove(track)
-                adapter.updateList(tracks)
-                val plural = resources.getQuantityString(
-                    R.plurals.plurals, timing.toInt()
-                )
-                var time = timing.toInt() - track.trackTimeMillis!! / 60000
-                binding.tvAllTimePlaylist.text = "$time $plural"
-                val countInt = countOfTracks.toInt() - 1
-                val pluralCount = resources.getQuantityString(
-                    R.plurals.plurals_tracks, countInt
-                )
-                val count = "$countInt $pluralCount"
-                binding.tvAllTracks.text = count
-
-            }
-            .show()
-    }
-}
-
-fun share() {
-    if (countOfTracks.toInt() > 0) {
-        viewModel.share(playlist)
-
-    } else {
-        Toast.makeText(
-            requireContext(),
-            requireActivity().getString(R.string.dont_have_a_tracks),
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-}
-}
-
-
-private fun <T : Serializable?> getSerializableExtraCompat(
+fun <T : Serializable?> getSerializableExtraCompat(
     bundle: Bundle,
     key: String,
     className: Class<T>

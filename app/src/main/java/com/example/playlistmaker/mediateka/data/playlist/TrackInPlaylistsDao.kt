@@ -14,7 +14,6 @@ interface TrackInPlaylistsDao {
     @Query("SELECT trackId  FROM track_in_playlists_table")
     suspend fun getTrackIds(): List<String>
 
-
     @Query("SELECT * FROM track_in_playlists_table WHERE trackId = :trId")
     suspend fun getTrackById(trId: String): TrackEntityInPlaylists
 

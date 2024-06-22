@@ -9,17 +9,17 @@ import com.example.playlistmaker.mediateka.domain.PlaylistsInteractor
 import com.example.playlistmaker.mediateka.domain.model.PlaylistsModel
 import kotlinx.coroutines.launch
 
-class NewPlaylistViewModel(val interactor: PlaylistsInteractor) : ViewModel() {
+open class NewPlaylistViewModel(open val interactor: PlaylistsInteractor) : ViewModel() {
     private val stateLiveData = MutableLiveData<NewPlaylistScreenState>()
-    fun observeState(): LiveData<NewPlaylistScreenState> = stateLiveData
+    open fun observeState(): LiveData<NewPlaylistScreenState> = stateLiveData
     lateinit var playlist: PlaylistsModel
-    var uri: Uri? = null
+   open var uri: Uri? = null
 
     init {
         changeState(NewPlaylistScreenState.Empty)
     }
 
-    fun changeState(state: NewPlaylistScreenState) {
+  open fun changeState(state: NewPlaylistScreenState) {
         stateLiveData.postValue(state)
     }
 
@@ -27,19 +27,19 @@ class NewPlaylistViewModel(val interactor: PlaylistsInteractor) : ViewModel() {
         viewModelScope.launch { interactor.insertPlaylist(newPlaylist) }
     }
 
-    fun changeName(string: String) {
+   open fun changeName(string: String) {
         changeState(NewPlaylistScreenState.NamePlaylists(string))
     }
 
-    fun changeDescription(string: String) {
-        changeState(NewPlaylistScreenState.DescriptionPlaylists(string))
+   open fun changeDescription(string: String) {
+        changeState(NewPlaylistScreenState.DescrPlaylists(string))
     }
 
-    fun saveImageName(string: String) {
+  open  fun saveImageName(string: String) {
         changeState(NewPlaylistScreenState.ImageName(string))
     }
 
-    fun imageIsNotEmpty(boolean: Boolean) {
+  open  fun imageIsNotEmpty(boolean: Boolean) {
         changeState(NewPlaylistScreenState.ImageIsNotEmpty(boolean))
     }
 

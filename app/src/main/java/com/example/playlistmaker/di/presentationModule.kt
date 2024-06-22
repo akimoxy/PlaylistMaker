@@ -4,6 +4,7 @@ import com.example.playlistmaker.mediateka.ui.favTracks.FavoriteTracksViewModel
 import com.example.playlistmaker.mediateka.ui.newPlaylists.NewPlaylistViewModel
 import com.example.playlistmaker.mediateka.ui.playlist.PlaylistViewModel
 import com.example.playlistmaker.mediateka.ui.playlists.PlayListsViewModel
+import com.example.playlistmaker.mediateka.ui.updatePlaylist.UpdatePlaylistViewModel
 import com.example.playlistmaker.player.ui.PlayerViewModel
 import com.example.playlistmaker.search.ui.SearchViewModel
 import com.example.playlistmaker.settings.ui.SettingsViewModel
@@ -30,4 +31,5 @@ val presentationModule = module {
         NewPlaylistViewModel(interactor = get())
     }
     viewModel<PlaylistViewModel> { PlaylistViewModel(playlists = get()) }
+    viewModel <UpdatePlaylistViewModel>{ UpdatePlaylistViewModel(interactor = get()) }
     }

@@ -27,7 +27,7 @@ class PlayListsFragment : Fragment() {
     private var recyclerViewPlaylists: RecyclerView? = null
 
     companion object {
-        private const val PLAYLIST = "playlist"
+        const val PLAYLIST = "playlist"
         fun newInstance(textForFragment: String) = PlayListsFragment().apply {
             arguments = Bundle().apply {
                 putString(PLAYLIST, textForFragment)

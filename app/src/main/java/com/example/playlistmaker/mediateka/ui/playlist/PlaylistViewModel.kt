@@ -20,12 +20,12 @@ class PlaylistViewModel(val playlists: PlaylistsInteractor) : ViewModel() {
     lateinit var playlistsM: PlaylistsModel
     fun observeState(): LiveData<PlaylistState> = playlistLiveData
     private var job: Job? = null
-    private var job2: Job? = null
 
     fun playlist(id: Int) {
         job = viewModelScope.launch {
             playlistsM = playlists.getPlaylistById(id)
             tracks.clear()
+            tracksTiming=0
             for (id in playlistsM.tracksId) {
                 if (id.isNotEmpty()) {
 
@@ -34,6 +34,7 @@ class PlaylistViewModel(val playlists: PlaylistsInteractor) : ViewModel() {
                     tracksTiming += track.trackTimeMillis!!
                 }
             }
+            tracks.reverse()
             tracksTimingMin = tracksTiming / 60000
             renderState(PlaylistState.Playlist(playlistsM, tracks, tracksTimingMin))
         }

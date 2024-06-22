@@ -2,7 +2,6 @@ package com.example.playlistmaker.mediateka.data.playlist
 
 import android.content.Context
 import android.os.Environment
-import android.util.Log
 import androidx.core.net.toUri
 import androidx.room.TypeConverter
 import com.example.playlistmaker.mediateka.domain.model.PlaylistsModel
@@ -28,7 +27,6 @@ class PlaylistsDBConverter(private val context: Context) {
             File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), MY_PLAYLIST_IMAGE)
         val uri = if (playlistEntity.imageStorageLink.isEmpty()) null
         else File(filePath, playlistEntity.imageStorageLink).toUri()
-        Log.d("мэп ту модел", playlistEntity.tracksId.toString())
         return PlaylistsModel(
             playlistEntity.playlistId,
             playlistEntity.playlistName!!,
