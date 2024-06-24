@@ -96,7 +96,8 @@ open class NewPlaylistFragment : Fragment() {
                 imageStorageLink = viewModel.uri,
                 playlistsImageName = nameImage,
                 tracksId = arrayListOf(),
-                countOfTracks = 0
+                countOfTracks = 0,
+                countOfTracksWithText = ""
             )
         }
     }

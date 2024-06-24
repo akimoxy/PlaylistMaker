@@ -29,7 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
 
 const val TWENTY = 20
-const val PLAYLIST_TO_UPDATE="playlist_to_update"
+const val PLAYLIST_TO_UPDATE = "playlist_to_update"
 
 class PlaylistFragment : Fragment() {
     private var _binding: FragmentPlaylistBinding? = null
@@ -102,6 +102,9 @@ class PlaylistFragment : Fragment() {
                     binding.rvPlaylistFragment.adapter = adapter
                     binding.rvPlaylistFragment.layoutManager =
                         LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                    if (playlist.countOfTracks > 0) {
+                        binding.tvEmptyPlaylist.visibility = View.GONE
+                    }
                     tracks.clear()
                     tracks.addAll(it.tracks!!)
                     adapter.updateList(tracks)
@@ -115,6 +118,7 @@ class PlaylistFragment : Fragment() {
             }
         }
 
+
         binding.sharePlaylistFr.setOnClickListener {
             share()
         }
@@ -124,7 +128,19 @@ class PlaylistFragment : Fragment() {
             }
         binding.threeDotPlaylistFrIv.setOnClickListener {
             bottomSheetBehaviorThreeDot.state = BottomSheetBehavior.STATE_COLLAPSED
+            binding.plListNameTvMini.text = playlist.playlistName
+            if (playlist.imageStorageLink == null) {
+                Glide.with(binding.plListThreeDotMiniImage)
+                    .load(playlist.imageStorageLink)
+                    .centerCrop()
+                    .placeholder(R.drawable.placeholder)
+                    .into(binding.plListThreeDotMiniImage)
+            }
+            binding.plListCountTracksThreeDot.text = playlist.countOfTracksWithText
         }
+
+
+
         bottomSheetBehaviorThreeDot.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -141,13 +157,16 @@ class PlaylistFragment : Fragment() {
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
-        binding.sharePlaylistFrThreeDot.setOnClickListener { share() }
+        binding.sharePlaylistFrThreeDot.setOnClickListener {
+            bottomSheetBehaviorThreeDot.state = BottomSheetBehavior.STATE_HIDDEN
+            share()
+        }
         binding.tvDeletePlaylist.setOnClickListener {
             bottomSheetBehaviorThreeDot.state = BottomSheetBehavior.STATE_HIDDEN
 
 
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle(requireContext().getString(R.string.delete_track_question))
+                .setTitle(requireContext().getString(R.string.delete_playlist_question))
                 .setNeutralButton(requireContext().getString(R.string.no)) { _, which ->
 
                 }
@@ -205,6 +224,9 @@ class PlaylistFragment : Fragment() {
                     binding.tvAllTracks.text = count
                 }
                 .show()
+            if (playlist.countOfTracks == 0) {
+                binding.tvEmptyPlaylist.visibility = View.VISIBLE
+            }
         }
     }
 

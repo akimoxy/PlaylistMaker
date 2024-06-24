@@ -1,6 +1,8 @@
 package com.example.playlistmaker.mediateka.data.playlist
 
+import android.content.Context
 import android.util.Log
+import com.example.playlistmaker.R
 import com.example.playlistmaker.mediateka.data.AppDataBase
 import com.example.playlistmaker.mediateka.domain.PlaylistsRepository
 import com.example.playlistmaker.mediateka.domain.model.PlaylistsModel
@@ -8,7 +10,11 @@ import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class PlaylistsRepositoryimpl(val appDataBase: AppDataBase, val conv: PlaylistsDBConverter) :
+class PlaylistsRepositoryimpl(
+    val appDataBase: AppDataBase,
+    val conv: PlaylistsDBConverter,
+    val context: Context
+) :
     PlaylistsRepository {
     override fun getPlaylists(): Flow<List<PlaylistsModel>> {
         val playlists = appDataBase.playlistDao().getPlaylists()
@@ -19,6 +25,11 @@ class PlaylistsRepositoryimpl(val appDataBase: AppDataBase, val conv: PlaylistsD
     }
 
     override suspend fun insertPlaylist(playlist: PlaylistsModel) {
+        val count = playlist.countOfTracks
+        val pluralCount = context.resources.getQuantityString(
+            R.plurals.plurals_tracks, playlist.countOfTracks
+        )
+        playlist.countOfTracksWithText = "$count $pluralCount"
         val playlistEnt = conv.mapInToPlaylistEntity(playlist)
         appDataBase.playlistDao().insertPlaylist(playlistEnt)
     }
@@ -45,8 +56,15 @@ class PlaylistsRepositoryimpl(val appDataBase: AppDataBase, val conv: PlaylistsD
                 Log.d("добавили", "еруер")
                 appDataBase.trackEntityInPlDao().insertTrack(trackEnt)
             }
+
             playlist.tracksId.add(track.trackId!!)
             playlist.countOfTracks = playlist.tracksId.size - 1
+            val count = playlist.countOfTracks
+            val pluralCount = context.resources.getQuantityString(
+                R.plurals.plurals_tracks, playlist.countOfTracks
+            )
+            playlist.countOfTracksWithText = "$count $pluralCount"
+
             updatePlaylistEntity(playlist)
             return true
         }
@@ -66,6 +84,19 @@ class PlaylistsRepositoryimpl(val appDataBase: AppDataBase, val conv: PlaylistsD
     override suspend fun updateBeforeDeletePMById(string: String, playlist: PlaylistsModel) {
         if (playlist.countOfTracks > 0) {
             playlist.countOfTracks = playlist.tracksId.size - 1
+            val pluralCount = context.resources.getQuantityString(
+                R.plurals.plurals_tracks, playlist.countOfTracks
+            )
+            val count = playlist.countOfTracks
+            playlist.countOfTracksWithText = "$count $pluralCount"
+        }
+        if (playlist.countOfTracks == 0) {
+            val pluralCount = context.resources.getQuantityString(
+                R.plurals.plurals_tracks, playlist.countOfTracks
+            )
+            val count = playlist.countOfTracks
+            playlist.countOfTracksWithText = "$count $pluralCount"
+
         }
         updatePlaylistEntity(playlist)
     }

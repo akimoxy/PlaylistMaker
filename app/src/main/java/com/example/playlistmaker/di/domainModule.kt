@@ -74,6 +74,6 @@ val domainModule = module {
     }
 
     factory<Playlistsinteractorimpl> { Playlistsinteractorimpl(plRepository = get(), sharePlaylist = get())  }
-    factory<PlaylistsRepository> { PlaylistsRepositoryimpl(appDataBase = get(), conv = get()) }
+    factory<PlaylistsRepository> { PlaylistsRepositoryimpl(appDataBase = get(), conv = get(), context = get()) }
 
 }

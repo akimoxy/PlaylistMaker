@@ -18,7 +18,8 @@ class PlaylistsDBConverter(private val context: Context) {
             playlist.playlistsImageName,
             playlist.playlistsImageName,
             toString(playlist.tracksId),
-            playlist.countOfTracks
+            playlist.countOfTracks,
+            playlist.countOfTracksWithText
         )
     }
 
@@ -34,7 +35,8 @@ class PlaylistsDBConverter(private val context: Context) {
             uri,
             playlistEntity.playlistsImageName,
             fromString(playlistEntity.tracksId),
-            playlistEntity.countOfTracks
+            playlistEntity.countOfTracks,
+            playlistEntity.countOfTracksWithText
         )
 
     }
