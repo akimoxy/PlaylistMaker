@@ -55,7 +55,6 @@ class SearchFragment : Fragment() {
         showView()
 
 
-
         adapterForHistoryTracks = TrackAdapter(viewModel.getHistoryItems(), clickListener)
         binding.recyclerViewHist.adapter = adapterForHistoryTracks
         binding.recyclerViewHist.layoutManager =
@@ -72,7 +71,6 @@ class SearchFragment : Fragment() {
             trackAdapter.updateList(arrayList)
             viewModel.setHistory()
             showView()
-
         }
         binding.inputEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {

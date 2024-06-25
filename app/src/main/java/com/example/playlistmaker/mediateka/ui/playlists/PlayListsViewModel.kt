@@ -4,16 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.db.domain.playlists.PlaylistsInteractor
-import com.example.playlistmaker.mediateka.domain.models.PlaylistsModel
+import com.example.playlistmaker.mediateka.domain.PlaylistsInteractor
+import com.example.playlistmaker.mediateka.domain.model.PlaylistsModel
 import kotlinx.coroutines.launch
 
-class PlayListsViewModel(val playlists: PlaylistsInteractor) : ViewModel() {
+class PlayListsViewModel(val playlists: PlaylistsInteractor): ViewModel()  {
     private val playlistsLiveData =
         MutableLiveData<PlayListsMediatekaState>(PlayListsMediatekaState.Empty)
 
     fun observeState(): LiveData<PlayListsMediatekaState> = playlistsLiveData
     var playlistsList: ArrayList<PlaylistsModel> = arrayListOf()
+
 
     init {
         viewModelScope.launch {

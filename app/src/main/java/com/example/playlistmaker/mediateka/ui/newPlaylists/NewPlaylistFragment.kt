@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
-import com.example.playlistmaker.mediateka.domain.models.PlaylistsModel
+import com.example.playlistmaker.mediateka.domain.model.PlaylistsModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -32,25 +32,36 @@ import java.util.Date
 
 const val MY_PLAYLIST_IMAGE = "myPlaylistImage"
 
-class NewPlaylistFragment : Fragment() {
-    private var _binding: FragmentNewPlaylistBinding? = null
-    private val binding get() = _binding!!
+open class NewPlaylistFragment : Fragment() {
+    open var _binding: FragmentNewPlaylistBinding? = null
+    open val binding get() = _binding!!
     var namePlaylist = ""
     var descriptionPlaylist = ""
     var nameImage = ""
     private var imageIsNotEmpty = false
-    private val viewModel by viewModel<NewPlaylistViewModel>()
+    open val viewModel by viewModel<NewPlaylistViewModel>()
     private val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             showDialog()
         }
     }
+   open var pickMedia =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                binding.imageViewPlaylistPlaceholder.setImageURI(uri)
+                saveImageToPrivateStorage(uri)
+            } else {
+                Log.d("PhotoPicker", "No media selected")
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,104 +69,22 @@ class NewPlaylistFragment : Fragment() {
         binding.backButtonNewPlaylist.setOnClickListener { showDialog() }
         viewModel!!.observeState()
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-        //прошу прощения, за невнимательность в прочтении задания (◕‿◕)
+        setTextInTitleAndButton()
 
         playlist()
-        val pickMedia =
-            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                if (uri != null) {
-                    binding.imageViewPlaylistPlaceholder.setImageURI(uri)
-                    saveImageToPrivateStorage(uri)
-                } else {
-                    Log.d("PhotoPicker", "No media selected")
-                }
-            }
-        binding.descriptionNewPlaylistEdittext.setOnFocusChangeListener { _, _ ->
-        }
-        binding.edittextPlaylistName.setOnFocusChangeListener { view, hasFocus ->
-            if (binding.edittextPlaylistName.text.isNotEmpty()) {
-                binding.buttonCreatePlaylist.isEnabled
-            }
-        }
-        binding.buttonCreatePlaylist.setOnClickListener {
-            if (binding.edittextPlaylistName.text.isNotEmpty()) {
-                playlist()
-                viewModel.createPlaylist(viewModel.playlist)
-                Toast.makeText(
-                    requireContext(),
-                    " «Плейлист $namePlaylist создан»",
-                    Toast.LENGTH_SHORT
-                ).show()
-                findNavController().navigateUp()
-            }
-        }
-        binding.edittextPlaylistName.addTextChangedListener(
-            object : TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-                override fun afterTextChanged(p0: Editable?) {}
 
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    viewModel!!.changeState(NewPlaylistScreenState.NamePlaylists(binding.edittextPlaylistName.text.toString()))
-                    if (p0.isNullOrEmpty().not()) {
-                        viewModel.changeName(p0.toString())
-                        binding.buttonCreatePlaylist.isEnabled = true
-                    } else {
-                        binding.buttonCreatePlaylist.isEnabled = false
-                    }
-                }
-            })
-        binding.descriptionNewPlaylistEdittext.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun afterTextChanged(p0: Editable?) {
-            }
+        editTextPlaylistName()
+        descriptionNewPlaylistEdittext()
+        imageViewPlaylistPlaceholder()
+        buttonCreatePlaylist()
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.changeDescription(p0.toString())
-            }
-        })
-        binding.imageViewPlaylistPlaceholder.setOnClickListener { view ->
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            viewModel.imageIsNotEmpty(true)
-        }
-        binding.edittextPlaylistName.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                binding.edittextPlaylistName.hideKeyboard()
-            }
-            false
-        }
-        binding.descriptionNewPlaylistEdittext.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                binding.edittextPlaylistName.hideKeyboard()
-            }
-            false
-        }
     }
 
-    private fun saveImageToPrivateStorage(uri: Uri) {
-        val filePath = File(
-            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-            MY_PLAYLIST_IMAGE
-        )
-        if (!filePath.exists()) {
-            filePath.mkdirs()
-        }
-        val imageName = SimpleDateFormat("yyyy.MM.dd_HH.mm.ss").format(Date()) + ".jpg"
-        viewModel.saveImageName(imageName)
-        val file = File(filePath, imageName)
-        val inputStream = requireActivity().contentResolver.openInputStream(uri)
-        val outputStream = FileOutputStream(file)
-        BitmapFactory
-            .decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
-    }
-
-    private fun playlist() {
+  fun playlist() {
         viewModel.observeState().observe(viewLifecycleOwner) {
             when (it) {
                 is NewPlaylistScreenState.NamePlaylists -> namePlaylist = it.name
-                is NewPlaylistScreenState.DescriptionPlaylists -> descriptionPlaylist =
-                    it.description
-
+                is NewPlaylistScreenState.DescrPlaylists -> descriptionPlaylist = it.description
                 is NewPlaylistScreenState.ImageName -> nameImage = it.name
                 is NewPlaylistScreenState.ImageIsNotEmpty -> imageIsNotEmpty = it.boolean
                 is NewPlaylistScreenState.Empty -> {}
@@ -167,9 +96,15 @@ class NewPlaylistFragment : Fragment() {
                 imageStorageLink = viewModel.uri,
                 playlistsImageName = nameImage,
                 tracksId = arrayListOf(),
-                countOfTracks = 0
+                countOfTracks = 0,
+                countOfTracksWithText = ""
             )
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun showDialog() {
@@ -194,8 +129,99 @@ class NewPlaylistFragment : Fragment() {
         inputManager.hideSoftInputFromWindow(windowToken, 0)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    open fun editTextPlaylistName() {
+        binding.edittextPlaylistName.setOnFocusChangeListener { view, hasFocus ->
+            if (binding.edittextPlaylistName.text.isNotEmpty()) {
+                binding.buttonCreatePlaylist.isEnabled
+            }
+        }
+        binding.edittextPlaylistName.addTextChangedListener(
+            object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun afterTextChanged(p0: Editable?) {}
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    viewModel!!.changeState(NewPlaylistScreenState.NamePlaylists(binding.edittextPlaylistName.text.toString()))
+                    if (p0.isNullOrEmpty().not()) {
+                        viewModel.changeName(p0.toString())
+                        binding.buttonCreatePlaylist.isEnabled = true
+                    } else {
+                        binding.buttonCreatePlaylist.isEnabled = false
+                    }
+                }
+            })
+        binding.edittextPlaylistName.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.edittextPlaylistName.hideKeyboard()
+            }
+            false
+        }
     }
+
+    open fun descriptionNewPlaylistEdittext() {
+        binding.descriptionNewPlaylistEdittext.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.changeDescription(p0.toString())
+            }
+        })
+        binding.descriptionNewPlaylistEdittext.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.edittextPlaylistName.hideKeyboard()
+            }
+            false
+        }
+    }
+
+    private fun buttonCreatePlaylist() {
+        binding.buttonCreatePlaylist.setOnClickListener {
+            if (binding.edittextPlaylistName.text.isNotEmpty()) {
+                playlist()
+                viewModel.createPlaylist(viewModel.playlist)
+                Toast.makeText(
+                    requireContext(),
+                    " «Плейлист $namePlaylist создан»",
+                    Toast.LENGTH_SHORT
+                ).show()
+                findNavController().navigateUp()
+            }
+        }
+    }
+
+    open fun imageViewPlaylistPlaceholder() {
+        binding.imageViewPlaylistPlaceholder.setOnClickListener { view ->
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            viewModel.imageIsNotEmpty(true)
+        }
+
+    }
+
+   open fun saveImageToPrivateStorage(uri: Uri) {
+        val filePath = File(
+            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            MY_PLAYLIST_IMAGE
+        )
+        if (!filePath.exists()) {
+            filePath.mkdirs()
+        }
+        val imageName = SimpleDateFormat("yyyy.MM.dd_HH.mm.ss").format(Date()) + ".jpg"
+        viewModel.saveImageName(imageName)
+
+        val file = File(filePath, imageName)
+        val inputStream = requireActivity().contentResolver.openInputStream(uri)
+        val outputStream = FileOutputStream(file)
+        BitmapFactory
+            .decodeStream(inputStream)
+            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
+    }
+
+    private fun setTextInTitleAndButton() {
+        binding.buttonCreatePlaylist.text = requireActivity().getString(R.string.create)
+        binding.newPlaylistTitle.text =
+            requireActivity().getString(R.string.new_playlist_title_text)
+    }
+
 }

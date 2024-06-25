@@ -14,8 +14,6 @@
         android:orientation="vertical"
         tools:context=".presentation.ui.UiAudioPlayerActivity.AudioPlayerActivity">
 
-
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/leftBorder"
             android:layout_width="wrap_content"
@@ -352,7 +350,7 @@
         android:background="@drawable/bottom_sheet_bg"
         android:orientation="vertical"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="240dp"
+        app:behavior_peekHeight="360dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
         <!-- Вёрстка Bottom Sheet с кнопкой и списком -->
         <ImageView

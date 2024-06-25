@@ -55,4 +55,40 @@
     <string name="cancel">Отмена</string>
     <string name="finished">Завершить</string>
 
+    <plurals name="plurals">
+        <item quantity="zero">минут</item>
+        <item quantity="one"> минута</item>
+        <item quantity="two"> минуты</item>
+        <item quantity="few"> минуты</item>
+        <item quantity="many"> минут</item>
+        <item quantity="other"> минут</item>
+    </plurals>
+
+    <plurals name="plurals_tracks">
+        <item quantity="zero">треков</item>
+        <item quantity="one"> трек</item>
+        <item quantity="two"> трека</item>
+        <item quantity="few"> трека</item>
+        <item quantity="many"> треков</item>
+        <item quantity="other"> трек</item>
+    </plurals>
+
+    <string name="delete_track">Удалить трек</string>
+    <string name="delete_track_question">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="delete">Удалить</string>
+
+    <string name="dont_have_a_tracks">В этом плейлисте нет списка треков, которым можно поделиться</string>
+
+    <string name="share_pl_list_fr">Поделиться</string>
+    <string name="change_info">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+
+    <string name="delete_playlist_question">Хотите удалить плейлист?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+
+    <string name="save">Сохранить</string>
+    <string name="edit">Редактировать</string>
+    <string name="empty_playlist">Плейлист пуст.</string>
+
 </resources>
