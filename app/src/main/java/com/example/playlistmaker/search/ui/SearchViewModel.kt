@@ -26,11 +26,11 @@ class SearchViewModel(
     private var searchJob: Job? = null
     private var isClickAllowed = true
 
-    fun activityStateLiveData(): LiveData<SearchActivityState> = searchLiveData
-
     init {
         updateState(SearchActivityState.NoTextOrFocusState)
     }
+
+    fun getState(): LiveData<SearchActivityState> = searchLiveData
 
     fun updateState(state: SearchActivityState) {
         searchLiveData.value = state

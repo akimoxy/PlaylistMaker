@@ -17,9 +17,9 @@ class PlaylistsRepositoryimpl(
 ) :
     PlaylistsRepository {
     override fun getPlaylists(): Flow<List<PlaylistsModel>> {
-        val playlists = appDataBase.playlistDao().getPlaylists()
+        val playlists =  appDataBase.playlistDao().getPlaylists()
         var i = playlists.map { list ->
-            list.map { conv.mapInToPlaylistModel(it) }
+            list.map { conv.mapInToPlaylistModel( it) }
         }
         return i
     }

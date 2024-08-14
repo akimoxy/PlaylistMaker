@@ -1,7 +1,6 @@
 package com.example.playlistmaker.search.ui
 
 import TRACK
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.provider.Contacts.SettingsColumns.KEY
@@ -28,10 +27,9 @@ class SearchFragment : Fragment() {
     private var text = ""
     lateinit var trackAdapter: TrackAdapter
     private lateinit var adapterForHistoryTracks: TrackAdapter
-    private lateinit var clickListener: RecyclerViewEvent
     private val viewModel by viewModel<SearchViewModel>()
     private var arrayList: ArrayList<Track> = arrayListOf()
-    lateinit var resultArrayList: ArrayList<Track>
+    private lateinit var resultArrayList: ArrayList<Track>
     private var arrayListHistory: ArrayList<Track> = arrayListOf()
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -50,66 +48,19 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        clickListener = clickListenerFun()
         viewModel.updateState(SearchActivityState.NoTextOrFocusState)
-        showView()
+        viewModel.getState().observe(viewLifecycleOwner) { showView(it) }
+        inputEditTextListener()
+        initAdapterAndRecycler()
 
 
-        adapterForHistoryTracks = TrackAdapter(viewModel.getHistoryItems(), clickListener)
-        binding.recyclerViewHist.adapter = adapterForHistoryTracks
-        binding.recyclerViewHist.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
-        trackAdapter = TrackAdapter(arrayList, clickListener)
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.recyclerView.adapter = trackAdapter
 
         binding.clearIconSearch.setOnClickListener {
             binding.inputEditText.text.clear()
             arrayList.clear()
             trackAdapter.updateList(arrayList)
             viewModel.setHistory()
-            showView()
         }
-        binding.inputEditText.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                binding.inputEditText.showKeyboard()
-                viewModel.setHistory()
-                showView()
-
-            }
-        }
-        binding.inputEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                binding.inputEditText.hideKeyboard()
-            }
-            false
-        }
-        binding.inputEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.clearIconSearch.isVisible = p0.isNullOrEmpty().not()
-                if (!p0.isNullOrEmpty()) {
-                    viewModel.searchDebounce(p0.toString())
-                } else if (p0.isNullOrEmpty() && viewModel.getHistoryItems().isEmpty()) {
-                    arrayList.clear()
-                    trackAdapter.updateList(arrayList)
-                    viewModel.updateState(SearchActivityState.NoTextOrFocusState)
-                    showView()
-
-                } else {
-                    // viewModel.setHistory()
-                    //  showView()
-                }
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                if (binding.inputEditText.hasFocus() && viewModel.getHistoryItems().isEmpty()) {
-                    viewModel.updateState(SearchActivityState.NoTextOrFocusState)
-                }
-            }
-        })
     }
 
     override fun onDestroyView() {
@@ -122,45 +73,34 @@ class SearchFragment : Fragment() {
         outState.putString(KEY, text)
     }
 
-    private fun showView() {
-        viewModel.activityStateLiveData().observe(viewLifecycleOwner) {
-            when (it) {
-                is SearchActivityState.SearchTracks -> {
-                    arrayList.clear()
-                    resultArrayList = it.searchTracks as ArrayList<Track>
-                    arrayList.addAll(resultArrayList)
-                    trackAdapter.updateList(arrayList)
-                    searchTracks()
-                }
-
-                is SearchActivityState.SearchHistory -> {
-                    arrayListHistory.clear()
-                    arrayListHistory.addAll(viewModel.getHistoryItems())
-                    adapterForHistoryTracks.updateList(arrayListHistory)
-                    showHistoryView()
-                }
-
-                is SearchActivityState.Loading -> {
-                    loading()
-                }
-
-                is SearchActivityState.NoResult -> {
-                    noResults()
-                }
-
-                is SearchActivityState.ServerError -> {
-                    serverError()
-                }
-
-                is SearchActivityState.NoTextOrFocusState -> {
-                    noTextOrFocusView()
-                }
-
-                else -> {}
+    private fun showView(it: SearchActivityState) {
+        when (it) {
+            is SearchActivityState.SearchTracks -> {
+                searchTracks(it.searchTracks as ArrayList<Track>)
             }
 
+            is SearchActivityState.SearchHistory -> {
+                showHistoryView()
+            }
+
+            is SearchActivityState.Loading -> {
+                loading()
+            }
+
+            is SearchActivityState.NoResult -> {
+                noResults()
+            }
+
+            is SearchActivityState.ServerError -> {
+                serverError()
+            }
+
+            is SearchActivityState.NoTextOrFocusState -> {
+                noTextOrFocusView()
+            }
         }
     }
+
 
     private fun View.showKeyboard() {
         val imm =
@@ -174,89 +114,130 @@ class SearchFragment : Fragment() {
         inputManager.hideSoftInputFromWindow(windowToken, 0)
     }
 
-    private fun clickListenerFun() = object : RecyclerViewEvent {
-        @SuppressLint("SuspiciousIndentation")
-        override fun onItemClick(track: Track) {
-            if (viewModel.clickDebounce()) {
-                viewModel.saveTrackToHistory(track)
-                val json = Json.encodeToString(track)
-                var bundle = bundleOf(TRACK to json)
-                findNavController().navigate(
-                    R.id.action_searchFragment_to_audioPlayerFragment,
-                    bundle
-                )
-            }
+    private fun clickListenerFun(track: Track) {
+        if (viewModel.clickDebounce()) {
+            viewModel.saveTrackToHistory(track)
+            val json = Json.encodeToString(track)
+            var bundle = bundleOf(TRACK to json)
+            findNavController().navigate(
+                R.id.action_searchFragment_to_audioPlayerFragment,
+                bundle
+            )
         }
     }
 
-    private fun searchTracks() {
-        binding.recyclerView.visibility = View.VISIBLE
-        binding.textViewYourSearch.visibility = View.GONE
-        binding.clearTrackHistory.visibility = View.GONE
-        binding.progressBarSearchActivity.visibility = View.GONE
-        binding.noResultsSearchInclude.root.visibility = View.GONE
-        binding.serverErrorInclude.root.visibility = View.GONE
-        binding.progressBarSearchActivity.visibility = View.GONE
+
+    private fun searchTracks(it: ArrayList<Track>) {
+        arrayList.clear()
+        resultArrayList = it
+        arrayList.addAll(resultArrayList)
+        trackAdapter.updateList(arrayList)
+        viewVisibility(rV = true)
     }
 
     private fun showHistoryView() {
-        binding.clearTrackHistory.visibility = View.VISIBLE
-        binding.textViewYourSearch.visibility = View.VISIBLE
-        binding.recyclerViewHist.visibility = View.VISIBLE
+        arrayListHistory.clear()
+        arrayListHistory.addAll(viewModel.getHistoryItems())
+        adapterForHistoryTracks.updateList(arrayListHistory)
         binding.clearTrackHistory.setOnClickListener {
             arrayListHistory.clear()
             viewModel.clearTrackHistory()
             adapterForHistoryTracks.updateList(arrayListHistory)
             viewModel.updateState(SearchActivityState.NoTextOrFocusState)
         }
-        binding.recyclerView.visibility = View.GONE
-        binding.noResultsSearchInclude.root.visibility = View.GONE
-        binding.serverErrorInclude.root.visibility = View.GONE
-        binding.progressBarSearchActivity.visibility = View.GONE
+        viewVisibility(
+            rVHist = true,
+            tVYourSearch = true,
+            clearTrackHist = true
+        )
     }
 
     private fun loading() {
-        binding.progressBarSearchActivity.visibility = View.VISIBLE
-        binding.textViewYourSearch.visibility = View.GONE
-        binding.noResultsSearchInclude.root.visibility = View.GONE
-        binding.recyclerViewHist.visibility = View.GONE
-        binding.recyclerView.visibility = View.GONE
-        binding.clearTrackHistory.visibility = View.GONE
-        binding.serverErrorInclude.root.visibility = View.GONE
+        viewVisibility(progressBar = true)
     }
 
     private fun serverError() {
-        binding.progressBarSearchActivity.visibility = View.GONE
-        binding.textViewYourSearch.visibility = View.GONE
-        binding.noResultsSearchInclude.root.visibility = View.GONE
-        binding.recyclerView.visibility = View.GONE
-        binding.recyclerViewHist.visibility = View.GONE
-        binding.clearTrackHistory.visibility = View.GONE
-        binding.serverErrorInclude.root.visibility = View.VISIBLE
+        viewVisibility(serverError = true)
         binding.serverErrorInclude.updateSearchServerError.setOnClickListener {
             viewModel.searchDebounce(binding.inputEditText.text.toString())
-            showView()
         }
     }
 
     private fun noResults() {
-        binding.noResultsSearchInclude.root.visibility = View.VISIBLE
-        binding.progressBarSearchActivity.visibility = View.GONE
-        binding.textViewYourSearch.visibility = View.GONE
-        binding.recyclerView.visibility = View.GONE
-        binding.recyclerViewHist.visibility = View.GONE
-        binding.clearTrackHistory.visibility = View.GONE
-        binding.serverErrorInclude.root.visibility = View.GONE
+        viewVisibility(noResult = true)
     }
 
     private fun noTextOrFocusView() {
-        binding.progressBarSearchActivity.visibility = View.GONE
-        binding.recyclerViewHist.visibility = View.GONE
-        binding.recyclerView.visibility = View.GONE
-        binding.textViewYourSearch.visibility = View.GONE
-        binding.clearTrackHistory.visibility = View.GONE
-        binding.serverErrorInclude.root.visibility = View.GONE
-        binding.noResultsSearchInclude.root.visibility = View.GONE
+        viewVisibility()
+    }
+
+    private fun viewVisibility(
+        progressBar: Boolean = false,
+        rVHist: Boolean = false,
+        rV: Boolean = false,
+        tVYourSearch: Boolean = false,
+        clearTrackHist: Boolean = false,
+        serverError: Boolean = false,
+        noResult: Boolean = false
+    ) {
+        with(binding) {
+            progressBarSearchActivity.isVisible = progressBar
+            if (progressBar) {
+                recyclerView.smoothScrollToPosition(trackAdapter.itemCount)
+            }
+            recyclerViewHist.isVisible = rVHist
+            recyclerView.isVisible = rV
+            textViewYourSearch.isVisible = tVYourSearch
+            clearTrackHistory.isVisible = clearTrackHist
+            serverErrorInclude.root.isVisible = serverError
+            noResultsSearchInclude.root.isVisible = noResult
+        }
+    }
+
+    private fun inputEditTextListener() {
+        binding.inputEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                binding.clearIconSearch.isVisible = p0.isNullOrEmpty().not()
+                if (!p0.isNullOrEmpty()) {
+                    viewModel.searchDebounce(p0.toString())
+                } else if (p0.isNullOrEmpty() && viewModel.getHistoryItems().isEmpty()) {
+                    arrayList.clear()
+                    trackAdapter.updateList(arrayList)
+                    viewModel.updateState(SearchActivityState.NoTextOrFocusState)
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                if (binding.inputEditText.hasFocus() && viewModel.getHistoryItems().isEmpty()) {
+                    viewModel.updateState(SearchActivityState.NoTextOrFocusState)
+                }
+            }
+        })
+        binding.inputEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.inputEditText.showKeyboard()
+                viewModel.setHistory()
+            }
+        }
+        binding.inputEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.inputEditText.hideKeyboard()
+            }
+            false
+        }
+    }
+
+    private fun initAdapterAndRecycler() {
+        adapterForHistoryTracks = TrackAdapter(viewModel.getHistoryItems(), ::clickListenerFun)
+        binding.recyclerViewHist.adapter = adapterForHistoryTracks
+        binding.recyclerViewHist.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+        trackAdapter = TrackAdapter(arrayList, ::clickListenerFun)
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.adapter = trackAdapter
     }
 
 }

@@ -18,7 +18,7 @@ import java.util.Locale
 const val TWENTY_FIVE = 25
 
 class TrackAdapter(
-    private var arrayOfTrack: ArrayList<Track>, private var clickListener: RecyclerViewEvent
+    private var arrayOfTrack: ArrayList<Track>, private var clickListener: (track:Track)->Unit
 ) : RecyclerView.Adapter<TrackAdapter.SearchViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -31,7 +31,7 @@ class TrackAdapter(
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.bind(arrayOfTrack[position])
         holder.itemView.setOnClickListener {
-            clickListener.onItemClick(arrayOfTrack[position])
+            clickListener(arrayOfTrack[position])
         }
     }
     @SuppressLint("NotifyDataSetChanged")
@@ -83,8 +83,5 @@ class TrackAdapter(
     }
 }
 
-interface RecyclerViewEvent {
-    fun onItemClick(track: Track)
-}
 
 
