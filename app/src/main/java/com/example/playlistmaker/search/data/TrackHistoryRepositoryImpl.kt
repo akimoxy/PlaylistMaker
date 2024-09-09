@@ -15,19 +15,19 @@ class TrackHistoryRepositoryImpl(
     val sharedPreferences: SharedPreferences
 ) : TrackHistoryRepository {
 
-    override fun getItemsFromCache(): ArrayList<Track> {
+    override fun getItemsFromCache(): MutableList<Track> {
         val json: String =
-            sharedPreferences.getString(TRACK_HISTORY_KEY, null) ?: return arrayListOf()
+            sharedPreferences.getString(TRACK_HISTORY_KEY, null) ?: return mutableListOf()
         return ArrayList(gson.fromJson(json, Array<Track>::class.java).toList())
     }
 
-    override fun getItems(): ArrayList<Track> {
+    override fun getItems(): MutableList<Track> {
         val itemsFromCache = getItemsFromCache()
         itemsFromCache.reverse()
         return itemsFromCache
     }
 
-    override fun saveTrack(trackArray: ArrayList<Track>) {
+    override fun saveTrack(trackArray: MutableList<Track>) {
         val json = gson.toJson(trackArray)
         sharedPreferences.edit()
             .putString(TRACK_HISTORY_KEY, json)

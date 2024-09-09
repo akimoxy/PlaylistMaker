@@ -15,10 +15,10 @@ class SharePlaylistImpl(
     override suspend fun sharePlaylist(playlistsModel: PlaylistsModel) {
         val playlistName = playlistsModel.playlistName
         val playlistDescr = playlistsModel.playlistDescription
-        var arrayOfString = arrayListOf<String>()
-        var name: String = ""
-        var trackName: String = ""
-        var trackTime: String = ""
+        val arrayOfString = arrayListOf<String>()
+        var name = ""
+        var trackName = ""
+        var trackTime = ""
         playlistsModel.apply {
             arrayOfString.clear()
             for (i in playlistsModel.tracksId) {

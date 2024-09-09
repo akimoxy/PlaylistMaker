@@ -28,9 +28,8 @@ class SearchFragment : Fragment() {
     lateinit var trackAdapter: TrackAdapter
     private lateinit var adapterForHistoryTracks: TrackAdapter
     private val viewModel by viewModel<SearchViewModel>()
-    private var arrayList: ArrayList<Track> = arrayListOf()
-    private lateinit var resultArrayList: ArrayList<Track>
-    private var arrayListHistory: ArrayList<Track> = arrayListOf()
+    private var listOfTracks: List<Track> = listOf()
+    private var listHistory: List<Track> = listOf()
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
@@ -57,8 +56,8 @@ class SearchFragment : Fragment() {
 
         binding.clearIconSearch.setOnClickListener {
             binding.inputEditText.text.clear()
-            arrayList.clear()
-            trackAdapter.updateList(arrayList)
+            listOfTracks = emptyList()
+            trackAdapter.updateList(listOfTracks)
             viewModel.setHistory()
         }
     }
@@ -128,21 +127,17 @@ class SearchFragment : Fragment() {
 
 
     private fun searchTracks(it: ArrayList<Track>) {
-        arrayList.clear()
-        resultArrayList = it
-        arrayList.addAll(resultArrayList)
-        trackAdapter.updateList(arrayList)
+        trackAdapter.updateList(it)
         viewVisibility(rV = true)
     }
 
     private fun showHistoryView() {
-        arrayListHistory.clear()
-        arrayListHistory.addAll(viewModel.getHistoryItems())
-        adapterForHistoryTracks.updateList(arrayListHistory)
+        listHistory = emptyList()
+        adapterForHistoryTracks.updateList(viewModel.getHistoryItems())
         binding.clearTrackHistory.setOnClickListener {
-            arrayListHistory.clear()
+            listHistory = emptyList()
             viewModel.clearTrackHistory()
-            adapterForHistoryTracks.updateList(arrayListHistory)
+            adapterForHistoryTracks.updateList(listHistory)
             viewModel.updateState(SearchActivityState.NoTextOrFocusState)
         }
         viewVisibility(
@@ -202,8 +197,8 @@ class SearchFragment : Fragment() {
                 if (!p0.isNullOrEmpty()) {
                     viewModel.searchDebounce(p0.toString())
                 } else if (p0.isNullOrEmpty() && viewModel.getHistoryItems().isEmpty()) {
-                    arrayList.clear()
-                    trackAdapter.updateList(arrayList)
+                    listOfTracks = emptyList()
+                    trackAdapter.updateList(listOfTracks)
                     viewModel.updateState(SearchActivityState.NoTextOrFocusState)
                 }
             }
@@ -234,7 +229,7 @@ class SearchFragment : Fragment() {
         binding.recyclerViewHist.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        trackAdapter = TrackAdapter(arrayList, ::clickListenerFun)
+        trackAdapter = TrackAdapter(listOfTracks, ::clickListenerFun)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = trackAdapter

@@ -8,10 +8,10 @@ const val MAX_SIZE_TRACK_HISTORY_ARRAY = 10
 const val FIRST_INDEX_IN_ARRAY = 0
 
 class TrackHistoryInteractorImpl(var history: TrackHistoryRepository) : TrackHistoryInteractor {
-    override fun getItemsFromCache(): ArrayList<Track> {
+    override fun getItemsFromCache(): MutableList<Track> {
         return history.getItemsFromCache()
     }
-    override fun getItems(): ArrayList<Track> {
+    override fun getItems(): MutableList<Track> {
         return history.getItems()
     }
     override fun saveTrack(track: Track) {
