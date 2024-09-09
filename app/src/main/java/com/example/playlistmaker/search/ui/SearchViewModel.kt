@@ -81,7 +81,7 @@ class SearchViewModel(
         return current
     }
 
-    fun getHistoryItems(): ArrayList<Track> {
+    fun getHistoryItems(): MutableList<Track> {
         return trackHistoryInteractor.getItems()
     }
 
