@@ -1,3 +1,3 @@
 package com.example.playlistmaker.search.data.dto
 
-data class TrackResponse(val results: ArrayList<TrackDto>): Response()
+data class TrackResponse(val results: MutableList<TrackDto>): Response()

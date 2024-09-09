@@ -12,9 +12,8 @@ const val SERVER_CODE_200 = 200
 
 class TrackRepositoryImpl(
     private val networkClient: NetworkClient,
-
     ) : TrackRepository {
-    private var emptyArray: ArrayList<Track> = arrayListOf()
+    private var emptyList: List<Track> = listOf()
     override fun searchTrack(expression: String): Flow<TrackResponseDomain> = flow {
         val response = networkClient.doRequest(TrackSearchRequest(expression))
 
@@ -36,7 +35,7 @@ class TrackRepositoryImpl(
             }
             emit(TrackResponseDomain(trackList as ArrayList<Track>, response.resultCode))
         } else {
-            emit(TrackResponseDomain(emptyArray, response.resultCode))
+            emit(TrackResponseDomain(emptyList, response.resultCode))
         }
     }
 }

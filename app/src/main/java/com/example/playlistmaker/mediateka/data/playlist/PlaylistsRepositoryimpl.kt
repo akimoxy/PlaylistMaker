@@ -72,7 +72,7 @@ class PlaylistsRepositoryimpl(
 
     override suspend fun getPlaylistById(id: Int): PlaylistsModel {
         val pl = appDataBase.playlistDao().getPlaylistId(id)
-        var model = conv.mapInToPlaylistModel(pl)
+        val model = conv.mapInToPlaylistModel(pl)
         return model
     }
 
@@ -111,6 +111,7 @@ class PlaylistsRepositoryimpl(
         if (tracks) {
             appDataBase.trackEntityInPlDao().deleteTrack(string)
         }
+
     }
 
     override suspend fun deletePlaylist(playlist: PlaylistsModel) {
